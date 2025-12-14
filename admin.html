@@ -26,26 +26,26 @@
         .form-tabs {
             display: flex;
             gap: 0;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid #e8e8e8;
         }
 
         .form-tab-btn {
             flex: 1;
-            padding: 12px;
+            padding: 10px 12px;
             background: transparent;
             border: none;
-            border-bottom: 3px solid transparent;
-            color: #999;
+            border-bottom: 2px solid transparent;
+            color: #667085;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.98rem;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.25s ease;
         }
 
         .form-tab-btn.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
+            color: #1d4ed8;
+            border-bottom-color: #1d4ed8;
         }
 
         .form-tab-btn:hover:not(.active) {
@@ -69,7 +69,7 @@
         .admin-card {
             background: white;
             border-radius: 16px;
-            padding: 2.5rem;
+            padding: 2rem 2rem;
             box-shadow: 0 8px 30px rgba(0, 102, 204, 0.1);
             position: relative;
             z-index: 1;
@@ -94,10 +94,11 @@
         }
 
         .admin-card h2 {
-            color: #667eea;
-            margin-bottom: 0.5rem;
-            font-size: 1.8rem;
+            color: #1d4ed8;
+            margin-bottom: 0.15rem;
+            font-size: 1.85rem;
             text-align: center;
+            letter-spacing: 0.2px;
         }
 
         .admin-card h2 i {
@@ -105,9 +106,9 @@
         }
 
         .admin-card > p {
-            color: #666;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
+            color: #64748b;
+            margin-bottom: 1rem;
+            line-height: 1.5;
             text-align: center;
         }
 
@@ -183,52 +184,59 @@
         }
 
         .form-group {
-            margin-bottom: 1.2rem;
+            margin-bottom: 0.75rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            color: #333;
+            margin-bottom: 0.35rem;
+            color: #0f172a;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
+            padding: 10px 12px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.97rem;
+            background: #f8fafc;
+            color: #0f172a;
+            transition: all 0.25s ease;
         }
 
+        .form-group input::placeholder { color: #94a3b8; }
+        .form-group input:hover,
+        .form-group select:hover { border-color: #cbd5e1; background: #eef2f7; }
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+            border-color: #1d4ed8;
+            box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.12);
+            background: #ffffff;
             transform: translateY(-1px);
         }
 
         .login-btn {
             width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 11px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
+            border-radius: 10px;
+            font-size: 0.98rem;
+            font-weight: 700;
+            letter-spacing: 0.2px;
             cursor: pointer;
-            transition: transform 0.3s;
-            margin-top: 0.5rem;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            margin-top: 0.25rem;
         }
 
         .login-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px rgba(37, 99, 235, 0.35);
         }
 
         .login-btn:active {
@@ -319,6 +327,34 @@
             .admin-container {
                 gap: 1rem;
             }
+
+            /* Register form grid polish */
+            .password-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .btn-group {
+                display: flex;
+                gap: 10px;
+            }
+
+            .btn-upload {
+                background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+                color: #fff;
+                border-radius: 10px;
+                padding: 10px 16px;
+                font-weight: 600;
+            }
+
+            .btn-remove {
+                background: #e9eef5;
+                color: #0f172a;
+                border-radius: 10px;
+                padding: 10px 16px;
+                font-weight: 600;
+            }
         }
     </style>
 </head>
@@ -333,6 +369,7 @@
             <ul class="navbar-menu">
                 <li><a href="index.html" class="nav-link">Beranda</a></li>
                 <li><a href="admin.html" class="nav-link active">Login Admin</a></li>
+                    <li><a href="create-admin.html" class="nav-link">Daftar Admin</a></li>
             </ul>
             <div class="hamburger">
                 <span></span>
@@ -353,15 +390,9 @@
                 </a>
 
                 <h2><i class="fas fa-lock"></i> Admin Portal</h2>
-                <p>Sistem Manajemen Rumah Sakit Jaya Sehat </p>
+                <p>Sistem Manajemen Rumah Sakit Jaya Sehat</p>
 
-                <!-- Tab Navigation -->
-                <div class="form-tabs">
-                    <button type="button" class="form-tab-btn active" onclick="switchTab('login')">Masuk</button>
-                    <button type="button" class="form-tab-btn" onclick="switchTab('register')">Buat Akun</button>
-                </div>
-
-                <!-- Login Tab -->
+                <!-- Login Only -->
                 <div id="login-tab" class="form-tab-content active">
                     <form id="admin-login-form" onsubmit="handleAdminLogin(event)" novalidate>
                         <div class="form-group">
@@ -387,13 +418,13 @@
                                 placeholder="Masukkan password"
                             >
                         </div>
-
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin: 0.5rem 0 1rem;">
                             <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin: 0;">
-                                <input type="checkbox" id="remember-me" name="remember" style="width: 18px; height: 18px; cursor: pointer;">
-                                <span style="color: #666; font-size: 0.95rem;">Remember me</span>
+                                <input type="checkbox" id="remember-me" name="remember" style="width: 16px; height: 16px; cursor: pointer;">
+                                <span style="color: #64748b; font-size: 0.9rem;">Remember me</span>
                             </label>
-                            <a href="#" onclick="event.preventDefault();" style="color: #667eea; text-decoration: none; font-size: 0.95rem; font-weight: 500;">Forgot Password?</a>
+                            <a href="#" onclick="event.preventDefault();" style="color: #2563eb; text-decoration: none; font-size: 0.9rem; font-weight: 600;">Forgot Password?</a>
                         </div>
 
                         <button type="submit" class="login-btn">
@@ -402,70 +433,6 @@
                     </form>
                 </div>
 
-                <!-- Register Tab -->
-                <div id="register-tab" class="form-tab-content">
-                    <form id="admin-register-form" onsubmit="handleAdminRegister(event)" novalidate>
-                        <div class="form-group">
-                            <label for="reg-nip">
-                                <i class="fas fa-id-card"></i> NIP
-                            </label>
-                            <input 
-                                type="text" 
-                                id="reg-nip" 
-                                name="nip" 
-                                placeholder="Nomor Identitas Pegawai"
-                                required
-                            >
-                        </div>
-
-                        <div class="form-group">
-                            <label for="reg-username">
-                                <i class="fas fa-user"></i> Username
-                            </label>
-                            <input 
-                                type="text" 
-                                id="reg-username" 
-                                name="username" 
-                                placeholder="Pilih username"
-                                required
-                            >
-                        </div>
-
-                        <div class="form-group">
-                            <label for="reg-email">
-                                <i class="fas fa-envelope"></i> Email
-                            </label>
-                            <input 
-                                type="email" 
-                                id="reg-email" 
-                                name="email" 
-                                placeholder="Email aktif Anda"
-                                required
-                            >
-                        </div>
-
-                        <div class="form-group">
-                            <label for="reg-password">
-                                <i class="fas fa-lock"></i> Password
-                            </label>
-                            <input 
-                                type="password" 
-                                id="reg-password" 
-                                name="password" 
-                                placeholder="Buat password yang kuat"
-                                required
-                            >
-                        </div>
-
-                        <button type="submit" class="login-btn">
-                            <i class="fas fa-user-plus"></i> Daftar
-                        </button>
-                    </form>
-
-                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e0e0e0; text-align: center;">
-                        <p style="color: #666; font-size: 0.9rem;">Sudah punya akun? <a href="#" onclick="switchTab('login'); return false;" style="color: #667eea; font-weight: 600; text-decoration: none;">Masuk di sini</a></p>
-                    </div>
-                </div>
 
             </div>
 
