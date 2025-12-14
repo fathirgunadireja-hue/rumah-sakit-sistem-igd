@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Laboratorium - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin: 15px 0;
+        }
+        .result-table thead {
+            background: #0066cc;
+            color: white;
+        }
+        .result-table th,
+        .result-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .result-table tbody tr:hover {
+            background: #f5f5f5;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        .badge-normal {
+            background: #d4edda;
+            color: #155724;
+        }
+        .badge-abnormal {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .badge-critical {
+            background: #f5c6cb;
+            color: #721c24;
+            animation: blink 1.5s infinite;
+        }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.7; }
+        }
+        .result-section {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .result-header {
+            background: #0066cc;
+            color: white;
+            padding: 15px;
+            border-radius: 6px 6px 0 0;
+            margin: -20px -20px 20px -20px;
+            font-weight: bold;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .interpretation-box {
+            background: #fff9e6;
+            border-left: 4px solid #ffcc00;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .interpretation-title {
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 8px;
+        }
+        .verified-badge {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+            padding: 10px 15px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        @media (max-width: 768px) {
+            .result-table {
+                font-size: 0.9em;
+            }
+            .result-table th,
+            .result-table td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div class="admin-container">
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="form-header">
+                <h1><i class="fas fa-microscope"></i> Hasil Pemeriksaan Laboratorium</h1>
+                <p>Tampilan hasil dan validasi pemeriksaan laboratorium pasien</p>
+            </div>
+            
+            <!-- Lab Results Form -->
+            <form class="patient-form" onsubmit="handleHasilLab(event)" novalidate>
+                
+                <!-- Data Pasien Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user-circle"></i> Data Pasien & Pemeriksaan</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-rm-hasil">No RM <span class="required">*</span></label>
+                            <input type="text" id="no-rm-hasil" placeholder="RM-2024-001" value="RM-2024-001" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama-pasien-hasil">Nama Pasien <span class="required">*</span></label>
+                            <input type="text" id="nama-pasien-hasil" placeholder="Nama lengkap pasien" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tanggal-pemeriksaan-hasil">Tanggal Pemeriksaan <span class="required">*</span></label>
+                            <input type="date" id="tanggal-pemeriksaan-hasil" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jenis-pemeriksaan-hasil">Jenis Pemeriksaan <span class="required">*</span></label>
+                            <select id="jenis-pemeriksaan-hasil" onchange="updateResultsTable()" required>
+                                <option value="">-- Pilih Jenis --</option>
+                                <option value="hematologi">Hematologi (Darah Lengkap)</option>
+                                <option value="kimia-klinis">Kimia Klinis (Fungsi Organ)</option>
+                                <option value="serologi">Serologi (Infeksi)</option>
+                                <option value="urinalisis">Urinalisis (Air Kencing)</option>
+                                <option value="feses">Feses (Tinja)</option>
+                                <option value="kultur">Kultur Mikroba</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hematology Results -->
+                <div id="hematologi-results" class="result-section" style="display: none;">
+                    <div class="result-header">
+                        <i class="fas fa-droplet"></i> Hasil Hematologi (Darah Lengkap)
+                    </div>
+                    <table class="result-table">
+                        <thead>
+                            <tr>
+                                <th>Pemeriksaan</th>
+                                <th>Hasil</th>
+                                <th>Satuan</th>
+                                <th>Nilai Normal</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Hemoglobin (Hb)</td>
+                                <td><input type="number" id="hb-value" placeholder="14.5" step="0.1" value="14.5"></td>
+                                <td>g/dL</td>
+                                <td>12-16</td>
+                                <td><span class="result-badge badge-normal">Normal</span></td>
+                            </tr>
+                            <tr>
+                                <td>Hematokrit (Hct)</td>
+                                <td><input type="number" id="hct-value" placeholder="42" step="0.1" value="42"></td>
+                                <td>%</td>
+                                <td>36-46</td>
+                                <td><span class="result-badge badge-normal">Normal</span></td>
+                            </tr>
+                            <tr>
+                                <td>Eritrosit (RBC)</td>
+                                <td><input type="number" id="rbc-value" placeholder="4.8" step="0.1" value="4.8"></td>
+                                <td>10^6/μL</td>
+                                <td>4.5-5.5</td>
+                                <td><span class="result-badge badge-normal">Normal</span></td>
+                            </tr>
+                            <tr>
+                                <td>Leukosit (WBC)</td>
+                                <td><input type="number" id="wbc-value" placeholder="7.5" step="0.1" value="7.5"></td>
+                                <td>10^3/μL</td>
+                                <td>4.5-11</td>
+                                <td><span class="result-badge badge-normal">Normal</span></td>
+                            </tr>
+                            <tr>
+                                <td>Trombosit (PLT)</td>
+                                <td><input type="number" id="plt-value" placeholder="250" step="10" value="250"></td>
+                                <td>10^3/μL</td>
+                                <td>150-400</td>
+                                <td><span class="result-badge badge-normal">Normal</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Chemistry Results -->
+                <div id="kimia-results" class="result-section" style="display: none;">
+                    <div class="result-header">
+                        <i class="fas fa-flask-vial"></i> Hasil Kimia Klinis (Fungsi Organ)
+                    </div>
+                    <table class="result-table">
+                        <thead>
+                            <tr>
+                                <th>Pemeriksaan</th>
+                                <th>Hasil</th>
+                                <th>Satuan</th>
+                                <th>Nilai Normal</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Glukosa Puasa</td>
+                                <td><input type="number" id="glukosa-value" placeholder="100" step="1" value="100"></td>
+                                <td>mg/dL</td>
+                                <td>70-100</td>
+                                <td><span class="result-badge badge-normal">Normal</span></td>
+                            </tr>
+                            <tr>
+                                <td>Kreatinin</td>
+                                <td><input type="number" id="kreatinin-value" placeholder="0.9" step="0.1" value="0.9"></td>
+                                <td>mg/dL</td>
+                                <td>0.6-1.2</td>
+                                <td><span class="result-badge badge-normal">Normal</span></td>
+                            </tr>
+                            <tr>
+                                <td>BUN (Urea Nitrogen)</td>
+                                <td><input type="number" id="bun-value" placeholder="15" step="1" value="15"></td>
+                                <td>mg/dL</td>
+                                <td>7-20</td>
+                                <td><span class="result-badge badge-normal">Normal</span></td>
+                            </tr>
+                            <tr>
+                                <td>SGOT (AST)</td>
+                                <td><input type="number" id="sgot-value" placeholder="30" step="1" value="30"></td>
+                                <td>U/L</td>
+                                <td>10-40</td>
+                                <td><span class="result-badge badge-normal">Normal</span></td>
+                            </tr>
+                            <tr>
+                                <td>SGPT (ALT)</td>
+                                <td><input type="number" id="sgpt-value" placeholder="25" step="1" value="25"></td>
+                                <td>U/L</td>
+                                <td>7-56</td>
+                                <td><span class="result-badge badge-normal">Normal</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Serology Results -->
+                <div id="serologi-results" class="result-section" style="display: none;">
+                    <div class="result-header">
+                        <i class="fas fa-virus"></i> Hasil Serologi (Pemeriksaan Infeksi)
+                    </div>
+                    <table class="result-table">
+                        <thead>
+                            <tr>
+                                <th>Pemeriksaan</th>
+                                <th>Hasil</th>
+                                <th>Interpretasi</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>HIV Antigen/Antibodi</td>
+                                <td><select id="hiv-result"><option value="negatif">Negatif</option><option value="positif">Positif</option><option value="indeterminate">Indeterminate</option></select></td>
+                                <td id="hiv-interp">Non reaktif</td>
+                                <td><span class="result-badge badge-normal">Normal</span></td>
+                            </tr>
+                            <tr>
+                                <td>Hepatitis B (HBsAg)</td>
+                                <td><select id="hbsag-result"><option value="negatif">Negatif</option><option value="positif">Positif</option></select></td>
+                                <td id="hbsag-interp">Non reaktif</td>
+                                <td><span class="result-badge badge-normal">Normal</span></td>
+                            </tr>
+                            <tr>
+                                <td>Hepatitis C (Anti-HCV)</td>
+                                <td><select id="hcv-result"><option value="negatif">Negatif</option><option value="positif">Positif</option></select></td>
+                                <td id="hcv-interp">Non reaktif</td>
+                                <td><span class="result-badge badge-normal">Normal</span></td>
+                            </tr>
+                            <tr>
+                                <td>Syphilis (RPR/VDRL)</td>
+                                <td><select id="syphilis-result"><option value="negatif">Negatif</option><option value="positif">Positif</option></select></td>
+                                <td id="syphilis-interp">Non reaktif</td>
+                                <td><span class="result-badge badge-normal">Normal</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Urinalysis Results -->
+                <div id="urinalisis-results" class="result-section" style="display: none;">
+                    <div class="result-header">
+                        <i class="fas fa-droplet-slash"></i> Hasil Urinalisis (Air Kencing)
+                    </div>
+                    <table class="result-table">
+                        <thead>
+                            <tr>
+                                <th>Pemeriksaan</th>
+                                <th>Hasil</th>
+                                <th>Nilai Normal</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Warna</td>
+                                <td><select id="urine-color"><option value="kuning-muda">Kuning Muda</option><option value="kuning">Kuning</option><option value="merah">Merah</option></select></td>
+                                <td>Kuning Jernih</td>
+                                <td><span class="result-badge badge-normal">Normal</span></td>
+                            </tr>
+                            <tr>
+                                <td>Kejerniahan</td>
+                                <td><select id="urine-clarity"><option value="jernih">Jernih</option><option value="keruh">Keruh</option></select></td>
+                                <td>Jernih</td>
+                                <td><span class="result-badge badge-normal">Normal</span></td>
+                            </tr>
+                            <tr>
+                                <td>Protein</td>
+                                <td><select id="urine-protein"><option value="negatif">Negatif</option><option value="+">+</option><option value="++">++</option></select></td>
+                                <td>Negatif</td>
+                                <td><span class="result-badge badge-normal">Normal</span></td>
+                            </tr>
+                            <tr>
+                                <td>Glukosa</td>
+                                <td><select id="urine-glucose"><option value="negatif">Negatif</option><option value="+">+</option><option value="++">++</option></select></td>
+                                <td>Negatif</td>
+                                <td><span class="result-badge badge-normal">Normal</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Interpretation & Notes -->
+                <div class="form-section">
+                    <h3><i class="fas fa-comment-dots"></i> Interpretasi & Catatan</h3>
+                    
+                    <div class="interpretation-box">
+                        <div class="interpretation-title"><i class="fas fa-stethoscope"></i> Interpretasi Hasil</div>
+                        <textarea id="interpretasi" placeholder="Interpretasi hasil pemeriksaan laboratorium..." rows="4" required></textarea>
+                    </div>
+
+                    <div class="interpretation-box">
+                        <div class="interpretation-title"><i class="fas fa-note-sticky"></i> Rekomendasi/Saran</div>
+                        <textarea id="rekomendasi" placeholder="Rekomendasi tindakan lanjutan..." rows="3"></textarea>
+                    </div>
+                </div>
+
+                <!-- Validation Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-check-circle"></i> Validasi & Persetujuan Dokter</h3>
+                    
+                    <div class="verified-badge">
+                        <i class="fas fa-check-circle"></i> Hasil telah diperiksa dan divalidasi
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nama-petugas-lab">Nama Petugas Lab <span class="required">*</span></label>
+                            <input type="text" id="nama-petugas-lab" placeholder="Nama teknisi lab" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal-selesai-lab">Tanggal Selesai Pemeriksaan <span class="required">*</span></label>
+                            <input type="date" id="tanggal-selesai-lab" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nama-dokter-validasi">Nama Dokter Validasi <span class="required">*</span></label>
+                            <input type="text" id="nama-dokter-validasi" placeholder="Nama dokter pemeriksa" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nip-dokter-validasi">NIP Dokter <span class="required">*</span></label>
+                            <input type="text" id="nip-dokter-validasi" placeholder="NIP dokter" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tanggal-validasi">Tanggal Validasi <span class="required">*</span></label>
+                        <input type="date" id="tanggal-validasi" required>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" onclick="window.print()" class="btn btn-secondary">
+                        <i class="fas fa-print"></i> Cetak Hasil
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan & Validasi Hasil
+                    </button>
+                </div>
+            </form>
+    <script src="js/role-manager.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggal-pemeriksaan-hasil').value = today;
+            document.getElementById('tanggal-selesai-lab').value = today;
+            document.getElementById('tanggal-validasi').value = today;
+            
+            roleManager.requireLogin(['pasien', 'dokter', 'pmik', 'admin']);
+            roleManager.updateNavbarProfile();
+        });
+
+        function updateResultsTable() {
+            const jenis = document.getElementById('jenis-pemeriksaan-hasil').value;
+            
+            document.getElementById('hematologi-results').style.display = 'none';
+            document.getElementById('kimia-results').style.display = 'none';
+            document.getElementById('serologi-results').style.display = 'none';
+            document.getElementById('urinalisis-results').style.display = 'none';
+
+            if (jenis === 'hematologi') {
+                document.getElementById('hematologi-results').style.display = 'block';
+            } else if (jenis === 'kimia-klinis') {
+                document.getElementById('kimia-results').style.display = 'block';
+            } else if (jenis === 'serologi') {
+                document.getElementById('serologi-results').style.display = 'block';
+            } else if (jenis === 'urinalisis') {
+                document.getElementById('urinalisis-results').style.display = 'block';
+            }
+        }
+
+        function handleHasilLab(event) {
+            event.preventDefault();
+
+            const jenis = document.getElementById('jenis-pemeriksaan-hasil').value;
+            if (!jenis) {
+                alert('⚠️ Pilih jenis pemeriksaan terlebih dahulu!');
+                return;
+            }
+
+            const interpretasi = document.getElementById('interpretasi').value;
+            if (!interpretasi) {
+                alert('⚠️ Tuliskan interpretasi hasil terlebih dahulu!');
+                return;
+            }
+
+            const data = {
+                noRm: document.getElementById('no-rm-hasil').value,
+                namaPasien: document.getElementById('nama-pasien-hasil').value,
+                jenisPemeriksaan: jenis,
+                interpretasi: interpretasi,
+                dokterValidasi: document.getElementById('nama-dokter-validasi').value
+            };
+
+            console.log('Data Hasil Laboratorium:', data);
+            alert(`✅ Hasil Laboratorium berhasil disimpan dan divalidasi!\n\nNo RM: ${data.noRm}\nJenis: ${data.jenisPemeriksaan}\nValidator: ${data.dokterValidasi}`);
+            resetForm();
+        }
+    </script>
+        </main>
+    </div>
+</body>
+</html>

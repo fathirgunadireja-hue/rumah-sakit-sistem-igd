@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informed Consent - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .consent-detail-box {
+            background: #f0f7ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .consent-detail-title {
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+        .procedure-list {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .procedure-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border-left: 3px solid #0066cc;
+        }
+        .procedure-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+        }
+        .procedure-item label {
+            cursor: pointer;
+            flex: 1;
+            margin: 0;
+        }
+        .consent-declaration {
+            background: #fff9e6;
+            border-left: 4px solid #ffcc00;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .signature-area {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: #f8f9fa;
+        }
+        .signature-line {
+            border-bottom: 2px solid #333;
+            height: 60px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: flex-end;
+            padding-bottom: 5px;
+        }
+        .signature-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .risk-section {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .benefit-section {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <div class="page-header">
+                <div>
+                    <h1><i class="fas fa-file-medical"></i> Informed Consent / Persetujuan Tindakan Spesifik</h1>
+                    <p>Persetujuan pasien untuk tindakan medis/operasi spesifik dengan penjelasan risiko & manfaat</p>
+                </div>
+            </div>
+
+            <!-- Informed Consent Form -->
+            <form class="patient-form" onsubmit="handleInformedConsent(event)" novalidate>
+                
+                <!-- Data Pasien Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user-circle"></i> Data Pasien</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-rm-ic">No RM <span class="required">*</span></label>
+                            <input type="text" id="no-rm-ic" placeholder="RM-2024-001" value="RM-2024-001" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama-pasien-ic">Nama Pasien <span class="required">*</span></label>
+                            <input type="text" id="nama-pasien-ic" placeholder="Nama lengkap" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tanggal-lahir-ic">Tanggal Lahir <span class="required">*</span></label>
+                            <input type="date" id="tanggal-lahir-ic" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nik-ic">NIK <span class="required">*</span></label>
+                            <input type="text" id="nik-ic" placeholder="NIK" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Procedure Information -->
+                <div class="form-section">
+                    <h3><i class="fas fa-procedures"></i> Informasi Tindakan/Operasi</h3>
+                    
+                    <div class="form-group">
+                        <label for="jenis-tindakan">Jenis Tindakan Medis/Operasi <span class="required">*</span></label>
+                        <select id="jenis-tindakan" onchange="updateTindakanInfo()" required>
+                            <option value="">-- Pilih Tindakan --</option>
+                            <option value="operasi-bedah">Operasi Bedah</option>
+                            <option value="anestesi-regional">Anestesi Regional/Spinal</option>
+                            <option value="anestesi-umum">Anestesi Umum</option>
+                            <option value="injeksi-intravena">Injeksi Intravena</option>
+                            <option value="transfusi-darah">Transfusi Darah</option>
+                            <option value="kateterisasi">Kateterisasi Jantung</option>
+                            <option value="endoskopi">Endoskopi</option>
+                            <option value="bronkoskopi">Bronkoskopi</option>
+                            <option value="biopsi">Biopsi/Pengambilan Sampel Jaringan</option>
+                            <option value="irigasi-luka">Irigasi & Debridement Luka</option>
+                            <option value="pemasangan-alat">Pemasangan Alat (Kateter, Drain, dll)</option>
+                            <option value="lainnya">Tindakan Lainnya</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deskripsi-tindakan">Deskripsi Detail Tindakan <span class="required">*</span></label>
+                        <textarea id="deskripsi-tindakan" placeholder="Penjelasan rinci tindakan yang akan dilakukan" required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="lokasi-tindakan">Lokasi Tindakan <span class="required">*</span></label>
+                            <input type="text" id="lokasi-tindakan" placeholder="Lokasi di tubuh pasien" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal-tindakan">Tanggal Tindakan Direncanakan <span class="required">*</span></label>
+                            <input type="date" id="tanggal-tindakan" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Indications & Alternatives -->
+                <div class="form-section">
+                    <h3><i class="fas fa-info-circle"></i> Indikasi & Alternatif Tindakan</h3>
+                    
+                    <div class="consent-detail-box">
+                        <div class="consent-detail-title">Indikasi Medis</div>
+                        <textarea id="indikasi-medis" placeholder="Alasan medis mengapa tindakan ini diperlukan" required></textarea>
+                    </div>
+
+                    <div class="consent-detail-box">
+                        <div class="consent-detail-title">Alternatif Tindakan yang Tersedia</div>
+                        <textarea id="alternatif-tindakan" placeholder="Pilihan pengobatan lain yang mungkin dilakukan" required></textarea>
+                    </div>
+
+                    <div class="consent-detail-box">
+                        <div class="consent-detail-title">Konsekuensi Jika Tidak Dilakukan Tindakan</div>
+                        <textarea id="konsekuensi-tidak-tindakan" placeholder="Risiko jika tindakan tidak dilakukan" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Benefits -->
+                <div class="form-section">
+                    <h3><i class="fas fa-check-circle"></i> Manfaat Tindakan</h3>
+                    
+                    <div class="benefit-section">
+                        <strong><i class="fas fa-heart"></i> Keuntungan/Manfaat yang Diharapkan:</strong>
+                        <textarea id="manfaat-tindakan" style="margin-top: 10px;" placeholder="Manfaat/hasil yang diharapkan dari tindakan ini" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Risks & Complications -->
+                <div class="form-section">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Risiko & Komplikasi yang Mungkin Terjadi</h3>
+                    
+                    <div class="risk-section">
+                        <strong><i class="fas fa-warning"></i> Risiko yang Diketahui:</strong>
+                        <div class="procedure-list">
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; font-weight: bold; margin-bottom: 10px;">Risiko Umum (Berlaku untuk semua tindakan):</label>
+                                <div class="procedure-item">
+                                    <input type="checkbox" id="risiko-perdarahan" name="risiko">
+                                    <label for="risiko-perdarahan">Perdarahan</label>
+                                </div>
+                                <div class="procedure-item">
+                                    <input type="checkbox" id="risiko-infeksi" name="risiko">
+                                    <label for="risiko-infeksi">Infeksi</label>
+                                </div>
+                                <div class="procedure-item">
+                                    <input type="checkbox" id="risiko-alergi" name="risiko">
+                                    <label for="risiko-alergi">Reaksi alergi terhadap obat/bahan</label>
+                                </div>
+                                <div class="procedure-item">
+                                    <input type="checkbox" id="risiko-anestesi" name="risiko">
+                                    <label for="risiko-anestesi">Komplikasi anestesi</label>
+                                </div>
+                                <div class="procedure-item">
+                                    <input type="checkbox" id="risiko-trombosis" name="risiko">
+                                    <label for="risiko-trombosis">Trombosis vena (bekuan darah)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <textarea id="risiko-spesifik" placeholder="Risiko spesifik terkait tindakan ini..." style="margin-top: 15px; width: 100%;" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Complications & Side Effects -->
+                <div class="form-section">
+                    <h3><i class="fas fa-hospital-user"></i> Komplikasi & Efek Samping yang Mungkin</h3>
+                    
+                    <div class="consent-detail-box">
+                        <div class="consent-detail-title">Komplikasi Jangka Pendek</div>
+                        <textarea id="komplikasi-pendek" placeholder="Kemungkinan komplikasi dalam beberapa hari/minggu pertama"></textarea>
+                    </div>
+
+                    <div class="consent-detail-box">
+                        <div class="consent-detail-title">Komplikasi Jangka Panjang</div>
+                        <textarea id="komplikasi-panjang" placeholder="Kemungkinan efek jangka panjang atau permanen"></textarea>
+                    </div>
+                </div>
+
+                <!-- Declaration & Confirmation -->
+                <div class="form-section">
+                    <h3><i class="fas fa-pen-fancy"></i> Pernyataan Pasien/Keluarga</h3>
+                    
+                    <div class="consent-declaration">
+                        <strong>Saya menyatakan bahwa:</strong>
+                        <div style="margin-top: 15px;">
+                            <div class="procedure-item">
+                                <input type="checkbox" id="declare-explain" name="declare" required>
+                                <label for="declare-explain">Dokter/petugas telah menjelaskan tindakan, risiko, manfaat, dan alternatif secara jelas</label>
+                            </div>
+                            <div class="procedure-item">
+                                <input type="checkbox" id="declare-understand" name="declare" required>
+                                <label for="declare-understand">Saya telah memahami penjelasan tersebut</label>
+                            </div>
+                            <div class="procedure-item">
+                                <input type="checkbox" id="declare-question" name="declare" required>
+                                <label for="declare-question">Saya sudah memberi kesempatan untuk bertanya</label>
+                            </div>
+                            <div class="procedure-item">
+                                <input type="checkbox" id="declare-voluntary" name="declare" required>
+                                <label for="declare-voluntary">Saya memberikan persetujuan secara sukarela, tidak ada paksaan</label>
+                            </div>
+                            <div class="procedure-item">
+                                <input type="checkbox" id="declare-accept" name="declare" required>
+                                <label for="declare-accept">Saya menerima risiko dan bersedia menjalani tindakan ini</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Signatures -->
+                <div class="form-section">
+                    <h3><i class="fas fa-signature"></i> Tanda Tangan</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Pasien / Orang Dewasa</label>
+                            <div class="signature-area">
+                                <div class="signature-line"></div>
+                                <div class="signature-label">Tanda Tangan</div>
+                                <div style="margin-top: 15px;">
+                                    <input type="text" id="nama-pasien-ttd" placeholder="Nama Jelas" style="width: 100%; margin-bottom: 8px;">
+                                    <input type="date" id="tanggal-pasien-ttd">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Keluarga/Wali (Jika perlu)</label>
+                            <div class="signature-area">
+                                <div class="signature-line"></div>
+                                <div class="signature-label">Tanda Tangan</div>
+                                <div style="margin-top: 15px;">
+                                    <input type="text" id="nama-keluarga-ttd" placeholder="Nama Jelas" style="width: 100%; margin-bottom: 8px;">
+                                    <input type="text" id="hubungan-keluarga-ttd" placeholder="Hubungan" style="width: 100%; margin-bottom: 8px;">
+                                    <input type="date" id="tanggal-keluarga-ttd">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Dokter/Petugas Medis</label>
+                            <div class="signature-area">
+                                <div class="signature-line"></div>
+                                <div class="signature-label">Tanda Tangan</div>
+                                <div style="margin-top: 15px;">
+                                    <input type="text" id="nama-dokter-ttd" placeholder="Nama & NIP" style="width: 100%; margin-bottom: 8px;">
+                                    <input type="date" id="tanggal-dokter-ttd">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" onclick="window.print()" class="btn btn-secondary">
+                        <i class="fas fa-print"></i> Cetak
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Informed Consent
+                    </button>
+                </div>
+            </form>
+        </div>
+        </main>
+    </div>
+
+    <script src="js/role-manager.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggal-pasien-ttd').value = today;
+            document.getElementById('tanggal-keluarga-ttd').value = today;
+            document.getElementById('tanggal-dokter-ttd').value = today;
+            
+            roleManager.requireLogin(['dokter', 'pmik', 'admin']);
+            roleManager.updateNavbarProfile();
+        });
+
+        function updateTindakanInfo() {
+            const tindakan = document.getElementById('jenis-tindakan').value;
+            const deskripsi = document.getElementById('deskripsi-tindakan');
+            
+            const deskripsiMap = {
+                'operasi-bedah': 'Prosedur pembedahan untuk menangani kondisi medis tertentu',
+                'anestesi-regional': 'Pemberian anestesi lokal pada daerah spesifik tubuh',
+                'anestesi-umum': 'Pemberian anestesi untuk membuat pasien tidak sadar selama prosedur',
+                'transfusi-darah': 'Pemberian darah donor untuk mengatasi anemia atau perdarahan',
+                'kateterisasi': 'Pemasukan kateter untuk diagnosis dan terapi penyakit jantung'
+            };
+            
+            if (deskripsiMap[tindakan]) {
+                deskripsi.placeholder = deskripsiMap[tindakan];
+            }
+        }
+
+        function handleInformedConsent(event) {
+            event.preventDefault();
+
+            const checks = document.querySelectorAll('input[name="declare"]:checked').length;
+            if (checks < 5) {
+                alert('⚠️ Semua deklarasi harus disetujui!');
+                return;
+            }
+
+            const data = {
+                noRm: document.getElementById('no-rm-ic').value,
+                namaPasien: document.getElementById('nama-pasien-ic').value,
+                tindakan: document.getElementById('jenis-tindakan').value,
+                tanggal: document.getElementById('tanggal-tindakan').value
+            };
+
+            console.log('Data Informed Consent:', data);
+            alert(`✅ Informed Consent berhasil disimpan!\n\nNo RM: ${data.noRm}\nTindakan: ${data.tindakan}`);
+            resetForm();
+        }
+    </script>
+</body>
+</html>

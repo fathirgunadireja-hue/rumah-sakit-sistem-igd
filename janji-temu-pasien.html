@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Janji Temu - Portal Pasien</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>🏥</text></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+
+        /* Sidebar */
+        .sidebar-patient {
+            width: 280px;
+            background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%);
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            padding: 20px;
+            color: white;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        
+        .sidebar-patient .logo {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-patient .logo i {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #00d4ff;
+        }
+        
+        .sidebar-patient .logo h2 {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .patient-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .patient-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .patient-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .patient-menu a:hover {
+            background: rgba(255,255,255,0.1);
+            padding-left: 20px;
+        }
+        
+        .patient-menu a.active {
+            background: rgba(0,212,255,0.2);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .patient-menu a i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Topbar */
+        .topbar-patient {
+            position: fixed;
+            top: 0;
+            left: 280px;
+            right: 0;
+            height: 70px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 99;
+        }
+
+        .topbar-title h1 {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification-icon {
+            position: relative;
+            font-size: 1.3em;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e74c3c;
+            color: white;
+            font-size: 0.6em;
+            padding: 2px 5px;
+            border-radius: 10px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-info .name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .user-info .role {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        /* Main Content */
+        .main-content-patient {
+            margin-left: 280px;
+            margin-top: 70px;
+            padding: 30px 40px;
+            min-height: calc(100vh - 70px);
+        }
+
+        .page-header {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-header h2 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .page-header p {
+            color: #666;
+        }
+
+        .btn-new-appointment {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-new-appointment:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .appointments-container {
+            display: grid;
+            gap: 20px;
+        }
+
+        .appointment-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 4px solid #667eea;
+        }
+
+        .appointment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 20px;
+        }
+
+        .appointment-date {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .date-box {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .date-box .day {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .date-box .month {
+            font-size: 0.8em;
+        }
+
+        .appointment-info h3 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .appointment-time {
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .status-confirmed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .appointment-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: start;
+            gap: 10px;
+        }
+
+        .detail-item i {
+            color: #667eea;
+            margin-top: 3px;
+        }
+
+        .detail-label {
+            font-size: 0.85em;
+            color: #999;
+        }
+
+        .detail-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .appointment-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-reschedule {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        .btn-cancel {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .btn-details {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* Modal Form - Janji Temu Pasien (Override style.css) */
+        #appointmentModal {
+            display: none !important;
+            position: fixed !important;
+            inset: 0 !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            background: rgba(0,0,0,0.6) !important;
+            z-index: 10000 !important;
+            padding: 20px !important;
+            margin: 0 !important;
+            overflow: auto !important;
+            align-items: flex-start !important;
+            justify-content: center !important;
+            transform: none !important;
+        }
+
+        #appointmentModal.active {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        #appointmentModal .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUpAppointment 0.3s ease-out;
+            position: relative;
+            margin: auto !important;
+            padding-top: 30px !important;
+            transform: none !important;
+            max-width: 600px !important;
+            width: 100% !important;
+        }
+
+        @keyframes slideUpAppointment {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+
+        .modal-header h2 {
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-header i {
+            color: #667eea;
+        }
+
+        .modal-header p {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        .form-group select,
+        .form-group input[type="date"],
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .form-group select:focus,
+        .form-group input[type="date"]:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: #333;
+            font-weight: normal;
+        }
+
+        .radio-label input[type="radio"] {
+            cursor: pointer;
+            width: auto;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-cancel-modal {
+            background: #e9ecef;
+            color: #333;
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-cancel-modal:hover {
+            background: #dee2e6;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar-patient">
+        <div class="logo">
+            <i class="fas fa-hospital"></i>
+            <h2>RS JAYA SEHAT</h2>
+        </div>
+        
+        <ul class="patient-menu">
+            <li><a href="portal-pasien.html"><i class="fas fa-home"></i> Beranda</a></li>
+            <li><a href="riwayat-kunjungan-pasien.html"><i class="fas fa-history"></i> Riwayat Kunjungan</a></li>
+            <li><a href="janji-temu-pasien.html" class="active"><i class="fas fa-calendar-check"></i> Janji Temu</a></li>
+            <li><a href="hasil-lab-pasien.html"><i class="fas fa-flask"></i> Hasil Laboratorium</a></li>
+            <li><a href="resep-obat-pasien.html"><i class="fas fa-pills"></i> Resep & Obat</a></li>
+            <li><a href="pembayaran-pasien.html"><i class="fas fa-credit-card"></i> Pembayaran</a></li>
+            <li><a href="profil-pasien.html"><i class="fas fa-cog"></i> Pengaturan Profil</a></li>
+            <li><a href="index.html"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
+        </ul>
+    </aside>
+
+    <!-- Topbar -->
+    <div class="topbar-patient">
+        <div class="topbar-title">
+            <h1>Janji Temu</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="notification-icon">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <div class="user-avatar">P</div>
+                <div class="user-info">
+                    <div class="name">Pasien</div>
+                    <div class="role">Pasien</div>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content-patient">
+        <div class="page-header">
+            <div>
+                <h2><i class="fas fa-calendar-check"></i> Jadwal Janji Temu</h2>
+                <p>Kelola jadwal konsultasi dengan dokter</p>
+            </div>
+            <button class="btn-new-appointment" onclick="openAppointmentModal()">
+                <i class="fas fa-plus"></i> Buat Janji Baru
+            </button>
+        </div>
+
+        <div class="appointments-container">
+            <!-- Upcoming Appointment -->
+            <div class="appointment-card">
+                <div class="appointment-header">
+                    <div class="appointment-date">
+                        <div class="date-box">
+                            <div class="day">18</div>
+                            <div class="month">DES</div>
+                        </div>
+                        <div class="appointment-info">
+                            <h3>Konsultasi Rutin</h3>
+                            <div class="appointment-time">
+                                <i class="fas fa-clock"></i> 10:00 - 11:00 WIB
+                            </div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-confirmed">Terkonfirmasi</span>
+                </div>
+
+                <div class="appointment-details">
+                    <div class="detail-item">
+                        <i class="fas fa-user-md"></i>
+                        <div>
+                            <div class="detail-label">Dokter</div>
+                            <div class="detail-value">dr. Amanda Wijaya, Sp.PD</div>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-clinic-medical"></i>
+                        <div>
+                            <div class="detail-label">Poli</div>
+                            <div class="detail-value">Poli Penyakit Dalam</div>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-sticky-note"></i>
+                        <div>
+                            <div class="detail-label">Catatan</div>
+                            <div class="detail-value">Kontrol tekanan darah</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="appointment-actions">
+                    <button class="btn btn-reschedule"><i class="fas fa-calendar-alt"></i> Reschedule</button>
+                    <button class="btn btn-cancel"><i class="fas fa-times"></i> Batalkan</button>
+                    <button class="btn btn-details"><i class="fas fa-eye"></i> Detail</button>
+                </div>
+            </div>
+
+            <!-- Pending Appointment -->
+            <div class="appointment-card">
+                <div class="appointment-header">
+                    <div class="appointment-date">
+                        <div class="date-box">
+                            <div class="day">25</div>
+                            <div class="month">DES</div>
+                        </div>
+                        <div class="appointment-info">
+                            <h3>Pemeriksaan Lab</h3>
+                            <div class="appointment-time">
+                                <i class="fas fa-clock"></i> 07:00 - 08:00 WIB
+                            </div>
+                        </div>
+                    </div>
+                    <span class="status-badge status-pending">Menunggu</span>
+                </div>
+
+                <div class="appointment-details">
+                    <div class="detail-item">
+                        <i class="fas fa-flask"></i>
+                        <div>
+                            <div class="detail-label">Layanan</div>
+                            <div class="detail-value">Laboratorium</div>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-vial"></i>
+                        <div>
+                            <div class="detail-label">Jenis</div>
+                            <div class="detail-value">Cek Darah Lengkap</div>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value">Menunggu konfirmasi</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="appointment-actions">
+                    <button class="btn btn-cancel"><i class="fas fa-times"></i> Batalkan</button>
+                    <button class="btn btn-details"><i class="fas fa-eye"></i> Detail</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Buat Janji -->
+    <div id="appointmentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-calendar-plus"></i> Buat Janji Temu Baru</h2>
+                <p>Isi form berikut untuk membuat jadwal konsultasi dengan dokter</p>
+            </div>
+
+            <form id="appointmentForm">
+                <!-- Nama Pasien -->
+                <div class="form-group">
+                    <label><span class="required">*</span> Nama Pasien</label>
+                    <input type="text" id="nama-pasien" name="nama-pasien" placeholder="Masukkan nama lengkap pasien" required>
+                </div>
+
+                <!-- Nomor Telepon -->
+                <div class="form-group">
+                    <label><span class="required">*</span> Nomor Telepon</label>
+                    <input type="tel" id="nomor-telepon" name="nomor-telepon" placeholder="Contoh: 08123456789" required>
+                </div>
+
+                <!-- Pilih Dokter -->
+                <div class="form-group">
+                    <label><span class="required">*</span> Pilih Dokter</label>
+                    <select id="doctor" name="doctor" required>
+                        <option value="">-- Pilih Dokter --</option>
+                        <option>Dr. Ahmad Sutrisno (Kardiologi)</option>
+                        <option>Dr. Siti Nurhaliza (Pediatri)</option>
+                        <option>Dr. Budi Santoso (Neurologi)</option>
+                        <option>Dr. Dewi Lestari (Obstetri)</option>
+                        <option>Dr. Rifa'i Rahman (Ortopedi)</option>
+                        <option>Dr. Indah Kusuma (Paru)</option>
+                    </select>
+                </div>
+
+                <!-- Tanggal -->
+                <div class="form-group">
+                    <label><span class="required">*</span> Tanggal Periksa</label>
+                    <input type="date" id="tanggal" name="tanggal" required>
+                </div>
+
+                <!-- Jam Periksa -->
+                <div class="form-group">
+                    <label><span class="required">*</span> Jam Periksa</label>
+                    <input type="time" id="jam" name="jam" required>
+                </div>
+
+                <!-- Keluhan -->
+                <div class="form-group">
+                    <label><span class="required">*</span> Keluhan</label>
+                    <textarea id="keluhan" name="keluhan" rows="4" placeholder="Jelaskan keluhan atau kondisi kesehatan Anda..." required></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-submit">
+                        <i class="fas fa-check-circle"></i> Konfirmasi Janji
+                    </button>
+                    <button type="button" class="btn btn-cancel-modal" onclick="closeAppointmentModal()">
+                        <i class="fas fa-times-circle"></i> Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/role-manager.js"></script>
+    <script>
+        // Setup yang aman dengan delay dan error handling
+        setTimeout(function() {
+            try {
+                if (typeof checkPageAccess === 'function') {
+                    checkPageAccess('pasien');
+                }
+            } catch(e) {
+                console.warn('checkPageAccess error:', e);
+            }
+        }, 100);
+
+        function openAppointmentModal() {
+            try {
+                const modal = document.getElementById('appointmentModal');
+                if (modal) {
+                    // Set minimal date to today
+                    const today = new Date().toISOString().split('T')[0];
+                    const dateInput = document.getElementById('tanggal');
+                    if (dateInput) {
+                        dateInput.setAttribute('min', today);
+                    }
+                    
+                    // Force modal centering
+                    modal.style.display = 'none';
+                    setTimeout(() => {
+                        modal.classList.add('active');
+                        modal.style.display = 'flex';
+                    }, 0);
+                    
+                    // Disable body scroll
+                    document.body.style.overflow = 'hidden';
+                }
+            } catch(e) {
+                console.error('Error opening modal:', e);
+            }
+        }
+
+        function closeAppointmentModal() {
+            try {
+                const modal = document.getElementById('appointmentModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    const form = document.getElementById('appointmentForm');
+                    if (form) form.reset();
+                    // Enable body scroll
+                    document.body.style.overflow = 'auto';
+                }
+            } catch(e) {
+                console.error('Error closing modal:', e);
+            }
+        }
+
+        // Setup event listeners setelah DOM ready
+        function setupEventListeners() {
+            try {
+                const modal = document.getElementById('appointmentModal');
+                const form = document.getElementById('appointmentForm');
+                
+                if (modal) {
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === this) {
+                            closeAppointmentModal();
+                        }
+                    });
+                }
+
+                if (form) {
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault();
+
+                        // Collect form data
+                        const namaPasien = document.getElementById('nama-pasien').value;
+                        const nomorTelepon = document.getElementById('nomor-telepon').value;
+                        const doctor = document.getElementById('doctor').value;
+                        const tanggal = document.getElementById('tanggal').value;
+                        const jam = document.getElementById('jam').value;
+                        const keluhan = document.getElementById('keluhan').value;
+
+                        if (!namaPasien || !nomorTelepon || !doctor || !tanggal || !jam || !keluhan) {
+                            alert('❌ Harap isi semua field yang diperlukan!');
+                            return;
+                        }
+
+                        // Success message
+                        alert(`✅ Janji temu berhasil dibuat!\n\nDetail Janji:\n- Nama: ${namaPasien}\n- Telepon: ${nomorTelepon}\n- Dokter: ${doctor}\n- Tanggal: ${tanggal}\n- Jam: ${jam}\n- Keluhan: ${keluhan}\n\nAnda akan menerima konfirmasi melalui email dan SMS.`);
+                        closeAppointmentModal();
+                    });
+                }
+            } catch(e) {
+                console.error('Error setting up event listeners:', e);
+            }
+        }
+
+        // Run setup ketika DOM siap
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', setupEventListeners);
+        } else {
+            setupEventListeners();
+        }
+    </script>
+</body>
+</html>

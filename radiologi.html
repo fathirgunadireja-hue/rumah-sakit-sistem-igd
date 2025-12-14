@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radiologi - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .modality-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .modality-box {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .modality-box:hover {
+            border-color: #0066cc;
+            background: #e6f0ff;
+        }
+        .modality-box input[type="radio"] {
+            margin-bottom: 5px;
+        }
+        .modality-box label {
+            cursor: pointer;
+            margin: 0;
+            display: block;
+            font-weight: bold;
+            color: #333;
+        }
+        .modality-icon {
+            font-size: 2em;
+            margin-bottom: 8px;
+            color: #0066cc;
+        }
+        .indication-box {
+            background: #f0f7ff;
+            border-left: 4px solid #0066cc;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        @media (max-width: 768px) {
+            .modality-group {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 480px) {
+            .modality-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <div class="page-header">
+                <div>
+                    <h1><i class="fas fa-x-ray"></i> Permintaan Radiologi/Pencitraan</h1>
+                    <p>Form permintaan pemeriksaan radiologi dan pencitraan medis</p>
+                </div>
+            </div>
+
+            <!-- Radiologi Form -->
+            <form class="patient-form" onsubmit="handleRadiologi(event)" novalidate>
+                
+                <!-- Data Pasien Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user-circle"></i> Data Pasien</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-rm-radio">No RM <span class="required">*</span></label>
+                            <input type="text" id="no-rm-radio" placeholder="RM-2024-001" value="RM-2024-001" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama-pasien-radio">Nama Pasien <span class="required">*</span></label>
+                            <input type="text" id="nama-pasien-radio" placeholder="Nama lengkap pasien" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="umur-radio">Umur (Tahun) <span class="required">*</span></label>
+                            <input type="number" id="umur-radio" placeholder="Umur pasien" min="0" max="120" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jenis-kelamin-radio">Jenis Kelamin <span class="required">*</span></label>
+                            <select id="jenis-kelamin-radio" required>
+                                <option value="">-- Pilih --</option>
+                                <option value="laki-laki">Laki-laki</option>
+                                <option value="perempuan">Perempuan</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Request Information -->
+                <div class="form-section">
+                    <h3><i class="fas fa-file-medical"></i> Informasi Permintaan</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-permintaan-radio">No Permintaan <span class="required">*</span></label>
+                            <input type="text" id="no-permintaan-radio" placeholder="Auto-generate" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal-permintaan">Tanggal Permintaan <span class="required">*</span></label>
+                            <input type="datetime-local" id="tanggal-permintaan" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dokter-pemesan">Dokter Pemesan <span class="required">*</span></label>
+                            <input type="text" id="dokter-pemesan" placeholder="Nama dokter pemesan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nip-dokter">NIP Dokter <span class="required">*</span></label>
+                            <input type="text" id="nip-dokter" placeholder="NIP dokter" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="departemen-asal">Departemen/Ruang Asal <span class="required">*</span></label>
+                            <select id="departemen-asal" required>
+                                <option value="">-- Pilih Departemen --</option>
+                                <option value="igd">IGD (Gawat Darurat)</option>
+                                <option value="rawat-inap">Rawat Inap</option>
+                                <option value="poli-umum">Poli Umum</option>
+                                <option value="poli-spesialis">Poli Spesialis</option>
+                                <option value="icu">ICU</option>
+                                <option value="kamar-bersalin">Kamar Bersalin</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="prioritas-radio">Prioritas Pemeriksaan <span class="required">*</span></label>
+                            <select id="prioritas-radio" required>
+                                <option value="">-- Pilih Prioritas --</option>
+                                <option value="rutin">Rutin (3-5 hari)</option>
+                                <option value="semi-urgent">Semi Urgent (24 jam)</option>
+                                <option value="urgent">Urgent (jam yang sama)</option>
+                                <option value="emergency">Emergency (segera)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Imaging Modality Selection -->
+                <div class="form-section">
+                    <h3><i class="fas fa-image"></i> Pilih Modalitas Pencitraan</h3>
+                    <label><strong>Jenis Pencitraan yang Diminta <span class="required">*</span></strong></label>
+                    
+                    <div class="modality-group">
+                        <div class="modality-box">
+                            <div class="modality-icon"><i class="fas fa-radiation"></i></div>
+                            <input type="radio" id="xray" name="modalitas" value="x-ray">
+                            <label for="xray">X-Ray</label>
+                        </div>
+                        <div class="modality-box">
+                            <div class="modality-icon"><i class="fas fa-cube"></i></div>
+                            <input type="radio" id="ct" name="modalitas" value="ct-scan">
+                            <label for="ct">CT Scan</label>
+                        </div>
+                        <div class="modality-box">
+                            <div class="modality-icon"><i class="fas fa-wave-square"></i></div>
+                            <input type="radio" id="usg" name="modalitas" value="ultrasound">
+                            <label for="usg">Ultrasound (USG)</label>
+                        </div>
+                        <div class="modality-box">
+                            <div class="modality-icon"><i class="fas fa-magnet"></i></div>
+                            <input type="radio" id="mri" name="modalitas" value="mri">
+                            <label for="mri">MRI</label>
+                        </div>
+                        <div class="modality-box">
+                            <div class="modality-icon"><i class="fas fa-person-dots-from-line"></i></div>
+                            <input type="radio" id="pet" name="modalitas" value="pet-ct">
+                            <label for="pet">PET-CT</label>
+                        </div>
+                        <div class="modality-box">
+                            <div class="modality-icon"><i class="fas fa-bones"></i></div>
+                            <input type="radio" id="bone-scan" name="modalitas" value="bone-scan">
+                            <label for="bone-scan">Bone Scan</label>
+                        </div>
+                        <div class="modality-box">
+                            <div class="modality-icon"><i class="fas fa-woman"></i></div>
+                            <input type="radio" id="mammografi" name="modalitas" value="mammografi">
+                            <label for="mammografi">Mammografi</label>
+                        </div>
+                        <div class="modality-box">
+                            <div class="modality-icon"><i class="fas fa-lungs"></i></div>
+                            <input type="radio" id="hrct" name="modalitas" value="hrct">
+                            <label for="hrct">HRCT Paru</label>
+                        </div>
+                        <div class="modality-box">
+                            <div class="modality-icon"><i class="fas fa-heart"></i></div>
+                            <input type="radio" id="echo" name="modalitas" value="echocardiography">
+                            <label for="echo">Echocardiography</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- X-Ray Details -->
+                <div id="xray-details" class="form-section" style="display: none;">
+                    <h3><i class="fas fa-radiation"></i> Detail X-Ray</h3>
+                    <div class="form-group">
+                        <label for="area-xray">Area/Lokasi X-Ray <span class="required">*</span></label>
+                        <select id="area-xray">
+                            <option value="">-- Pilih Area --</option>
+                            <option value="thorax">Thorax (Dada)</option>
+                            <option value="abdomen">Abdomen (Perut)</option>
+                            <option value="pelvis">Pelvis</option>
+                            <option value="spine">Spine (Tulang Belakang)</option>
+                            <option value="extremitas">Extremitas (Tangan/Kaki)</option>
+                            <option value="skull">Skull (Kepala)</option>
+                            <option value="neck">Neck (Leher)</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="posisi-xray">Posisi Pemotretan</label>
+                        <select id="posisi-xray">
+                            <option value="">-- Pilih Posisi --</option>
+                            <option value="pa">PA (Posteroanterior)</option>
+                            <option value="ap">AP (Anteroposterior)</option>
+                            <option value="lateral">Lateral</option>
+                            <option value="ap-lateral">AP & Lateral</option>
+                            <option value="oblique">Oblique</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- USG Details -->
+                <div id="usg-details" class="form-section" style="display: none;">
+                    <h3><i class="fas fa-wave-square"></i> Detail Ultrasound (USG)</h3>
+                    <div class="form-group">
+                        <label for="area-usg">Area USG <span class="required">*</span></label>
+                        <select id="area-usg">
+                            <option value="">-- Pilih Area --</option>
+                            <option value="abdomen-atas">Abdomen Atas</option>
+                            <option value="abdomen-bawah">Abdomen Bawah</option>
+                            <option value="pelvis">Pelvis</option>
+                            <option value="obstetric">Obstetric (Kandungan)</option>
+                            <option value="gynecology">Gynecology (Ginekologi)</option>
+                            <option value="dada">Dada</option>
+                            <option value="pembuluh-darah">Pembuluh Darah (Vascular)</option>
+                            <option value="payudara">Payudara</option>
+                            <option value="kelenjar-tiroid">Kelenjar Tiroid</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- CT Scan Details -->
+                <div id="ct-details" class="form-section" style="display: none;">
+                    <h3><i class="fas fa-cube"></i> Detail CT Scan</h3>
+                    <div class="form-group">
+                        <label for="area-ct">Area CT Scan <span class="required">*</span></label>
+                        <select id="area-ct">
+                            <option value="">-- Pilih Area --</option>
+                            <option value="head">Head (Kepala)</option>
+                            <option value="cervical">Cervical (Leher)</option>
+                            <option value="thorax">Thorax (Dada)</option>
+                            <option value="abdomen-pelvis">Abdomen & Pelvis</option>
+                            <option value="spine">Spine (Tulang Belakang)</option>
+                            <option value="extremitas">Extremitas</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contrast-ct">Dengan Kontras</label>
+                        <select id="contrast-ct">
+                            <option value="non-kontras">Non Kontras</option>
+                            <option value="dengan-kontras-iv">Dengan Kontras IV</option>
+                            <option value="dengan-kontras-oral">Dengan Kontras Oral</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Medical History for Imaging -->
+                <div class="form-section">
+                    <h3><i class="fas fa-stethoscope"></i> Riwayat Medis & Indikasi Klinis</h3>
+                    
+                    <div class="indication-box">
+                        <strong>Indikasi Klinis (Keluhan/Diagnosis) <span class="required">*</span></strong>
+                        <textarea id="indikasi-klinis" placeholder="Keluhan pasien dan alasan permintaan pemeriksaan" style="margin-top: 10px;" required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="alergi-kontras">Riwayat Alergi Kontras</label>
+                            <select id="alergi-kontras">
+                                <option value="tidak">Tidak Ada</option>
+                                <option value="ringan">Ringan</option>
+                                <option value="berat">Berat</option>
+                                <option value="tidak-tahu">Tidak Tahu</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="fungsi-ginjal">Status Fungsi Ginjal</label>
+                            <select id="fungsi-ginjal">
+                                <option value="">-- Pilih Status --</option>
+                                <option value="normal">Normal</option>
+                                <option value="menurun">Menurun</option>
+                                <option value="gagal-ginjal">Gagal Ginjal</option>
+                                <option value="dialisis">Dialisis</option>
+                                <option value="tidak-tahu">Tidak Diketahui</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="obat-metformin">Sedang Minum Metformin (Diabetes)</label>
+                        <select id="obat-metformin">
+                            <option value="tidak">Tidak</option>
+                            <option value="ya">Ya</option>
+                            <option value="tidak-tahu">Tidak Tahu</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="catatan-khusus">Catatan Khusus / Informasi Tambahan</label>
+                        <textarea id="catatan-khusus" placeholder="Informasi penting lainnya untuk radiolog"></textarea>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" onclick="window.location.href='farmasi.html'" class="btn btn-secondary">
+                        <i class="fas fa-arrow-right"></i> Lanjut ke Farmasi
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Permintaan Radiologi
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/role-manager.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            const formattedDate = now.toISOString().slice(0, 16);
+            document.getElementById('tanggal-permintaan').value = formattedDate;
+
+            // Auto-generate No Permintaan
+            document.getElementById('no-permintaan-radio').value = `RAD-${new Date().getFullYear()}-${Math.floor(Math.random() * 10000)}`;
+
+            // Add event listeners for modalitas
+            document.querySelectorAll('input[name="modalitas"]').forEach(radio => {
+                radio.addEventListener('change', updateModalitasDetails);
+            });
+            
+            roleManager.requireLogin(['dokter', 'pmik', 'admin']);
+            roleManager.updateNavbarProfile();
+        });
+
+        function updateModalitasDetails() {
+            const modalitas = document.querySelector('input[name="modalitas"]:checked')?.value;
+
+            // Hide all details first
+            document.getElementById('xray-details').style.display = 'none';
+            document.getElementById('usg-details').style.display = 'none';
+            document.getElementById('ct-details').style.display = 'none';
+
+            // Show relevant details
+            if (modalitas === 'x-ray') {
+                document.getElementById('xray-details').style.display = 'block';
+            } else if (modalitas === 'ultrasound') {
+                document.getElementById('usg-details').style.display = 'block';
+            } else if (modalitas === 'ct-scan') {
+                document.getElementById('ct-details').style.display = 'block';
+            }
+        }
+
+        function handleRadiologi(event) {
+            event.preventDefault();
+
+            const modalitas = document.querySelector('input[name="modalitas"]:checked')?.value;
+            if (!modalitas) {
+                alert('⚠️ Pilih modalitas pencitraan terlebih dahulu!');
+                return;
+            }
+
+            const indikasi = document.getElementById('indikasi-klinis').value;
+            if (!indikasi) {
+                alert('⚠️ Tuliskan indikasi klinis terlebih dahulu!');
+                return;
+            }
+
+            const data = {
+                noRm: document.getElementById('no-rm-radio').value,
+                namaPasien: document.getElementById('nama-pasien-radio').value,
+                noPermintaan: document.getElementById('no-permintaan-radio').value,
+                tanggal: document.getElementById('tanggal-permintaan').value,
+                dokter: document.getElementById('dokter-pemesan').value,
+                modalitas: modalitas,
+                prioritas: document.getElementById('prioritas-radio').value,
+                indikasi: indikasi
+            };
+
+            console.log('Data Radiologi:', data);
+            alert(`✅ Permintaan Radiologi berhasil disimpan!\n\nNo RM: ${data.noRm}\nModalitas: ${data.modalitas}\nPrioritas: ${data.prioritas}`);
+            resetForm();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Consent - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .consent-box {
+            background: #fff9e6;
+            border-left: 4px solid #ffcc00;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            line-height: 1.6;
+        }
+        .consent-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .consent-text {
+            color: #555;
+            text-align: justify;
+        }
+        .signature-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        .signature-box {
+            margin: 30px 0;
+        }
+        .signature-line {
+            border-bottom: 2px solid #333;
+            height: 80px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: flex-end;
+            padding-bottom: 5px;
+        }
+        .signature-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        .consent-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border-left: 3px solid #0066cc;
+        }
+        .consent-item strong {
+            color: #0066cc;
+        }
+        .checkbox-group {
+            margin: 15px 0;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            margin: 12px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 12px;
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .checkbox-item label {
+            cursor: pointer;
+            flex: 1;
+            margin: 0;
+        }
+        .required-consent {
+            color: #ff4444;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard-admin.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="identitas-pasien.html" class="nav-item">
+                    <i class="fas fa-id-card"></i>
+                    <span>Identifikasi Pasien</span>
+                </a>
+                <a href="daftar-kunjungan.html" class="nav-item">
+                    <i class="fas fa-list"></i>
+                    <span>Daftar Kunjungan</span>
+                </a>
+                <a href="general-consent.html" class="nav-item active">
+                    <i class="fas fa-file-contract"></i>
+                    <span>General Consent</span>
+                </a>
+                <a href="triase-igd.html" class="nav-item">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>Triase IGD</span>
+                </a>
+                <a href="assessment-igd.html" class="nav-item">
+                    <i class="fas fa-stethoscope"></i>
+                    <span>Assessment IGD</span>
+                </a>
+                <a href="pemeriksaan-fisik-1.html" class="nav-item">
+                    <i class="fas fa-procedures"></i>
+                    <span>Pemeriksaan Fisik</span>
+                </a>
+                <a href="laboratorium-1.html" class="nav-item">
+                    <i class="fas fa-flask"></i>
+                    <span>Laboratorium</span>
+                </a>
+                <a href="diagnosis.html" class="nav-item">
+                    <i class="fas fa-file-medical"></i>
+                    <span>Diagnosis</span>
+                </a>
+                <a href="farmasi.html" class="nav-item">
+                    <i class="fas fa-prescription-bottle"></i>
+                    <span>Farmasi</span>
+                </a>
+                <a href="keuangan.html" class="nav-item">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Keuangan</span>
+                </a>
+                <a href="setting.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Pengaturan</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="form-header">
+                <h1><i class="fas fa-file-contract"></i> General Consent / Persetujuan Umum</h1>
+                <p>Dokumen persetujuan pasien untuk tindakan medis dan penggunaan data kesehatan</p>
+            </div>
+
+            <!-- Consent Form -->
+            <form class="patient-form" onsubmit="handleGeneralConsent(event)" novalidate>
+                
+                <!-- Data Pasien Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user-circle"></i> Data Pasien</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-rm-consent">No RM <span class="required">*</span></label>
+                            <input type="text" id="no-rm-consent" placeholder="RM-2024-001" value="RM-2024-001" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama-pasien-consent">Nama Pasien <span class="required">*</span></label>
+                            <input type="text" id="nama-pasien-consent" placeholder="Nama lengkap pasien" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tanggal-lahir-consent">Tanggal Lahir <span class="required">*</span></label>
+                            <input type="date" id="tanggal-lahir-consent" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nik-consent">NIK <span class="required">*</span></label>
+                            <input type="text" id="nik-consent" placeholder="1234567890123456" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Consent 1: Tindakan Medis -->
+                <div class="form-section">
+                    <h3><i class="fas fa-stethoscope"></i> Persetujuan Tindakan Medis</h3>
+                    <div class="consent-box">
+                        <div class="consent-title">Pernyataan Pasien/Keluarga</div>
+                        <div class="consent-text">
+                            Saya yang bertanda tangan di bawah ini menyatakan bahwa saya telah menerima penjelasan dari dokter/petugas kesehatan 
+                            mengenai kondisi kesehatan saya, tujuan, prosedur, manfaat, risiko, serta alternatif tindakan medis yang akan dilakukan. 
+                            Saya telah memahami penjelasan tersebut dan <strong>dengan sadar dan sukarela</strong> memberikan persetujuan untuk dilakukan 
+                            tindakan medis yang diperlukan.
+                        </div>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <label class="required-consent">Saya setuju untuk tindakan berikut (pilih yang berlaku):</label>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tindakan-pemeriksaan" name="tindakan">
+                            <label for="tindakan-pemeriksaan">Pemeriksaan fisik dan diagnostik</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tindakan-laboratorium" name="tindakan">
+                            <label for="tindakan-laboratorium">Pemeriksaan laboratorium dan pencitraan</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tindakan-pemberian-obat" name="tindakan">
+                            <label for="tindakan-pemberian-obat">Pemberian obat dan injeksi</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tindakan-transfusi" name="tindakan">
+                            <label for="tindakan-transfusi">Transfusi darah (jika diperlukan)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tindakan-operasi" name="tindakan">
+                            <label for="tindakan-operasi">Tindakan operasi</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tindakan-perawatan-lanjut" name="tindakan">
+                            <label for="tindakan-perawatan-lanjut">Perawatan dan pengobatan lanjutan</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Consent 2: Penggunaan Data -->
+                <div class="form-section">
+                    <h3><i class="fas fa-shield-alt"></i> Persetujuan Penggunaan Data Kesehatan</h3>
+                    <div class="consent-box">
+                        <div class="consent-title">Perlindungan Data Pribadi</div>
+                        <div class="consent-text">
+                            Saya menyetujui data kesehatan saya digunakan untuk tujuan pengobatan, perawatan, penelitian medis, pendidikan, 
+                            dan evaluasi kualitas layanan rumah sakit. Data saya akan dijaga kerahasiaannya dan hanya dapat diakses oleh 
+                            petugas yang berwenang sesuai dengan peraturan yang berlaku.
+                        </div>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <label class="required-consent">Saya setuju:</label>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="data-perawatan" name="data">
+                            <label for="data-perawatan">Data saya digunakan untuk keperluan perawatan dan pengobatan</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="data-pendidikan" name="data">
+                            <label for="data-pendidikan">Data saya dapat digunakan untuk pendidikan dan penelitian (identitas akan dijaga rahasia)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="data-asuransi" name="data">
+                            <label for="data-asuransi">Data saya dapat dibagikan kepada pihak asuransi untuk keperluan klaim</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="data-rujukan" name="data">
+                            <label for="data-rujukan">Data saya dapat dikirim ke rumah sakit rujukan jika diperlukan</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="data-rahasia" name="data">
+                            <label for="data-rahasia">Saya mengerti bahwa data saya adalah rahasia medis yang dilindungi</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Consent 3: Risiko Medis -->
+                <div class="form-section">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Pengetahuan Risiko Medis</h3>
+                    <div class="consent-box">
+                        <div class="consent-title">Pemahaman Risiko</div>
+                        <div class="consent-text">
+                            Saya telah memahami bahwa setiap tindakan medis memiliki risiko. Risiko dapat berupa efek samping obat, 
+                            komplikasi tindakan, atau hasil yang tidak sesuai harapan. Saya memahami dan bersedia menanggung risiko tersebut.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pemahaman-risiko">Risiko yang dijelaskan dokter:</label>
+                        <textarea id="pemahaman-risiko" placeholder="Tuliskan risiko yang telah dijelaskan dokter" rows="4"></textarea>
+                    </div>
+
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="setuju-risiko" name="risiko" required>
+                        <label for="setuju-risiko"><strong>Saya telah memahami risiko yang dijelaskan dan setuju untuk melanjutkan</strong></label>
+                    </div>
+                </div>
+
+                <!-- Consent 4: Biaya & Pembayaran -->
+                <div class="form-section">
+                    <h3><i class="fas fa-money-bill-alt"></i> Persetujuan Biaya Pengobatan</h3>
+                    <div class="consent-box">
+                        <div class="consent-title">Tanggung Jawab Biaya</div>
+                        <div class="consent-text">
+                            Saya menyatakan bahwa saya atau keluarga saya yang akan bertanggung jawab atas semua biaya pengobatan yang timbul. 
+                            Saya telah diberikan informasi mengenai perkiraan biaya dan metode pembayaran yang tersedia.
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="jaminan-pembayaran">Cara Pembayaran <span class="required">*</span></label>
+                            <select id="jaminan-pembayaran" required>
+                                <option value="">-- Pilih Cara Pembayaran --</option>
+                                <option value="pribadi">Pribadi (Tunai)</option>
+                                <option value="jkn">JKN/BPJS Kesehatan</option>
+                                <option value="asuransi">Asuransi Swasta</option>
+                                <option value="perusahaan">Perusahaan/Ketentuan Kerja</option>
+                                <option value="kartu-kredit">Kartu Kredit</option>
+                                <option value="transfer">Transfer Bank</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="penanggung-jawab">Nama Penanggung Jawab Biaya <span class="required">*</span></label>
+                            <input type="text" id="penanggung-jawab" placeholder="Nama yang bertanggung jawab biaya" required>
+                        </div>
+                    </div>
+
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="setuju-biaya" name="biaya" required>
+                        <label for="setuju-biaya"><strong>Saya memahami dan menerima tanggung jawab biaya pengobatan</strong></label>
+                    </div>
+                </div>
+
+                <!-- Signature Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-pen-fancy"></i> Tanda Tangan & Persetujuan</h3>
+                    
+                    <div class="signature-section">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="ttd-pasien">Tanda Tangan Pasien</label>
+                                <div class="signature-box">
+                                    <div class="signature-line" id="signature-pasien">
+                                        <span style="color: #ccc; font-size: 12px; margin-right: 5px;">(Pasien menandatangani di sini)</span>
+                                    </div>
+                                    <div class="signature-label">Pasien / Pasien Dewasa</div>
+                                    <div class="form-group" style="margin-top: 10px;">
+                                        <label for="nama-pasien-tanda">Nama Jelas:</label>
+                                        <input type="text" id="nama-pasien-tanda" placeholder="Nama">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tanggal-tanda-pasien">Tanggal:</label>
+                                        <input type="date" id="tanggal-tanda-pasien">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ttd-keluarga">Tanda Tangan Keluarga / Wali</label>
+                                <div class="signature-box">
+                                    <div class="signature-line" id="signature-keluarga">
+                                        <span style="color: #ccc; font-size: 12px; margin-right: 5px;">(Keluarga menandatangani di sini)</span>
+                                    </div>
+                                    <div class="signature-label">Keluarga / Wali (jika pasien anak-anak)</div>
+                                    <div class="form-group" style="margin-top: 10px;">
+                                        <label for="nama-keluarga-tanda">Nama Jelas:</label>
+                                        <input type="text" id="nama-keluarga-tanda" placeholder="Nama">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="hubungan-keluarga">Hubungan dengan Pasien:</label>
+                                        <input type="text" id="hubungan-keluarga" placeholder="Contoh: Ibu, Istri, Suami">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tanggal-tanda-keluarga">Tanggal:</label>
+                                        <input type="date" id="tanggal-tanda-keluarga">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ttd-dokter">Tanda Tangan Dokter</label>
+                                <div class="signature-box">
+                                    <div class="signature-line" id="signature-dokter">
+                                        <span style="color: #ccc; font-size: 12px; margin-right: 5px;">(Dokter menandatangani di sini)</span>
+                                    </div>
+                                    <div class="signature-label">Dokter / Petugas Medis</div>
+                                    <div class="form-group" style="margin-top: 10px;">
+                                        <label for="nama-dokter-tanda">Nama & NIP:</label>
+                                        <input type="text" id="nama-dokter-tanda" placeholder="Nama dan NIP dokter">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tanggal-tanda-dokter">Tanggal:</label>
+                                        <input type="date" id="tanggal-tanda-dokter">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="goBack()">
+                        <i class="fas fa-times"></i> Batal
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='farmasi.html'">
+                        <i class="fas fa-arrow-right"></i> Lanjut
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Persetujuan
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggal-tanda-pasien').value = today;
+            document.getElementById('tanggal-tanda-keluarga').value = today;
+            document.getElementById('tanggal-tanda-dokter').value = today;
+        });
+
+        function handleGeneralConsent(event) {
+            event.preventDefault();
+
+            // Validasi checkbox persetujuan
+            if (!document.getElementById('setuju-risiko').checked) {
+                alert('⚠️ Anda harus menyetujui risiko medis terlebih dahulu!');
+                return;
+            }
+
+            if (!document.getElementById('setuju-biaya').checked) {
+                alert('⚠️ Anda harus menyetujui tanggung jawab biaya terlebih dahulu!');
+                return;
+            }
+
+            // Validasi minimal satu tindakan dipilih
+            const tindakanChecked = Array.from(document.querySelectorAll('input[name="tindakan"]:checked')).length;
+            if (tindakanChecked === 0) {
+                alert('⚠️ Pilih minimal satu jenis tindakan medis!');
+                return;
+            }
+
+            const data = {
+                noRm: document.getElementById('no-rm-consent').value,
+                namaPasien: document.getElementById('nama-pasien-consent').value,
+                tanggalLahir: document.getElementById('tanggal-lahir-consent').value,
+                nik: document.getElementById('nik-consent').value,
+                caraPembayaran: document.getElementById('jaminan-pembayaran').value,
+                penanggungJawab: document.getElementById('penanggung-jawab').value,
+                tindakanMedis: Array.from(document.querySelectorAll('input[name="tindakan"]:checked'))
+                    .map(cb => cb.nextElementSibling.textContent),
+                pemahamanRisiko: document.getElementById('pemahaman-risiko').value,
+                namaPasienTanda: document.getElementById('nama-pasien-tanda').value,
+                namaKeluargaTanda: document.getElementById('nama-keluarga-tanda').value,
+                namaDokterTanda: document.getElementById('nama-dokter-tanda').value
+            };
+
+            console.log('Data General Consent:', data);
+
+            // Show success message
+            alert(`✅ Persetujuan Umum berhasil disimpan!\n\nNo RM: ${data.noRm}\nNama Pasien: ${data.namaPasien}\nCara Pembayaran: ${data.caraPembayaran}`);
+
+            // Reset form
+            resetForm();
+        }
+    </script>
+    <script src="js/role-manager.js"></script>
+    <script>
+        // Check if user is logged in with appropriate role
+        document.addEventListener('DOMContentLoaded', function() {
+            roleManager.requireLogin(['dokter', 'pmik', 'admin']);
+            roleManager.updateNavbarProfile();
+        });
+    </script>
+</body>
+</html>

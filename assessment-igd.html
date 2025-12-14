@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Awal IGD - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .pain-scale {
+            display: flex;
+            gap: 8px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .pain-btn {
+            min-width: 55px;
+            padding: 10px 8px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        .pain-emoji {
+            font-size: 24px;
+        }
+        .pain-btn:hover {
+            border-color: #0066cc;
+            background: #e6f0ff;
+        }
+        .pain-btn.selected {
+            background: #ff4444;
+            color: white;
+            border-color: #ff4444;
+        }
+        .pain-info {
+            background: #fff3cd;
+            border-left: 4px solid #ffcc00;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .risk-assessment {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        .risk-assessment .form-group {
+            margin-bottom: 12px;
+        }
+        .risk-level {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+        .risk-level.rendah {
+            background: #d4edda;
+            color: #155724;
+        }
+        .risk-level.sedang {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .risk-level.tinggi {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .role-indicator {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .role-indicator.pmik {
+            background: #cfe2ff;
+            color: #084298;
+        }
+        .role-indicator.perawat {
+            background: #d1e7dd;
+            color: #0a3622;
+        }
+        .role-indicator.dokter {
+            background: #f8d7da;
+            color: #842029;
+        }
+        .form-section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard-admin.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="identitas-pasien.html" class="nav-item">
+                    <i class="fas fa-id-card"></i>
+                    <span>Identifikasi Pasien</span>
+                </a>
+                <a href="daftar-kunjungan.html" class="nav-item">
+                    <i class="fas fa-list"></i>
+                    <span>Daftar Kunjungan</span>
+                </a>
+                <a href="general-consent.html" class="nav-item">
+                    <i class="fas fa-file-contract"></i>
+                    <span>General Consent</span>
+                </a>
+                <a href="triase-igd.html" class="nav-item">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>Triase IGD</span>
+                </a>
+                <a href="assessment-igd.html" class="nav-item active">
+                    <i class="fas fa-stethoscope"></i>
+                    <span>Assessment IGD</span>
+                </a>
+                <a href="pemeriksaan-fisik-1.html" class="nav-item">
+                    <i class="fas fa-procedures"></i>
+                    <span>Pemeriksaan Fisik</span>
+                </a>
+                <a href="laboratorium-1.html" class="nav-item">
+                    <i class="fas fa-flask"></i>
+                    <span>Laboratorium</span>
+                </a>
+                <a href="diagnosis.html" class="nav-item">
+                    <i class="fas fa-file-medical"></i>
+                    <span>Diagnosis</span>
+                </a>
+                <a href="farmasi.html" class="nav-item">
+                    <i class="fas fa-prescription-bottle"></i>
+                    <span>Farmasi</span>
+                </a>
+                <a href="keuangan.html" class="nav-item">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Keuangan</span>
+                </a>
+                <a href="setting.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Pengaturan</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="form-header">
+                <h1><i class="fas fa-stethoscope"></i> Assessment Awal IGD</h1>
+                <p>Penilaian awal pasien gawat darurat dengan pain scale dan risiko</p>
+            </div>
+
+            <!-- Assessment Form -->
+            <form class="patient-form" onsubmit="handleAssessmentIGD(event)" novalidate>
+                
+                <!-- Data Pasien Section -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-user-circle"></i> Data Pasien</h3>
+                    <span class="role-indicator perawat">Perawat</span>
+                </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-rm-assessment">No RM <span class="required">*</span></label>
+                            <input type="text" id="no-rm-assessment" placeholder="RM-2024-001" value="RM-2024-001" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama-pasien-assessment">Nama Pasien <span class="required">*</span></label>
+                            <input type="text" id="nama-pasien-assessment" placeholder="Nama lengkap pasien" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tanggal-assessment">Tanggal & Waktu Assessment <span class="required">*</span></label>
+                            <input type="datetime-local" id="tanggal-assessment" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="petugas-assessment">Petugas Assessment <span class="required">*</span></label>
+                            <input type="text" id="petugas-assessment" placeholder="Nama petugas" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pain Assessment Section -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-heartbeat"></i> Penilaian Nyeri (Pain Scale)</h3>
+                    <span class="role-indicator perawat">Perawat</span>
+                </div>
+                    <div class="form-group">
+                        <label for="keluhan-utama">Keluhan Utama / Chief Complaint <span class="required">*</span></label>
+                        <textarea id="keluhan-utama" placeholder="Deskripsi keluhan pasien" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Skala Nyeri (0-10) dengan Smiley Face <span class="required">*</span></label>
+                        <div class="pain-scale" id="pain-scale">
+                            <button type="button" class="pain-btn" data-pain="0"><span class="pain-emoji">😢</span><br>0</button>
+                            <button type="button" class="pain-btn" data-pain="1"><span class="pain-emoji">😭</span><br>1</button>
+                            <button type="button" class="pain-btn" data-pain="2"><span class="pain-emoji">😞</span><br>2</button>
+                            <button type="button" class="pain-btn" data-pain="3"><span class="pain-emoji">😟</span><br>3</button>
+                            <button type="button" class="pain-btn" data-pain="4"><span class="pain-emoji">😕</span><br>4</button>
+                            <button type="button" class="pain-btn" data-pain="5"><span class="pain-emoji">😐</span><br>5</button>
+                            <button type="button" class="pain-btn" data-pain="6"><span class="pain-emoji">🙂</span><br>6</button>
+                            <button type="button" class="pain-btn" data-pain="7"><span class="pain-emoji">🙂</span><br>7</button>
+                            <button type="button" class="pain-btn" data-pain="8"><span class="pain-emoji">😌</span><br>8</button>
+                            <button type="button" class="pain-btn" data-pain="9"><span class="pain-emoji">😊</span><br>9</button>
+                            <button type="button" class="pain-btn" data-pain="10"><span class="pain-emoji">😄</span><br>10</button>
+                        </div>
+                        <input type="hidden" id="pain-value" value="">
+                        <div class="pain-info">
+                            <strong>😢 (0) = Tidak ada nyeri | 😐 (5) = Nyeri sedang | 😄 (10) = Nyeri terparah</strong>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="lokasi-nyeri">Lokasi Nyeri <span class="required">*</span></label>
+                            <input type="text" id="lokasi-nyeri" placeholder="Contoh: Dada bagian kiri" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="karakter-nyeri">Karakter Nyeri <span class="required">*</span></label>
+                            <select id="karakter-nyeri" required>
+                                <option value="">-- Pilih Karakter --</option>
+                                <option value="tajam">Tajam/Menusuk</option>
+                                <option value="tumpul">Tumpul</option>
+                                <option value="panas">Panas/Terbakar</option>
+                                <option value="berdenyut">Berdenyut</option>
+                                <option value="kaku">Kaku</option>
+                                <option value="lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="skala-kanvas">Durasi Nyeri <span class="required">*</span></label>
+                            <select id="skala-kanvas" required>
+                                <option value="">-- Pilih Durasi --</option>
+                                <option value="akut">Akut (< 6 minggu)</option>
+                                <option value="sub-akut">Sub-akut (6-12 minggu)</option>
+                                <option value="kronis">Kronis (> 12 minggu)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="faktor-pemicu">Faktor Pemicu / Pemicu Nyeri <span class="required">*</span></label>
+                            <input type="text" id="faktor-pemicu" placeholder="Apa yang memicu nyeri" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Risk Assessment Section -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-shield-alt"></i> Penilaian Risiko</h3>
+                    <span class="role-indicator perawat">Perawat</span>
+                </div>
+                    
+                    <!-- Fall Risk -->
+                    <div class="risk-assessment">
+                        <h4 style="margin-top: 0; color: #0066cc;">Risiko Jatuh (Fall Risk)</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="usia-risiko">Usia > 65 tahun</label>
+                                <select id="usia-risiko" onchange="calculateFallRisk()">
+                                    <option value="0">Tidak</option>
+                                    <option value="1">Ya</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="obat-risiko">Riwayat Jatuh / Obat Berisiko</label>
+                                <select id="obat-risiko" onchange="calculateFallRisk()">
+                                    <option value="0">Tidak</option>
+                                    <option value="1">Ya</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="mental-risiko">Status Mental Terganggu</label>
+                                <select id="mental-risiko" onchange="calculateFallRisk()">
+                                    <option value="0">Tidak</option>
+                                    <option value="1">Ya</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="fall-risk-result" style="margin-top: 10px;"></div>
+                    </div>
+
+                    <!-- Pressure Ulcer Risk -->
+                    <div class="risk-assessment">
+                        <h4 style="margin-top: 0; color: #0066cc;">Risiko Luka Tekan (Pressure Ulcer)</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="mobilitas-risiko">Mobilitas Terbatas</label>
+                                <select id="mobilitas-risiko" onchange="calculatePressureRisk()">
+                                    <option value="0">Tidak</option>
+                                    <option value="1">Ya, sedikit terbatas</option>
+                                    <option value="2">Ya, sangat terbatas</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="nutrisi-risiko">Status Nutrisi Kurang</label>
+                                <select id="nutrisi-risiko" onchange="calculatePressureRisk()">
+                                    <option value="0">Tidak</option>
+                                    <option value="1">Ya</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="inkontinensi-risiko">Inkontinensi (Urin/Feses)</label>
+                                <select id="inkontinensi-risiko" onchange="calculatePressureRisk()">
+                                    <option value="0">Tidak</option>
+                                    <option value="1">Ya</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="pressure-risk-result" style="margin-top: 10px;"></div>
+                    </div>
+
+                    <!-- Infection Risk -->
+                    <div class="risk-assessment">
+                        <h4 style="margin-top: 0; color: #0066cc;">Risiko Infeksi</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="imun-risiko">Status Imun Lemah</label>
+                                <select id="imun-risiko">
+                                    <option value="tidak">Tidak</option>
+                                    <option value="ya">Ya</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="luka-risiko">Adanya Luka Terbuka</label>
+                                <select id="luka-risiko">
+                                    <option value="tidak">Tidak</option>
+                                    <option value="ya">Ya</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="kateter-risiko">Pasang Kateter/Invasif Device</label>
+                                <select id="kateter-risiko">
+                                    <option value="tidak">Tidak</option>
+                                    <option value="ya">Ya</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Psychological Assessment Section -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-brain"></i> Penilaian Psikologis</h3>
+                    <span class="role-indicator dokter">Dokter</span>
+                </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="status-mental">Status Mental <span class="required">*</span></label>
+                            <select id="status-mental" required>
+                                <option value="">-- Pilih Status --</option>
+                                <option value="sadar-baik">Sadar baik, orientasi baik</option>
+                                <option value="sadar-terganggu">Sadar, orientasi terganggu</option>
+                                <option value="mengantuk">Mengantuk</option>
+                                <option value="somnolen">Somnolen (perlu rangsang)</option>
+                                <option value="koma">Koma</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="emosi-pasien">Keadaan Emosi <span class="required">*</span></label>
+                            <select id="emosi-pasien" required>
+                                <option value="">-- Pilih Keadaan --</option>
+                                <option value="tenang">Tenang dan kooperatif</option>
+                                <option value="cemas">Cemas</option>
+                                <option value="agitasi">Agitasi / Gelisah</option>
+                                <option value="takut">Takut</option>
+                                <option value="sedih">Sedih / Depresi</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="catatan-psikologis">Catatan Psikologis</label>
+                        <textarea id="catatan-psikologis" placeholder="Catatan tambahan tentang kondisi psikologis pasien"></textarea>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="goBack()">
+                        <i class="fas fa-times"></i> Batal
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='pemeriksaan-fisik-1.html'">
+                        <i class="fas fa-arrow-right"></i> Lanjut ke Pemeriksaan Fisik
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Assessment
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Set default datetime to now
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            const formattedDate = now.toISOString().slice(0, 16);
+            document.getElementById('tanggal-assessment').value = formattedDate;
+
+            // Pain scale buttons
+            document.querySelectorAll('.pain-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelectorAll('.pain-btn').forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    document.getElementById('pain-value').value = this.dataset.pain;
+                });
+            });
+        });
+
+        function calculateFallRisk() {
+            let risk = 0;
+            risk += parseInt(document.getElementById('usia-risiko').value) || 0;
+            risk += parseInt(document.getElementById('obat-risiko').value) || 0;
+            risk += parseInt(document.getElementById('mental-risiko').value) || 0;
+
+            let level = 'Rendah';
+            let levelClass = 'rendah';
+            if (risk >= 2) {
+                level = 'Tinggi';
+                levelClass = 'tinggi';
+            } else if (risk === 1) {
+                level = 'Sedang';
+                levelClass = 'sedang';
+            }
+
+            document.getElementById('fall-risk-result').innerHTML = 
+                `<strong>Hasil: </strong><span class="risk-level ${levelClass}">${level}</span>`;
+        }
+
+        function calculatePressureRisk() {
+            let risk = 0;
+            risk += parseInt(document.getElementById('mobilitas-risiko').value) || 0;
+            risk += parseInt(document.getElementById('nutrisi-risiko').value) || 0;
+            risk += parseInt(document.getElementById('inkontinensi-risiko').value) || 0;
+
+            let level = 'Rendah';
+            let levelClass = 'rendah';
+            if (risk >= 3) {
+                level = 'Tinggi';
+                levelClass = 'tinggi';
+            } else if (risk >= 1) {
+                level = 'Sedang';
+                levelClass = 'sedang';
+            }
+
+            document.getElementById('pressure-risk-result').innerHTML = 
+                `<strong>Hasil: </strong><span class="risk-level ${levelClass}">${level}</span>`;
+        }
+
+        function handleAssessmentIGD(event) {
+            event.preventDefault();
+
+            const data = {
+                noRm: document.getElementById('no-rm-assessment').value,
+                namaPasien: document.getElementById('nama-pasien-assessment').value,
+                tanggal: document.getElementById('tanggal-assessment').value,
+                petugas: document.getElementById('petugas-assessment').value,
+                keluhanUtama: document.getElementById('keluhan-utama').value,
+                skalaNyeri: document.getElementById('pain-value').value,
+                lokasiNyeri: document.getElementById('lokasi-nyeri').value,
+                karakterNyeri: document.getElementById('karakter-nyeri').value,
+                durasiNyeri: document.getElementById('skala-kanvas').value,
+                faktorPemicu: document.getElementById('faktor-pemicu').value,
+                statusMental: document.getElementById('status-mental').value,
+                emosi: document.getElementById('emosi-pasien').value,
+                catatanPsikologis: document.getElementById('catatan-psikologis').value
+            };
+
+            console.log('Data Assessment IGD:', data);
+
+            // Validasi pain value
+            if (!data.skalaNyeri) {
+                alert('Pilih skala nyeri terlebih dahulu!');
+                return;
+            }
+
+            // Show success message
+            alert(`✅ Assessment IGD berhasil disimpan!\n\nNo RM: ${data.noRm}\nNama: ${data.namaPasien}\nSkala Nyeri: ${data.skalaNyeri}/10`);
+
+            // Reset form
+            resetForm('assessment-igd-form');
+        }
+    </script>
+    <script src="js/role-manager.js"></script>
+    <script>
+        // Check if user is logged in with appropriate role
+        document.addEventListener('DOMContentLoaded', function() {
+            roleManager.requireLogin(['perawat', 'dokter', 'pmik', 'admin']);
+            roleManager.updateNavbarProfile();
+        });
+    </script>
+</body>
+</html>

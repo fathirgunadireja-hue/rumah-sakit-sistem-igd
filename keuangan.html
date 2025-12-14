@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keuangan - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="form-header">
+                <h1>Formulir Pembayaran Pasien</h1>
+                <p>Input data pembayaran dan verifikasi biaya perawatan</p>
+            </div>
+
+            <form id="keuangan-form" onsubmit="handlePembayaran(event)" class="patient-form" novalidate>
+                <!-- Data Pasien -->
+                <div class="form-section">
+                    <h3>
+                        <i class="fas fa-user"></i> Data Pasien
+                    </h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-rm-keuangan">
+                                <span class="required">*</span> No RM
+                            </label>
+                            <input type="text" id="no-rm-keuangan" name="no-rm-keuangan" placeholder="No Rekam Medis" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama-pasien-keuangan">
+                                <span class="required">*</span> Nama Pasien
+                            </label>
+                            <input type="text" id="nama-pasien-keuangan" name="nama-pasien-keuangan" placeholder="Nama pasien" required>
+                        </div>
+                    </div>
+
+
+                <!-- Sumber Pembayaran -->
+                <div class="form-section">
+                    <h3>
+                        <i class="fas fa-wallet"></i> Sumber Pembayaran
+                    </h3>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="cara-pembayaran-keuangan">
+                                <span class="required">*</span> Cara Pembayaran
+                            </label>
+                            <select id="cara-pembayaran-keuangan" name="cara-pembayaran-keuangan" onchange="updateDetailPembayaran()" required>
+                                <option value="">Pilih Cara Pembayaran</option>
+                                <option value="jkn">JKN (Asuransi Kesehatan Nasional)</option>
+                                <option value="bpjs">BPJS Kesehatan</option>
+                                <option value="asuransi-swasta">Asuransi Swasta</option>
+                                <option value="mandiri">Mandiri / Tunai</option>
+                                <option value="kartu-kredit">Kartu Kredit</option>
+                                <option value="transfer-bank">Transfer Bank</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Detail JKN/BPJS -->
+                    <div id="detail-jkn" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="no-jkn">
+                                    <span class="required">*</span> Nomor JKN/BPJS
+                                </label>
+                                <input type="text" id="no-jkn" name="no-jkn" placeholder="16 digit nomor JKN/BPJS" maxlength="16">
+                            </div>
+                            <div class="form-group">
+                                <label for="tipe-peserta">
+                                    <span class="required">*</span> Tipe Peserta
+                                </label>
+                                <select id="tipe-peserta" name="tipe-peserta">
+                                    <option value="">Pilih Tipe Peserta</option>
+                                    <option value="pbi">PBI (Penerima Bantuan Iuran)</option>
+                                    <option value="non-pbi">Non-PBI</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detail Asuransi Swasta -->
+                    <div id="detail-asuransi" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nama-asuransi">
+                                    <span class="required">*</span> Nama Asuransi
+                                </label>
+                                <input type="text" id="nama-asuransi" name="nama-asuransi" placeholder="Nama perusahaan asuransi">
+                            </div>
+                            <div class="form-group">
+                                <label for="no-polis">
+                                    <span class="required">*</span> Nomor Polis
+                                </label>
+                                <input type="text" id="no-polis" name="no-polis" placeholder="Nomor polis asuransi">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detail Mandiri/Tunai -->
+                    <div id="detail-mandiri" style="display: none;">
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="metode-pembayaran-mandiri">
+                                    <span class="required">*</span> Metode Pembayaran
+                                </label>
+                                <select id="metode-pembayaran-mandiri" name="metode-pembayaran-mandiri">
+                                    <option value="">Pilih Metode</option>
+                                    <option value="tunai">Tunai</option>
+                                    <option value="transfer-bank">Transfer Bank</option>
+                                    <option value="debit-card">Kartu Debit</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Biaya Pelayanan -->
+                <div class="form-section">
+                    <h3>
+                        <i class="fas fa-receipt"></i> Rincian Biaya Pelayanan
+                    </h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="biaya-registrasi">
+                                <span class="required">*</span> Biaya Registrasi (Rp)
+                            </label>
+                            <input type="number" id="biaya-registrasi" name="biaya-registrasi" placeholder="0" onchange="hitungTotal()">
+                        </div>
+                        <div class="form-group">
+                            <label for="biaya-pemeriksaan">
+                                <span class="required">*</span> Biaya Pemeriksaan (Rp)
+                            </label>
+                            <input type="number" id="biaya-pemeriksaan" name="biaya-pemeriksaan" placeholder="0" onchange="hitungTotal()">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="biaya-obat">
+                                <span class="required">*</span> Biaya Obat (Rp)
+                            </label>
+                            <input type="number" id="biaya-obat" name="biaya-obat" placeholder="0" onchange="hitungTotal()">
+                        </div>
+                        <div class="form-group">
+                            <label for="biaya-tindakan">
+                                <span class="required">*</span> Biaya Tindakan (Rp)
+                            </label>
+                            <input type="number" id="biaya-tindakan" name="biaya-tindakan" placeholder="0" onchange="hitungTotal()">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="biaya-lainnya">Biaya Lainnya (Rp)</label>
+                            <input type="number" id="biaya-lainnya" name="biaya-lainnya" placeholder="0" onchange="hitungTotal()">
+                        </div>
+                        <div class="form-group">
+                            <label for="diskon">Diskon (Rp)</label>
+                            <input type="number" id="diskon" name="diskon" placeholder="0" onchange="hitungTotal()">
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>Total Biaya (Rp)</label>
+                            <div class="total-biaya">
+                                <strong id="total-biaya-value">0</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status Pembayaran -->
+                <div class="form-section">
+                    <h3>
+                        <i class="fas fa-check-square"></i> Status Pembayaran
+                    </h3>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="status-pembayaran">
+                                <span class="required">*</span> Status Pembayaran
+                            </label>
+                            <select id="status-pembayaran" name="status-pembayaran" required>
+                                <option value="">Pilih Status</option>
+                                <option value="belum-bayar">Belum Bayar</option>
+                                <option value="sebagian">Sebagian Bayar</option>
+                                <option value="lunas">Lunas</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="jumlah-dibayar">Jumlah Dibayar (Rp)</label>
+                            <input type="number" id="jumlah-dibayar" name="jumlah-dibayar" placeholder="0" onchange="hitungSisa()">
+                        </div>
+                        <div class="form-group">
+                            <label>Sisa Pembayaran (Rp)</label>
+                            <div style="padding: 10px 12px; border: 1px solid #e0e0e0; border-radius: 5px; background-color: #f9f9f9;">
+                                <strong id="sisa-pembayaran">0</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="tanggal-pembayaran">
+                                <span class="required">*</span> Tanggal Pembayaran
+                            </label>
+                            <input type="date" id="tanggal-pembayaran" name="tanggal-pembayaran" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="catatan-pembayaran">Catatan Pembayaran</label>
+                            <textarea id="catatan-pembayaran" name="catatan-pembayaran" rows="2" placeholder="Catatan tambahan tentang pembayaran"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="goBack()">
+                        <i class="fas fa-times"></i> Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Data Pembayaran
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/role-manager.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        function updateDetailPembayaran() {
+            const caraPembayaran = document.getElementById('cara-pembayaran-keuangan').value;
+            
+            // Hide all detail sections
+            document.getElementById('detail-jkn').style.display = 'none';
+            document.getElementById('detail-asuransi').style.display = 'none';
+            document.getElementById('detail-mandiri').style.display = 'none';
+            
+            // Show relevant section
+            if (caraPembayaran === 'jkn' || caraPembayaran === 'bpjs') {
+                document.getElementById('detail-jkn').style.display = 'block';
+            } else if (caraPembayaran === 'asuransi-swasta') {
+                document.getElementById('detail-asuransi').style.display = 'block';
+            } else if (caraPembayaran === 'mandiri' || caraPembayaran === 'kartu-kredit' || caraPembayaran === 'transfer-bank') {
+                document.getElementById('detail-mandiri').style.display = 'block';
+            }
+        }
+
+        function hitungTotal() {
+            const registrasi = parseInt(document.getElementById('biaya-registrasi').value) || 0;
+            const pemeriksaan = parseInt(document.getElementById('biaya-pemeriksaan').value) || 0;
+            const obat = parseInt(document.getElementById('biaya-obat').value) || 0;
+            const tindakan = parseInt(document.getElementById('biaya-tindakan').value) || 0;
+            const lainnya = parseInt(document.getElementById('biaya-lainnya').value) || 0;
+            const diskon = parseInt(document.getElementById('diskon').value) || 0;
+            
+            const total = registrasi + pemeriksaan + obat + tindakan + lainnya - diskon;
+            document.getElementById('total-biaya-value').textContent = formatCurrency(total);
+        }
+
+        function hitungSisa() {
+            const total = parseInt(document.getElementById('biaya-registrasi').value || 0) +
+                         parseInt(document.getElementById('biaya-pemeriksaan').value || 0) +
+                         parseInt(document.getElementById('biaya-obat').value || 0) +
+                         parseInt(document.getElementById('biaya-tindakan').value || 0) +
+                         parseInt(document.getElementById('biaya-lainnya').value || 0) -
+                         parseInt(document.getElementById('diskon').value || 0);
+            
+            const dibayar = parseInt(document.getElementById('jumlah-dibayar').value) || 0;
+            const sisa = total - dibayar;
+            
+            document.getElementById('sisa-pembayaran').textContent = formatCurrency(Math.max(0, sisa));
+        }
+
+        function handlePembayaran(event) {
+            event.preventDefault();
+            alert('Data pembayaran pasien berhasil disimpan!');
+        }
+
+        // Set tanggal default
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('tanggal-pembayaran').valueAsDate = new Date();
+            roleManager.requireLogin(['keuangan', 'admin']);
+            roleManager.updateNavbarProfile();
+        });
+    </script>
+    <script src="js/role-manager.js"></script>
+</body>
+</html>

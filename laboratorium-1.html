@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorium - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="admin-sidebar"></aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="form-header">
+                <h1>Formulir Permintaan Pemeriksaan Laboratorium</h1>
+                <p>Bagian 1: Data Dasar dan Kategori Pemeriksaan</p>
+            </div>
+
+            <form id="lab-form-1" onsubmit="handleLaboratorium1(event)" class="patient-form" novalidate>
+                <!-- Data Pasien -->
+                <div class="form-section">
+                    <h3>
+                        <i class="fas fa-user"></i> Data Pasien
+                    </h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-rm-lab">
+                                <span class="required">*</span> No RM
+                            </label>
+                            <input type="text" id="no-rm-lab" name="no-rm-lab" placeholder="No Rekam Medis" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama-pasien-lab">
+                                <span class="required">*</span> Nama Pasien
+                            </label>
+                            <input type="text" id="nama-pasien-lab" name="nama-pasien-lab" placeholder="Nama pasien" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="umur-lab">
+                                <span class="required">*</span> Umur
+                            </label>
+                            <input type="number" id="umur-lab" name="umur-lab" placeholder="Umur" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jenis-kelamin-lab">
+                                <span class="required">*</span> Jenis Kelamin
+                            </label>
+                            <select id="jenis-kelamin-lab" name="jenis-kelamin-lab" required>
+                                <option value="">Pilih Jenis Kelamin</option>
+                                <option value="laki-laki">Laki-laki</option>
+                                <option value="perempuan">Perempuan</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Waktu Permintaan -->
+                <div class="form-section">
+                    <h3>
+                        <i class="fas fa-clock"></i> Waktu Permintaan
+                    </h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tanggal-permintaan">
+                                <span class="required">*</span> Tanggal Permintaan
+                            </label>
+                            <input type="date" id="tanggal-permintaan" name="tanggal-permintaan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jam-permintaan">
+                                <span class="required">*</span> Jam Permintaan
+                            </label>
+                            <input type="time" id="jam-permintaan" name="jam-permintaan" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="status-puasa">
+                                <span class="required">*</span> Status Puasa
+                            </label>
+                            <select id="status-puasa" name="status-puasa" required>
+                                <option value="">Pilih Status Puasa</option>
+                                <option value="puasa">Puasa</option>
+                                <option value="tidak-puasa">Tidak Puasa</option>
+                                <option value="tidak-tahu">Tidak Tahu</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kategori Pemeriksaan -->
+                <div class="form-section">
+                    <h3>
+                        <i class="fas fa-list-check"></i> Kategori dan Jenis Pemeriksaan
+                    </h3>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="kategori-pemeriksaan">
+                                <span class="required">*</span> Kategori Pemeriksaan
+                            </label>
+                            <select id="kategori-pemeriksaan" name="kategori-pemeriksaan" onchange="updatePemeriksaan()" required>
+                                <option value="">Pilih Kategori</option>
+                                <option value="hematologi">Hematologi (Tes Darah)</option>
+                                <option value="kimia-klinis">Kimia Klinis</option>
+                                <option value="mikrobiologi">Mikrobiologi</option>
+                                <option value="imunologi">Imunologi / Serologi</option>
+                                <option value="urinalisis">Urinalisis</option>
+                                <option value="paket">Paket Pemeriksaan</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="jenis-pemeriksaan-container" style="display: none;">
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="jenis-pemeriksaan">
+                                    <span class="required">*</span> Jenis Pemeriksaan
+                                </label>
+                                <select id="jenis-pemeriksaan" name="jenis-pemeriksaan" multiple size="6">
+                                    <option value="">-- Pilih Jenis --</option>
+                                </select>
+                                <small class="form-hint">
+                                    <i class="fas fa-info-circle"></i> Gunakan Ctrl+Click untuk memilih lebih dari satu
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informasi Dokter -->
+                <div class="form-section">
+                    <h3>
+                        <i class="fas fa-stethoscope"></i> Informasi Dokter Pengirim
+                    </h3>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="dokter-pengirim">
+                                <span class="required">*</span> Dokter Pengirim
+                            </label>
+                            <select id="dokter-pengirim" name="dokter-pengirim" required>
+                                <option value="">Pilih Dokter</option>
+                                <option value="dr-ahmad">Dr. Ahmad Sutrisno</option>
+                                <option value="dr-siti">Dr. Siti Nurhaliza</option>
+                                <option value="dr-budi">Dr. Budi Santoso</option>
+                                <option value="dr-dewi">Dr. Dewi Lestari</option>
+                                <option value="dr-rifa">Dr. Rifa'i Rahman</option>
+                                <option value="dr-indah">Dr. Indah Kusuma</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="prioritas">
+                                <span class="required">*</span> Prioritas Pemeriksaan
+                            </label>
+                            <select id="prioritas" name="prioritas" required>
+                                <option value="">Pilih Prioritas</option>
+                                <option value="rutin">Rutin</option>
+                                <option value="segera">Segera (Urgent)</option>
+                                <option value="stat">Stat (Sangat Urgent)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="indikasi-klinis">
+                                <span class="required">*</span> Indikasi Klinis / Diagnosis
+                            </label>
+                            <textarea id="indikasi-klinis" name="indikasi-klinis" rows="3" placeholder="Alasan pemeriksaan laboratorium" required></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="goBack()">
+                        <i class="fas fa-times"></i> Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-arrow-right"></i> Lanjut ke Data Spesimen
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script>
+        // Data for pemeriksaan based on kategori
+        const pemeriksaanData = {
+            'hematologi': [
+                'Hemoglobin',
+                'Hematokrit',
+                'Eritrosit (RBC)',
+                'Leukosit (WBC)',
+                'Trombosit',
+                'Tes Darah Lengkap (CBC)',
+                'Diferensial Leukosit',
+                'Masa Perdarahan',
+                'Masa Pembekuan'
+            ],
+            'kimia-klinis': [
+                'Glukosa Darah',
+                'Urea',
+                'Kreatinin',
+                'Asam Urat',
+                'Kolesterol Total',
+                'Trigliserida',
+                'HDL dan LDL',
+                'Protein Total',
+                'Albumin',
+                'Globulin'
+            ],
+            'mikrobiologi': [
+                'Kultur Urin',
+                'Kultur Darah',
+                'Kultur Sputum',
+                'Kultur Tinja',
+                'Gram Stain',
+                'Tes Kepekaan Antibiotik'
+            ],
+            'imunologi': [
+                'HBsAg (Hepatitis B)',
+                'Anti HCV (Hepatitis C)',
+                'HIV',
+                'Sifilis (RPR/VDRL)',
+                'Tes Kehamilan (HCG)',
+                'Tes Alergi'
+            ],
+            'urinalisis': [
+                'Tes Urin Lengkap',
+                'Protein Urin',
+                'Glukosa Urin',
+                'Benda Keton',
+                'Sel Darah Putih Urin',
+                'Sel Darah Merah Urin'
+            ],
+            'paket': [
+                'Paket Medical Check-up Lengkap',
+                'Paket Pre Operasi',
+                'Paket Ibu Hamil',
+                'Paket Kesehatan Karyawan'
+            ]
+        };
+
+        function updatePemeriksaan() {
+            const kategori = document.getElementById('kategori-pemeriksaan').value;
+            const container = document.getElementById('jenis-pemeriksaan-container');
+            const selectJenis = document.getElementById('jenis-pemeriksaan');
+
+            if (kategori) {
+                selectJenis.innerHTML = '<option value="">-- Pilih Jenis --</option>';
+                pemeriksaanData[kategori].forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.toLowerCase().replace(' ', '-');
+                    option.textContent = item;
+                    selectJenis.appendChild(option);
+                });
+                container.style.display = 'block';
+            } else {
+                container.style.display = 'none';
+            }
+        }
+
+        function handleLaboratorium1(event) {
+            event.preventDefault();
+            alert('Data laboratorium bagian 1 disimpan. Lanjut ke bagian 2.');
+            // Redirect to laboratorium part 2
+            window.location.href = 'laboratorium-2.html';
+        }
+    </script>
+    <script src="js/role-manager.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            roleManager.requireLogin(['dokter', 'pmik', 'admin']);
+            roleManager.updateNavbarProfile();
+        });
+    </script>
+</body>
+</html>

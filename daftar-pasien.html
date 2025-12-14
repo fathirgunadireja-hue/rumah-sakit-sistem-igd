@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Pasien - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .registration-wrapper {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            padding: 2rem 0;
+            min-height: 100vh;
+        }
+
+        .registration-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .registration-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 30px rgba(0, 102, 204, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .registration-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 102, 204, 0.15);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .registration-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 1rem;
+        }
+
+        .registration-header i {
+            font-size: 2rem;
+            color: #0066cc;
+            margin-bottom: 0.3rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .registration-header h1 {
+            color: #0066cc;
+            margin-bottom: 0.2rem;
+            font-size: 1.6rem;
+        }
+
+        .registration-header p {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .form-section {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-section:last-of-type {
+            margin-bottom: 0.8rem;
+        }
+
+        .form-section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #333;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .form-section-title i {
+            color: #0066cc;
+            font-size: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-row.triple {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.3rem;
+            font-size: 0.82rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 0.55rem 0.7rem;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 55px;
+        }
+
+        .password-input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-input-group input {
+            flex: 1;
+            padding-right: 40px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            cursor: pointer;
+            color: #0066cc;
+            font-size: 1rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            margin-top: 0.1rem;
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .checkbox-item label {
+            cursor: pointer;
+            margin: 0;
+            font-weight: 500;
+            color: #555;
+            line-height: 1.4;
+            font-size: 0.82rem;
+        }
+
+        .checkbox-item a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .checkbox-item a:hover {
+            text-decoration: underline;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1.2rem;
+        }
+
+        .btn-register {
+            flex: 1;
+            padding: 0.7rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-register.primary {
+            background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+            color: white;
+        }
+
+        .btn-register.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 102, 204, 0.35);
+        }
+
+        .btn-register.primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-register.secondary {
+            background: white;
+            color: #0066cc;
+            border: 2px solid #0066cc;
+        }
+
+        .btn-register.secondary:hover {
+            background: #f0f5ff;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1rem;
+            color: #666;
+            font-size: 0.82rem;
+        }
+
+        .login-link a {
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .registration-wrapper {
+                padding: 1.5rem 0;
+            }
+
+            .registration-card {
+                padding: 1.5rem;
+            }
+
+            .form-row,
+            .form-row.triple {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .registration-header {
+                margin-bottom: 1rem;
+                padding-bottom: 0.8rem;
+            }
+
+            .registration-header h1 {
+                font-size: 1.4rem;
+            }
+
+            .registration-header i {
+                font-size: 1.8rem;
+            }
+
+            .btn-register {
+                font-size: 0.85rem;
+                padding: 0.65rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                gap: 0.6rem;
+            }
+
+            .form-actions .btn-register {
+                width: 100%;
+            }
+
+            .form-section-title {
+                font-size: 0.9rem;
+            }
+
+            .form-group label {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .registration-card {
+                padding: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+
+            .registration-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .btn-register {
+                font-size: 0.9rem;
+                padding: 0.8rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .form-actions .btn-register {
+                flex: 1;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-logo">
+                <i class="fas fa-hospital"></i>
+                <span>RUMAH SAKIT JAYA SEHAT</span>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="index.html" class="nav-link">Beranda</a></li>
+                <li><a href="login-pasien.html" class="nav-link">Login Pasien</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Registration Section -->
+    <section class="registration-wrapper">
+        <div class="registration-container">
+            <div class="registration-card">
+                <div class="registration-header">
+                    <i class="fas fa-user-plus"></i>
+                    <h1>Daftar Pasien</h1>
+                    <p>Buat akun untuk akses rekam medis online</p>
+                </div>
+
+                <form id="daftar-pasien-form" onsubmit="handleDaftarPasien(event)" novalidate>
+                    <!-- Data Pribadi Section -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-id-card"></i> Data Pribadi
+                        </div>
+
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="nama-lengkap">Nama Lengkap <span style="color: #e74c3c;">*</span></label>
+                                <input type="text" id="nama-lengkap" placeholder="Masukkan nama lengkap">
+                            </div>
+                        </div>
+
+                        <div class="form-row triple">
+                            <div class="form-group">
+                                <label for="nik-daftar">NIK <span style="color: #e74c3c;">*</span></label>
+                                <input type="text" id="nik-daftar" placeholder="16 digit" maxlength="16">
+                            </div>
+                            <div class="form-group">
+                                <label for="tanggal-lahir">Tanggal Lahir <span style="color: #e74c3c;">*</span></label>
+                                <input type="date" id="tanggal-lahir">
+                            </div>
+                            <div class="form-group">
+                                <label for="golongan-darah">Gol. Darah</label>
+                                <select id="golongan-darah">
+                                    <option value="">--</option>
+                                    <option value="O">O</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="AB">AB</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="jenis-kelamin">Jenis Kelamin <span style="color: #e74c3c;">*</span></label>
+                                <select id="jenis-kelamin">
+                                    <option value="">-- Pilih --</option>
+                                    <option value="laki-laki">Laki-laki</option>
+                                    <option value="perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="email-daftar">Email <span style="color: #e74c3c;">*</span></label>
+                                <input type="email" id="email-daftar" placeholder="email@example.com">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Informasi Kontak -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-phone"></i> Kontak & Alamat
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nomor-telepon">Nomor Telepon <span style="color: #e74c3c;">*</span></label>
+                                <input type="tel" id="nomor-telepon" placeholder="081234567890">
+                            </div>
+                            <div class="form-group">
+                                <label for="alamat">Alamat Lengkap <span style="color: #e74c3c;">*</span></label>
+                                <textarea id="alamat" placeholder="Alamat lengkap"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Akun Login -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-lock"></i> Keamanan Akun
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="password-daftar">Password <span style="color: #e74c3c;">*</span></label>
+                                <div class="password-input-group">
+                                    <input type="password" id="password-daftar" placeholder="Min. 8 karakter">
+                                    <span class="toggle-password" onclick="togglePasswordDaftar()">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="konfirmasi-password">Konfirmasi Password <span style="color: #e74c3c;">*</span></label>
+                                <div class="password-input-group">
+                                    <input type="password" id="konfirmasi-password" placeholder="Ulangi password">
+                                    <span class="toggle-password" onclick="toggleKonfirmasiPassword()">
+                                        <i class="fas fa-eye"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checkbox-group" style="margin-top: 0.8rem;">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="setuju-syarat">
+                                <label for="setuju-syarat">
+                                    Saya setuju dengan <a href="#">Syarat & Ketentuan</a>
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="setuju-privasi">
+                                <label for="setuju-privasi">
+                                    Saya setuju dengan <a href="#">Kebijakan Privasi</a>
+                                </label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="setuju-komunikasi">
+                                <label for="setuju-komunikasi">
+                                    Terima notifikasi & informasi
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn-register primary">
+                            <i class="fas fa-user-plus"></i> Daftar Akun
+                        </button>
+                        <button type="reset" class="btn-register secondary">
+                            <i class="fas fa-redo"></i> Bersihkan
+                        </button>
+                    </div>
+
+                    <div class="login-link">
+                        Sudah punya akun? <a href="login-pasien.html">Login di sini</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 RUMAH SAKIT JAYA SEHAT. Semua hak dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/role-manager.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        function togglePasswordDaftar() {
+            const input = document.getElementById('password-daftar');
+            const icon = event.target.closest('.toggle-password').querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function toggleKonfirmasiPassword() {
+            const input = document.getElementById('konfirmasi-password');
+            const icon = event.target.closest('.toggle-password').querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function handleDaftarPasien(event) {
+            event.preventDefault();
+
+            // Generate No RM
+            const noRM = 'RM-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 100000)).padStart(5, '0');
+            
+            // Redirect to login page
+            window.location.href = 'login-pasien.html';
+        }
+
+        // Set default date to today
+        document.addEventListener('DOMContentLoaded', function() {
+            // Optional: set min date to past dates only
+            const dobInput = document.getElementById('tanggal-lahir');
+            // Set max date to 18 years ago (minimum age requirement)
+            const maxDate = new Date();
+            maxDate.setFullYear(maxDate.getFullYear() - 18);
+            dobInput.max = maxDate.toISOString().split('T')[0];
+        });
+    </script>
+</body>
+</html>

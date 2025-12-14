@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triase IGD - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="admin-navbar">
+        <div class="admin-navbar-content">
+            <div class="navbar-logo">
+                <i class="fas fa-hospital"></i>
+                <span>RUMAH SAKIT JAYA SEHAT - Triase IGD</span>
+            </div>
+            <div class="navbar-actions">
+                <div class="notification-bell">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="admin-profile">
+                    <img src="https://via.placeholder.com/40" alt="Admin">
+                    <span>Admin</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard-admin.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="identitas-pasien.html" class="nav-item">
+                    <i class="fas fa-id-card"></i>
+                    <span>Identifikasi Pasien</span>
+                </a>
+                <a href="daftar-kunjungan.html" class="nav-item">
+                    <i class="fas fa-list"></i>
+                    <span>Daftar Kunjungan</span>
+                </a>
+                <a href="general-consent.html" class="nav-item">
+                    <i class="fas fa-file-contract"></i>
+                    <span>General Consent</span>
+                </a>
+                <a href="triase-igd.html" class="nav-item active">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>Triase IGD</span>
+                </a>
+                <a href="assessment-igd.html" class="nav-item">
+                    <i class="fas fa-stethoscope"></i>
+                    <span>Assessment IGD</span>
+                </a>
+                <a href="pemeriksaan-fisik-1.html" class="nav-item">
+                    <i class="fas fa-procedures"></i>
+                    <span>Pemeriksaan Fisik</span>
+                </a>
+                <a href="laboratorium-1.html" class="nav-item">
+                    <i class="fas fa-flask"></i>
+                    <span>Laboratorium</span>
+                </a>
+                <a href="diagnosis.html" class="nav-item">
+                    <i class="fas fa-file-medical"></i>
+                    <span>Diagnosis</span>
+                </a>
+                <a href="farmasi.html" class="nav-item">
+                    <i class="fas fa-prescription-bottle"></i>
+                    <span>Farmasi</span>
+                </a>
+                <a href="keuangan.html" class="nav-item">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Keuangan</span>
+                </a>
+                <a href="setting.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Pengaturan</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="form-header">
+                <h1>Formulir Triase Gawat Darurat (IGD)</h1>
+                <p>Catat informasi pasien gawat darurat yang masuk</p>
+            </div>
+
+            <form id="triase-igd-form" onsubmit="handleTriaseIGD(event)" class="patient-form" novalidate>
+                <!-- Waktu Masuk -->
+                <div class="form-section">
+                <!-- Top Navigation -->
+    
+    
+                    <h3>
+                        <i class="fas fa-clock"></i> Waktu dan Sarana Masuk
+                    </h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tanggal-masuk">
+                                <span class="required">*</span> Tanggal Masuk
+                            </label>
+                            <input type="date" id="tanggal-masuk" name="tanggal-masuk" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jam-masuk">
+                                <span class="required">*</span> Jam Masuk
+                            </label>
+                            <input type="time" id="jam-masuk" name="jam-masuk" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="sarana-transportasi">
+                                <span class="required">*</span> Sarana Transportasi
+                            </label>
+                            <select id="sarana-transportasi" name="sarana-transportasi" required>
+                                <option value="">Pilih Sarana Transportasi</option>
+                                <option value="ambulans-rs">Ambulans RS</option>
+                                <option value="ambulans-puskesmas">Ambulans Puskesmas</option>
+                                <option value="ambulans-pribadi">Ambulans Pribadi</option>
+                                <option value="kendaraan-pribadi">Kendaraan Pribadi</option>
+                                <option value="kendaraan-umum">Kendaraan Umum</option>
+                                <option value="jalan-kaki">Jalan Kaki</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="kondisi-pasien">
+                                <span class="required">*</span> Kondisi Pasien Saat Masuk
+                            </label>
+                            <select id="kondisi-pasien" name="kondisi-pasien" required>
+                                <option value="">Pilih Kondisi Pasien</option>
+                                <option value="sadar-baik">Sadar dan Baik</option>
+                                <option value="sadar-gelisah">Sadar Gelisah</option>
+                                <option value="sadar-apatis">Sadar Apatis</option>
+                                <option value="mengantuk">Mengantuk</option>
+                                <option value="somnolen">Somnolen</option>
+                                <option value="koma">Koma</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Anamnesis -->
+                <div class="form-section">
+                    <h3>
+                        <i class="fas fa-stethoscope"></i> Anamnesis
+                    </h3>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="keluhan-utama">
+                                <span class="required">*</span> Keluhan Utama
+                            </label>
+                            <textarea id="keluhan-utama" name="keluhan-utama" rows="3" placeholder="Deskripsi keluhan utama pasien" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="riwayat-alergi">
+                                <span class="required">*</span> Riwayat Alergi
+                            </label>
+                            <textarea id="riwayat-alergi" name="riwayat-alergi" rows="3" placeholder="Obat, makanan, atau bahan lainnya" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="riwayat-penyakit">
+                                <span class="required">*</span> Riwayat Penyakit Sebelumnya
+                            </label>
+                            <textarea id="riwayat-penyakit" name="riwayat-penyakit" rows="3" placeholder="Penyakit atau kondisi medis sebelumnya"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="riwayat-pengobatan">
+                                <span class="required">*</span> Riwayat Pengobatan Saat Ini
+                            </label>
+                            <textarea id="riwayat-pengobatan" name="riwayat-pengobatan" rows="3" placeholder="Obat-obatan yang sedang dikonsumsi"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tanda Vital -->
+                <div class="form-section">
+                    <h3>
+                        <i class="fas fa-heart"></i> Tanda Vital
+                    </h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tekanan-darah">
+                                <span class="required">*</span> Tekanan Darah (mmHg)
+                            </label>
+                            <input type="text" id="tekanan-darah" name="tekanan-darah" placeholder="120/80" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="denyut-nadi">
+                                <span class="required">*</span> Denyut Nadi (x/menit)
+                            </label>
+                            <input type="number" id="denyut-nadi" name="denyut-nadi" placeholder="80" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="pernapasan">
+                                <span class="required">*</span> Pernapasan (x/menit)
+                            </label>
+                            <input type="number" id="pernapasan" name="pernapasan" placeholder="20" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="suhu-tubuh">
+                                <span class="required">*</span> Suhu Tubuh (°C)
+                            </label>
+                            <input type="number" id="suhu-tubuh" name="suhu-tubuh" step="0.1" placeholder="36.5" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="tingkat-kesadaran">
+                                <span class="required">*</span> Tingkat Kesadaran
+                            </label>
+                            <select id="tingkat-kesadaran" name="tingkat-kesadaran" required>
+                                <option value="">Pilih Tingkat Kesadaran</option>
+                                <option value="compos-mentis">Compos Mentis (Sadar Penuh)</option>
+                                <option value="apatis">Apatis</option>
+                                <option value="somnolen">Somnolen (Mengantuk)</option>
+                                <option value="sopor">Sopor (Tidur Dalam)</option>
+                                <option value="koma">Koma</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="goBack()">
+                        <i class="fas fa-times"></i> Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Triase
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/role-manager.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            roleManager.requireLogin(['perawat', 'dokter', 'pmik', 'admin']);
+            roleManager.updateNavbarProfile();
+        });
+    </script>
+</body>
+</html>

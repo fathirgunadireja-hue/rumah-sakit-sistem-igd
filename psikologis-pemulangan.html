@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psikologis & Pemulangan - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .assessment-box {
+            background: #f0f7ff;
+            border-left: 4px solid #0066cc;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .assessment-title {
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 12px;
+            font-size: 1.05em;
+        }
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 10px 0;
+        }
+        .radio-item {
+            flex: 1;
+            min-width: 150px;
+        }
+        .radio-item input[type="radio"] {
+            margin-right: 8px;
+        }
+        .radio-item label {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .instruction-box {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            font-size: 0.95em;
+            color: #555;
+        }
+        .discharge-plan-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border-left: 3px solid #00ccff;
+        }
+        .discharge-header {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin: 10px 0;
+        }
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+        .checklist-item label {
+            cursor: pointer;
+            flex: 1;
+        }
+        .warning-section {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .warning-title {
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <div class="page-header">
+                <div>
+                    <h1><i class="fas fa-brain"></i> Psikologis & Pemulangan</h1>
+                    <p>Penilaian kondisi psikologis dan perencanaan pemulangan pasien</p>
+                </div>
+            </div>
+
+            <!-- Psikologis & Discharge Form -->
+            <form class="patient-form" onsubmit="handlePsikologisPemulangan(event)" novalidate>
+                
+                <!-- Data Pasien -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user-circle"></i> Data Pasien</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-rm-psik">No RM <span class="required">*</span></label>
+                            <input type="text" id="no-rm-psik" placeholder="RM-2024-001" value="RM-2024-001" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama-pasien-psik">Nama Pasien <span class="required">*</span></label>
+                            <input type="text" id="nama-pasien-psik" placeholder="Nama lengkap" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tanggal-assessment">Tanggal Penilaian <span class="required">*</span></label>
+                            <input type="datetime-local" id="tanggal-assessment" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jam-assessment">Jam Penilaian</label>
+                            <input type="time" id="jam-assessment">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Psychological Assessment Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-head-side-virus"></i> Penilaian Psikologis</h3>
+                    
+                    <div class="assessment-box">
+                        <div class="assessment-title"><i class="fas fa-brain"></i> Status Mental</div>
+                        <div class="form-group">
+                            <label for="status-mental">Kondisi Mental Pasien <span class="required">*</span></label>
+                            <select id="status-mental" onchange="updateStatusMental()" required>
+                                <option value="">-- Pilih Status Mental --</option>
+                                <option value="sadar-baik">Sadar Baik (Alert & Responsive)</option>
+                                <option value="sadar-terganggu">Sadar Terganggu (Confused)</option>
+                                <option value="mengantuk">Mengantuk (Drowsy)</option>
+                                <option value="sulit-dibangunkan">Sulit Dibangunkan (Stuporous)</option>
+                                <option value="tidak-sadar">Tidak Sadar (Comatose)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="assessment-box">
+                        <div class="assessment-title"><i class="fas fa-heart-pulse"></i> Keadaan Emosional</div>
+                        <label style="display: block; margin-bottom: 10px;">Kondisi Emosional Pasien <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="emosi-stabil" name="emosi" value="stabil" required>
+                                <label for="emosi-stabil">Stabil & Tenang</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="emosi-cemas" name="emosi" value="cemas">
+                                <label for="emosi-cemas">Cemas</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="emosi-sedih" name="emosi" value="sedih">
+                                <label for="emosi-sedih">Sedih/Depresi</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="emosi-marah" name="emosi" value="marah">
+                                <label for="emosi-marah">Marah/Agitasi</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="emosi-apatis" name="emosi" value="apatis">
+                                <label for="emosi-apatis">Apatis (Masa Bodoh)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="assessment-box">
+                        <div class="assessment-title"><i class="fas fa-handshake"></i> Mekanisme Coping</div>
+                        <label style="display: block; margin-bottom: 10px;">Bagaimana pasien menghadapi stress? <span class="required">*</span></label>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="coping-religius" name="coping">
+                            <label for="coping-religius">Spiritual/Agama (doa, ibadah)</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="coping-sosial" name="coping">
+                            <label for="coping-sosial">Dukungan Sosial (keluarga, teman)</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="coping-aktif" name="coping">
+                            <label for="coping-aktif">Aktivitas Positif (hobi, olahraga)</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="coping-profesional" name="coping">
+                            <label for="coping-profesional">Bantuan Profesional (konseling)</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="coping-negative" name="coping">
+                            <label for="coping-negative">Coping Negatif (merokok, minuman keras)</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="coping-lainnya" name="coping">
+                            <label for="coping-lainnya">Mekanisme Lainnya</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dukungan-sosial">Sistem Dukungan Sosial <span class="required">*</span></label>
+                        <textarea id="dukungan-sosial" placeholder="Keluarga, teman, komunitas yang mendukung pasien" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Social & Functional Assessment -->
+                <div class="form-section">
+                    <h3><i class="fas fa-users"></i> Penilaian Sosial & Fungsional</h3>
+                    
+                    <div class="assessment-box">
+                        <div class="assessment-title">Situasi Tempat Tinggal</div>
+                        <label style="display: block; margin-bottom: 10px;">Tipe Rumah/Tempat Tinggal <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="tempat-sendiri" name="tempat" value="sendiri" required>
+                                <label for="tempat-sendiri">Sendiri</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="tempat-keluarga" name="tempat" value="keluarga">
+                                <label for="tempat-keluarga">Bersama Keluarga</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="tempat-rumah-sakit" name="tempat" value="rumah-sakit">
+                                <label for="tempat-rumah-sakit">Rumah Perawatan</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="tempat-yayasan" name="tempat" value="yayasan">
+                                <label for="tempat-yayasan">Yayasan/Panti</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="assessment-box">
+                        <div class="assessment-title">Pekerjaan/Peran Sosial</div>
+                        <label style="display: block; margin-bottom: 10px;">Status Pekerjaan <span class="required">*</span></label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="kerja-bekerja" name="kerja" value="bekerja" required>
+                                <label for="kerja-bekerja">Bekerja Aktif</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="kerja-menganggur" name="kerja" value="menganggur">
+                                <label for="kerja-menganggur">Menganggur</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="kerja-pensiunan" name="kerja" value="pensiunan">
+                                <label for="kerja-pensiunan">Pensiunan</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="kerja-ibu-rumah" name="kerja" value="ibu-rumah">
+                                <label for="kerja-ibu-rumah">Ibu Rumah Tangga</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="status-ekonomi">Status Ekonomi <span class="required">*</span></label>
+                            <select id="status-ekonomi" required>
+                                <option value="">-- Pilih Status --</option>
+                                <option value="baik">Baik</option>
+                                <option value="menengah">Menengah</option>
+                                <option value="kurang">Kurang</option>
+                                <option value="sangat-kurang">Sangat Kurang</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dukungan-finansial">Dukungan Finansial Keluarga <span class="required">*</span></label>
+                            <select id="dukungan-finansial" required>
+                                <option value="">-- Pilih --</option>
+                                <option value="ada">Ada</option>
+                                <option value="sebagian">Sebagian</option>
+                                <option value="tidak-ada">Tidak Ada</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spiritual Assessment -->
+                <div class="form-section">
+                    <h3><i class="fas fa-om"></i> Penilaian Spiritual</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="agama">Agama <span class="required">*</span></label>
+                            <input type="text" id="agama" placeholder="Agama/Kepercayaan Pasien" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="kebutuhan-spiritual">Kebutuhan Spiritual <span class="required">*</span></label>
+                            <input type="text" id="kebutuhan-spiritual" placeholder="Contoh: kunjungan pastor, doa bersama, ayat Quran" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="praktik-keagamaan">Praktik Keagamaan Pasien <span class="required">*</span></label>
+                        <textarea id="praktik-keagamaan" placeholder="Ibadah, ritual, atau praktik keagamaan pasien" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Discharge Planning -->
+                <div class="form-section">
+                    <h3><i class="fas fa-clipboard-list"></i> Perencanaan Pemulangan</h3>
+                    
+                    <div class="instruction-box">
+                        <i class="fas fa-info-circle"></i> Perencanaan pemulangan dimulai sejak pasien masuk untuk memastikan kontinuitas perawatan di rumah
+                    </div>
+
+                    <!-- Pre-discharge Education -->
+                    <div class="assessment-box">
+                        <div class="assessment-title"><i class="fas fa-graduation-cap"></i> Edukasi Pra-Pemulangan</div>
+                        <label style="display: block; margin-bottom: 10px;">Topik edukasi yang diberikan:</label>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="edukasi-diet" name="edukasi">
+                            <label for="edukasi-diet">Edukasi Diet/Nutrisi</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="edukasi-obat" name="edukasi">
+                            <label for="edukasi-obat">Edukasi Penggunaan Obat</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="edukasi-aktivitas" name="edukasi">
+                            <label for="edukasi-aktivitas">Edukasi Aktivitas Fisik</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="edukasi-perawatan" name="edukasi">
+                            <label for="edukasi-perawatan">Edukasi Perawatan Luka/Prosedur</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="edukasi-pencegahan" name="edukasi">
+                            <label for="edukasi-pencegahan">Edukasi Pencegahan Penyakit</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="edukasi-psikologis" name="edukasi">
+                            <label for="edukasi-psikologis">Dukungan Psikologis</label>
+                        </div>
+                    </div>
+
+                    <!-- Home Care Instructions -->
+                    <div class="discharge-plan-item">
+                        <div class="discharge-header"><i class="fas fa-home"></i> Instruksi Perawatan di Rumah</div>
+                        <textarea id="instruksi-rumah" placeholder="Perawatan luka, minum obat, mobilisasi, diet khusus, dll" required></textarea>
+                    </div>
+
+                    <!-- Medication Compliance -->
+                    <div class="discharge-plan-item">
+                        <div class="discharge-header"><i class="fas fa-pills"></i> Kepatuhan Obat</div>
+                        <textarea id="kepatuhan-obat" placeholder="Jadwal minum obat, efek samping yang perlu diawasi, interaksi obat" required></textarea>
+                    </div>
+
+                    <!-- Follow-up Appointments -->
+                    <div class="discharge-plan-item">
+                        <div class="discharge-header"><i class="fas fa-calendar-check"></i> Jadwal Kontrol/Follow-up</div>
+                        <textarea id="jadwal-kontrol" placeholder="Kapan dan ke mana pasien harus kontrol (dokter spesialis, puskesmas, dll)" required></textarea>
+                    </div>
+
+                    <!-- Lifestyle Modifications -->
+                    <div class="discharge-plan-item">
+                        <div class="discharge-header"><i class="fas fa-person-hiking"></i> Modifikasi Gaya Hidup</div>
+                        <textarea id="modifikasi-gaya" placeholder="Diet, olahraga, istirahat, hindari stress, berhenti merokok, dll" required></textarea>
+                    </div>
+
+                    <!-- Warning Signs -->
+                    <div class="warning-section">
+                        <div class="warning-title"><i class="fas fa-exclamation-triangle"></i> Tanda-tanda Bahaya untuk Segera ke RS/Hubungi Dokter</div>
+                        <textarea id="tanda-bahaya" placeholder="Gejala/tanda yang memerlukan penanganan segera, kapan harus ke rumah sakit, nomor kontak darurat" required></textarea>
+                    </div>
+
+                    <!-- Emergency Contacts -->
+                    <div class="discharge-plan-item">
+                        <div class="discharge-header"><i class="fas fa-phone"></i> Informasi Kontak Darurat</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="kontak-dokter">Nomor Dokter/RS</label>
+                                <input type="tel" id="kontak-dokter" placeholder="Nomor HP Dokter atau Hotline RS">
+                            </div>
+                            <div class="form-group">
+                                <label for="kontak-keluarga">Nomor Keluarga Terdekat</label>
+                                <input type="tel" id="kontak-keluarga" placeholder="Nomor untuk dihubungi keluarga">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Healthcare Provider Information -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user-md"></i> Data Perawatan Lanjutan</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nama-dokter-psik">Nama Dokter yang Merencanakan <span class="required">*</span></label>
+                            <input type="text" id="nama-dokter-psik" placeholder="Nama Dokter" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nip-dokter-psik">NIP Dokter <span class="required">*</span></label>
+                            <input type="text" id="nip-dokter-psik" placeholder="NIP" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tanda-tangan-dokter">Tanda Tangan Dokter</label>
+                            <input type="text" id="tanda-tangan-dokter" placeholder="[Tanda Tangan]" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal-dokter-psik">Tanggal <span class="required">*</span></label>
+                            <input type="date" id="tanggal-dokter-psik" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" onclick="window.print()" class="btn btn-secondary">
+                        <i class="fas fa-print"></i> Cetak Form
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Evaluasi
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/role-manager.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            document.getElementById('tanggal-assessment').value = now.toISOString().split('T')[0];
+            document.getElementById('tanggal-dokter-psik').value = now.toISOString().split('T')[0];
+            document.getElementById('jam-assessment').value = now.toTimeString().substring(0, 5);
+            
+            roleManager.requireLogin(['perawat', 'dokter', 'pmik', 'admin']);
+            roleManager.updateNavbarProfile();
+        });
+
+        function updateStatusMental() {
+            const status = document.getElementById('status-mental').value;
+            const warning = {
+                'tidak-sadar': '⚠️ Pasien tidak sadar - memerlukan monitoring ketat dan bantuan keluarga penuh',
+                'sulit-dibangunkan': '⚠️ Pasien sulit dibangunkan - perlu pengawasan khusus'
+            };
+            
+            if (warning[status]) {
+                console.warn(warning[status]);
+            }
+        }
+
+        function handlePsikologisPemulangan(event) {
+            event.preventDefault();
+
+            const requiredFields = [
+                'dukungan-sosial',
+                'status-mental',
+                'kerja',
+                'agama',
+                'instruksi-rumah',
+                'kepatuhan-obat',
+                'jadwal-kontrol'
+            ];
+
+            for (let field of requiredFields) {
+                const element = document.getElementById(field);
+                if (!element.value.trim()) {
+                    alert(`⚠️ Kolom "${element.previousElementSibling?.textContent || field}" harus diisi!`);
+                    return;
+                }
+            }
+
+            const data = {
+                noRm: document.getElementById('no-rm-psik').value,
+                namaPasien: document.getElementById('nama-pasien-psik').value,
+                statusMental: document.getElementById('status-mental').value,
+                tglAssessment: document.getElementById('tanggal-assessment').value,
+                namaDokter: document.getElementById('nama-dokter-psik').value
+            };
+
+            console.log('Data Psikologis & Pemulangan:', data);
+            alert(`✅ Penilaian Psikologis & Pemulangan berhasil disimpan!\n\nNo RM: ${data.noRm}\nTanggal: ${data.tglAssessment}`);
+            resetForm();
+        }
+    </script>
+</body>
+</html>

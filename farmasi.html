@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmasi - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="admin-navbar">
+        <div class="admin-navbar-content">
+            <div class="navbar-logo">
+                <i class="fas fa-hospital"></i>
+                <span>RUMAH SAKIT JAYA SEHAT - Farmasi</span>
+            </div>
+            <div class="navbar-actions">
+                <div class="notification-bell">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="admin-profile">
+                    <img src="https://via.placeholder.com/40" alt="Admin">
+                    <span>Admin</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard-admin.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="identitas-pasien.html" class="nav-item">
+                    <i class="fas fa-id-card"></i>
+                    <span>Identifikasi Pasien</span>
+                </a>
+                <a href="daftar-kunjungan.html" class="nav-item">
+                    <i class="fas fa-list"></i>
+                    <span>Daftar Kunjungan</span>
+                </a>
+                <a href="general-consent.html" class="nav-item">
+                    <i class="fas fa-file-contract"></i>
+                    <span>General Consent</span>
+                </a>
+                <a href="triase-igd.html" class="nav-item">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>Triase IGD</span>
+                </a>
+                <a href="assessment-igd.html" class="nav-item">
+                    <i class="fas fa-stethoscope"></i>
+                    <span>Assessment IGD</span>
+                </a>
+                <a href="pemeriksaan-fisik-1.html" class="nav-item">
+                    <i class="fas fa-procedures"></i>
+                    <span>Pemeriksaan Fisik</span>
+                </a>
+                <a href="laboratorium-1.html" class="nav-item">
+                    <i class="fas fa-flask"></i>
+                    <span>Laboratorium</span>
+                </a>
+                <a href="diagnosis.html" class="nav-item">
+                    <i class="fas fa-file-medical"></i>
+                    <span>Diagnosis</span>
+                </a>
+                <a href="farmasi.html" class="nav-item active">
+                    <i class="fas fa-prescription-bottle"></i>
+                    <span>Farmasi</span>
+                </a>
+                <a href="keuangan.html" class="nav-item">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Keuangan</span>
+                </a>
+                <a href="setting.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Pengaturan</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="form-header">
+                <h1>Formulir Resep Obat</h1>
+                <p>Input data resep dan obat untuk pasien</p>
+            </div>
+
+            <form id="farmasi-form" onsubmit="handleFarmasi(event)" class="patient-form" novalidate>
+                <!-- Data Pasien -->
+                <div class="form-section">
+                    <h3>
+                        <i class="fas fa-user"></i> Data Pasien
+                    </h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-rm-farmasi">
+                                <span class="required">*</span> No RM
+                            </label>
+                            <input type="text" id="no-rm-farmasi" name="no-rm-farmasi" placeholder="No Rekam Medis" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama-pasien-farmasi">
+                                <span class="required">*</span> Nama Pasien
+                            </label>
+                            <input type="text" id="nama-pasien-farmasi" name="nama-pasien-farmasi" placeholder="Nama pasien" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="umur-farmasi">
+                                <span class="required">*</span> Umur / Berat Badan
+                            </label>
+                            <input type="text" id="umur-farmasi" name="umur-farmasi" placeholder="Cth: 35 tahun / 70 kg" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="alergi-farmasi">
+                                <span class="required">*</span> Riwayat Alergi
+                            </label>
+                            <input type="text" id="alergi-farmasi" name="alergi-farmasi" placeholder="Obat atau bahan alergi">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Resep -->
+                <div class="form-section">
+                    <h3>
+                        <i class="fas fa-prescription-bottle"></i> Data Resep
+                    </h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="id-resep">
+                                <span class="required">*</span> ID Resep
+                            </label>
+                            <input type="text" id="id-resep" name="id-resep" placeholder="Auto generated" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal-resep">
+                                <span class="required">*</span> Tanggal Resep
+                            </label>
+                            <input type="date" id="tanggal-resep" name="tanggal-resep" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="diagnosa">
+                                <span class="required">*</span> Diagnosa
+                            </label>
+                            <input type="text" id="diagnosa" name="diagnosa" placeholder="Diagnosa pasien" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daftar Obat -->
+                <div class="form-section">
+                    <h3>
+                        <i class="fas fa-list"></i> Daftar Obat
+                    </h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nama-obat">
+                                <span class="required">*</span> Nama Obat
+                            </label>
+                            <input type="text" id="nama-obat" name="nama-obat" placeholder="Nama obat" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jenis-obat">
+                                <span class="required">*</span> Jenis Obat
+                            </label>
+                            <select id="jenis-obat" name="jenis-obat" required>
+                                <option value="">Pilih Jenis</option>
+                                <option value="tablet">Tablet</option>
+    
+                            <input type="text" id="dosis" name="dosis" placeholder="Cth: 500 mg" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="frekuensi">
+                                <span class="required">*</span> Frekuensi
+                            </label>
+                            <select id="frekuensi" name="frekuensi" required>
+                                <option value="">Pilih Frekuensi</option>
+                                <option value="1x-sehari">1 x sehari</option>
+                                <option value="2x-sehari">2 x sehari</option>
+                                <option value="3x-sehari">3 x sehari</option>
+                                <option value="4x-sehari">4 x sehari</option>
+                                <option value="sesuai-kebutuhan">Sesuai kebutuhan</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="jumlah-obat">
+                                <span class="required">*</span> Jumlah
+                            </label>
+                            <input type="number" id="jumlah-obat" name="jumlah-obat" placeholder="Jumlah kemasan/botol" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cara-pakai">
+                                <span class="required">*</span> Cara Pakai
+                            </label>
+                            <select id="cara-pakai" name="cara-pakai" required>
+                                <option value="">Pilih Cara Pakai</option>
+                                <option value="diminum">Diminum</option>
+                                <option value="disuntik">Disuntik</option>
+                                <option value="dioleskan">Dioleskan</option>
+                                <option value="diteteskan">Diteteskan</option>
+                                <option value="dihirup">Dihirup</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="keterangan-obat">Keterangan Tambahan</label>
+                            <textarea id="keterangan-obat" name="keterangan-obat" rows="2" placeholder="Catatan khusus untuk obat ini"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <button type="button" class="btn btn-secondary" onclick="tambahObat()">
+                            <i class="fas fa-plus"></i> Tambah Obat Lain
+                        </button>
+                    </div>
+
+                    <div id="daftar-obat-list" style="margin-top: 1rem;">
+                        <!-- Daftar obat yang ditambahkan akan ditampilkan di sini -->
+                    </div>
+                </div>
+
+                <!-- Informasi Dokter -->
+                <div class="form-section">
+                    <h3>
+                        <i class="fas fa-stethoscope"></i> Informasi Dokter Penulis Resep
+                    </h3>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="dokter-penulis">
+                                <span class="required">*</span> Dokter Penulis Resep
+                            </label>
+                            <select id="dokter-penulis" name="dokter-penulis" required>
+                                <option value="">Pilih Dokter</option>
+                                <option value="dr-ahmad">Dr. Ahmad Sutrisno</option>
+                                <option value="dr-siti">Dr. Siti Nurhaliza</option>
+                                <option value="dr-budi">Dr. Budi Santoso</option>
+                                <option value="dr-dewi">Dr. Dewi Lestari</option>
+                                <option value="dr-rifa">Dr. Rifa'i Rahman</option>
+                                <option value="dr-indah">Dr. Indah Kusuma</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="nip-dokter">
+                                <span class="required">*</span> NIP Dokter
+                            </label>
+                            <input type="text" id="nip-dokter" name="nip-dokter" placeholder="NIP Dokter" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label for="catatan-khusus">Catatan Khusus</label>
+                            <textarea id="catatan-khusus" name="catatan-khusus" rows="3" placeholder="Catatan khusus dari dokter untuk pasien atau apoteker"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="goBack()">
+                        <i class="fas fa-times"></i> Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Resep
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        function tambahObat() {
+            alert('Fitur tambah obat lain akan ditambahkan dalam pengembangan lebih lanjut');
+        }
+
+        function handleFarmasi(event) {
+            event.preventDefault();
+            
+            // Generate ID Resep
+            const idResep = 'RSP-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+            document.getElementById('id-resep').value = idResep;
+            
+            alert('Resep obat berhasil disimpan dengan ID: ' + idResep);
+        }
+    </script>
+    <script src="js/role-manager.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            roleManager.requireLogin(['farmasi', 'pmik', 'admin']);
+            roleManager.updateNavbarProfile();
+        });
+    </script>
+</body>
+</html>

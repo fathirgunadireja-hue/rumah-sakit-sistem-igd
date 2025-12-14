@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Akun Admin - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-logo">
+                <i class="fas fa-hospital"></i>
+                <span>RUMAH SAKIT JAYA SEHAT</span>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="index.html" class="nav-link">Beranda</a></li>
+                <li><a href="login-pasien.html" class="nav-link">Login Pasien</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Create Account Section -->
+    <section class="login-section">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <i class="fas fa-user-plus"></i>
+                    <h1>Buat Akun Admin</h1>
+                    <p>Daftar Akun Administrator Rumah Sakit</p>
+                </div>
+
+                <form id="create-admin-form" onsubmit="handleCreateAdmin(event)" novalidate>
+                    <div class="form-group">
+                        <label for="nip">
+                            <i class="fas fa-id-badge"></i> NIP (Nomor Identitas Pegawai)
+                        </label>
+                        <input 
+                            type="text" 
+                            id="nip" 
+                            name="nip" 
+                            placeholder="Masukkan NIP Anda"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username-register">
+                            <i class="fas fa-user"></i> Username
+                        </label>
+                        <input 
+                            type="text" 
+                            id="username-register" 
+                            name="username" 
+                            placeholder="Buat username Anda"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email-register">
+                            <i class="fas fa-envelope"></i> Email
+                        </label>
+                        <input 
+                            type="email" 
+                            id="email-register" 
+                            name="email" 
+                            placeholder="Masukkan email Anda"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password-register">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <div class="password-input-group">
+                            <input 
+                                type="password" 
+                                id="password-register" 
+                                name="password" 
+                                placeholder="Buat password yang kuat"
+                                required
+                            >
+                            <span class="toggle-password" onclick="togglePasswordRegister()">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                        <small class="form-hint">
+                            <i class="fas fa-info-circle"></i> Password harus minimal 8 karakter
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm-password">
+                            <i class="fas fa-lock"></i> Konfirmasi Password
+                        </label>
+                        <div class="password-input-group">
+                            <input 
+                                type="password" 
+                                id="confirm-password" 
+                                name="confirm-password" 
+                                placeholder="Ulangi password Anda"
+                                required
+                            >
+                            <span class="toggle-password" onclick="toggleConfirmPassword()">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group checkbox">
+                        <label>
+                            <input type="checkbox" name="agree-terms" required>
+                            <span>Saya setuju dengan <a href="#">Syarat dan Ketentuan</a></span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-user-check"></i> Daftar Akun
+                    </button>
+                </form>
+
+                <div class="login-divider">atau</div>
+
+                <div class="login-footer">
+                    <p>Sudah memiliki akun?</p>
+                    <a href="login-admin.html" class="btn btn-secondary btn-full">
+                        <i class="fas fa-sign-in-alt"></i> Masuk Sekarang
+                    </a>
+                </div>
+            </div>
+
+            <div class="login-info">
+                <div class="info-card">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Proses Mudah</h3>
+                    <p>Daftar hanya dalam beberapa langkah sederhana</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-lock-open"></i>
+                    <h3>Akses Lengkap</h3>
+                    <p>Kelola semua data pasien dan operasional rumah sakit</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-headset"></i>
+                    <h3>Bantuan 24/7</h3>
+                    <p>Tim support kami siap membantu kapan saja</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 RUMAH SAKIT JAYA SEHAT. Semua hak dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/role-manager.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            roleManager.requireLogin(['admin']);
+            roleManager.updateNavbarProfile();
+        });
+    </script>
+</body>
+</html>

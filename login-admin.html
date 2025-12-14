@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Admin - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-logo">
+                <i class="fas fa-hospital"></i>
+                <span>RUMAH SAKIT JAYA SEHAT</span>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="index.html" class="nav-link">Beranda</a></li>
+                <li><a href="login-pasien.html" class="nav-link">Login Pasien</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Redirect Message -->
+    <section class="login-section" style="text-align: center;">
+        <div class="login-container">
+            <div class="login-card" style="max-width: 600px;">
+                <div class="login-header">
+                    <i class="fas fa-info-circle" style="color: #2196F3;"></i>
+                    <h1>Halaman Sudah Dipindahkan</h1>
+                    <p>Admin login sekarang tersedia di Admin Portal</p>
+                </div>
+
+                <p style="color: #666; margin: 2rem 0; font-size: 1.1rem;">
+                    Silakan akses Admin Portal untuk login dengan berbagai role dan melihat kredensial test yang tersedia.
+                </p>
+
+                <a href="admin.html" class="btn btn-primary btn-full" style="margin-bottom: 1rem;">
+                    <i class="fas fa-arrow-right"></i> Menuju Admin Portal
+                </a>
+
+                <a href="index.html" class="btn btn-secondary btn-full">
+                    <i class="fas fa-home"></i> Kembali ke Beranda
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 RUMAH SAKIT JAYA SEHAT. Semua hak dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Auto redirect setelah 3 detik
+        setTimeout(() => {
+            window.location.href = 'admin.html';
+        }, 3000);
+    </script>
+</body>
+</html>

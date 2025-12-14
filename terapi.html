@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terapi & Tindakan - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .procedure-detail-box {
+            background: #f0f7ff;
+            border-left: 4px solid #0066cc;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .procedure-detail-title {
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 12px;
+            font-size: 1.05em;
+        }
+        .equipment-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border-left: 3px solid #00ccff;
+        }
+        .equipment-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 5px;
+        }
+        .complication-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border-left: 3px solid #ff4444;
+        }
+        .outcome-section {
+            background: #e8f5e9;
+            border: 1px solid #4caf50;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        .outcome-title {
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 12px;
+            font-size: 1.05em;
+        }
+        .finding-item {
+            background: #fff9c4;
+            border-left: 4px solid #fbc02d;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .finding-title {
+            font-weight: bold;
+            color: #f57f17;
+            margin-bottom: 8px;
+        }
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+        }
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+        }
+        .checklist-item label {
+            cursor: pointer;
+            flex: 1;
+            margin: 0;
+        }
+        .performer-info {
+            background: #f3e5f5;
+            border-left: 4px solid #9c27b0;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <div class="page-header">
+                <div>
+                    <h1><i class="fas fa-user-nurse"></i> Terapi & Tindakan</h1>
+                    <p>Dokumentasi lengkap terapi, prosedur, dan tindakan medis yang dilakukan</p>
+                </div>
+            </div>
+
+            <!-- Therapy & Procedure Form -->
+            <form class="patient-form" onsubmit="handleTerapi(event)" novalidate>
+                
+                <!-- Patient Data -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user-circle"></i> Data Pasien</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-rm-terapi">No RM <span class="required">*</span></label>
+                            <input type="text" id="no-rm-terapi" placeholder="RM-2024-001" value="RM-2024-001" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama-pasien-terapi">Nama Pasien <span class="required">*</span></label>
+                            <input type="text" id="nama-pasien-terapi" placeholder="Nama lengkap" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="umur-terapi">Umur <span class="required">*</span></label>
+                            <input type="text" id="umur-terapi" placeholder="Tahun" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="diagnosis-terapi">Diagnosis <span class="required">*</span></label>
+                            <input type="text" id="diagnosis-terapi" placeholder="Diagnosis pasien" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Procedure Information -->
+                <div class="form-section">
+                    <h3><i class="fas fa-procedures"></i> Informasi Tindakan/Terapi</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="jenis-terapi">Jenis Terapi/Tindakan <span class="required">*</span></label>
+                            <select id="jenis-terapi" onchange="updateJenisTerapi()" required>
+                                <option value="">-- Pilih Jenis Tindakan --</option>
+                                <option value="bedah">Operasi Bedah</option>
+                                <option value="drainase">Drainase Luka</option>
+                                <option value="debridement">Debridement Luka</option>
+                                <option value="balut-luka">Perawatan & Balut Luka</option>
+                                <option value="intubasi">Intubasi Endotrakeal</option>
+                                <option value="trakeostomi">Trakeostomi</option>
+                                <option value="kateter">Pemasangan Kateter</option>
+                                <option value="nasogastrik">Nasogastrik Tube (NGT)</option>
+                                <option value="chest-tube">Chest Tube (Drain Dada)</option>
+                                <option value="infus">Pemasangan Infus/IV Line</option>
+                                <option value="transfusi">Transfusi Darah</option>
+                                <option value="dialisis">Dialisis/Hemodialisis</option>
+                                <option value="ventilasi">Ventilasi Mekanis</option>
+                                <option value="fisioterapi">Fisioterapi</option>
+                                <option value="rehabilitasi">Rehabilitasi Medis</option>
+                                <option value="lainnya">Tindakan Lainnya</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal-tindakan-terapi">Tanggal Tindakan <span class="required">*</span></label>
+                            <input type="date" id="tanggal-tindakan-terapi" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="jam-mulai">Jam Mulai <span class="required">*</span></label>
+                            <input type="time" id="jam-mulai" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jam-selesai">Jam Selesai <span class="required">*</span></label>
+                            <input type="time" id="jam-selesai" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lokasi-tindakan-terapi">Lokasi Tindakan <span class="required">*</span></label>
+                        <input type="text" id="lokasi-tindakan-terapi" placeholder="Lokasi/area di tubuh pasien" required>
+                    </div>
+                </div>
+
+                <!-- Indication -->
+                <div class="form-section">
+                    <h3><i class="fas fa-info-circle"></i> Indikasi Tindakan</h3>
+                    
+                    <div class="procedure-detail-box">
+                        <div class="procedure-detail-title">Alasan Medis Tindakan Dilakukan</div>
+                        <textarea id="indikasi-tindakan" placeholder="Penjelasan mengapa tindakan ini diperlukan" required></textarea>
+                    </div>
+
+                    <div class="procedure-detail-box">
+                        <div class="procedure-detail-title">Tujuan Tindakan</div>
+                        <textarea id="tujuan-tindakan" placeholder="Hasil yang diharapkan dari tindakan ini" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Pre-procedure Preparation -->
+                <div class="form-section">
+                    <h3><i class="fas fa-check-square"></i> Persiapan Sebelum Tindakan</h3>
+                    
+                    <label style="display: block; margin-bottom: 12px; font-weight: bold;">Persiapan yang Dilakukan:</label>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="prep-fasting" name="prep">
+                        <label for="prep-fasting">Puasa</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="prep-informed" name="prep">
+                        <label for="prep-informed">Informed Consent Ditandatangani</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="prep-premedikasi" name="prep">
+                        <label for="prep-premedikasi">Premedikasi Diberikan</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="prep-anestesi" name="prep">
+                        <label for="prep-anestesi">Anestesi Diberikan</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="prep-steril" name="prep">
+                        <label for="prep-steril">Area Steril/Antiseptik</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="prep-monitorisasi" name="prep">
+                        <label for="prep-monitorisasi">Monitorisasi Vital Sign</label>
+                    </div>
+                </div>
+
+                <!-- Equipment & Materials -->
+                <div class="form-section">
+                    <h3><i class="fas fa-toolbox"></i> Peralatan & Bahan yang Digunakan</h3>
+                    
+                    <div class="equipment-item">
+                        <label style="font-weight: bold; display: block; margin-bottom: 8px;">Instrumen/Peralatan Utama:</label>
+                        <textarea id="instrumen-utama" placeholder="Peralatan utama yang digunakan (nama, merek, ukuran, qty)" required></textarea>
+                    </div>
+
+                    <div class="equipment-item">
+                        <label style="font-weight: bold; display: block; margin-bottom: 8px;">Bahan Habis Pakai:</label>
+                        <textarea id="bahan-habis" placeholder="Kasa, perban, balutan, jarum, benang, dll" required></textarea>
+                    </div>
+
+                    <div class="equipment-item">
+                        <label style="font-weight: bold; display: block; margin-bottom: 8px;">Cairan/Obat yang Digunakan:</label>
+                        <textarea id="cairan-obat" placeholder="Cairan infus, obat anestesi, antibiotik, dll" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Procedure Description -->
+                <div class="form-section">
+                    <h3><i class="fas fa-file-medical-alt"></i> Deskripsi Tindakan</h3>
+                    
+                    <div class="procedure-detail-box">
+                        <div class="procedure-detail-title">Langkah-langkah Tindakan</div>
+                        <textarea id="langkah-tindakan" placeholder="Uraian rinci prosedur yang dilakukan step by step" required></textarea>
+                    </div>
+
+                    <div class="procedure-detail-box">
+                        <div class="procedure-detail-title">Temuan Intra-prosedur</div>
+                        <textarea id="temuan-intra" placeholder="Hal-hal penting yang ditemukan selama tindakan" required></textarea>
+                    </div>
+
+                    <div class="procedure-detail-box">
+                        <div class="procedure-detail-title">Tindakan Tambahan (jika ada)</div>
+                        <textarea id="tindakan-tambahan" placeholder="Tindakan lain yang dilakukan di saat bersamaan"></textarea>
+                    </div>
+                </div>
+
+                <!-- Complications -->
+                <div class="form-section">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Komplikasi & Kejadian Tidak Diinginkan</h3>
+                    
+                    <label style="display: block; margin-bottom: 12px; font-weight: bold;">Komplikasi Terjadi?</label>
+                    <div style="margin-bottom: 15px;">
+                        <input type="radio" id="komplikasi-tidak" name="komplikasi" value="tidak" onchange="updateKomplikasi()" checked required>
+                        <label for="komplikasi-tidak" style="cursor: pointer; margin-right: 20px;">Tidak</label>
+                        <input type="radio" id="komplikasi-ya" name="komplikasi" value="ya" onchange="updateKomplikasi()">
+                        <label for="komplikasi-ya" style="cursor: pointer;">Ya</label>
+                    </div>
+
+                    <div id="komplikasi-detail" style="display: none;">
+                        <div class="complication-item">
+                            <label style="font-weight: bold; display: block; margin-bottom: 8px;">Jenis Komplikasi:</label>
+                            <textarea id="jenis-komplikasi" placeholder="Jenis komplikasi yang terjadi"></textarea>
+                        </div>
+
+                        <div class="complication-item">
+                            <label style="font-weight: bold; display: block; margin-bottom: 8px;">Waktu Terjadinya:</label>
+                            <select id="waktu-komplikasi">
+                                <option value="">-- Pilih --</option>
+                                <option value="intra">Intra-prosedur</option>
+                                <option value="immediate">Langsung Setelah Prosedur</option>
+                                <option value="early">Dini (24 jam)</option>
+                                <option value="late">Lanjut (>24 jam)</option>
+                            </select>
+                        </div>
+
+                        <div class="complication-item">
+                            <label style="font-weight: bold; display: block; margin-bottom: 8px;">Penanganan Komplikasi:</label>
+                            <textarea id="penanganan-komplikasi" placeholder="Tindakan yang dilakukan mengatasi komplikasi"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Outcome & Response -->
+                <div class="form-section">
+                    <h3><i class="fas fa-heart-pulse"></i> Hasil & Respons Pasien</h3>
+                    
+                    <div class="outcome-section">
+                        <div class="outcome-title"><i class="fas fa-check-circle"></i> Hasil Tindakan</div>
+                        <label style="display: block; margin-bottom: 12px;">Hasil Tindakan: <span class="required">*</span></label>
+                        <div style="margin: 10px 0;">
+                            <input type="radio" id="hasil-sukses" name="hasil" value="sukses" required>
+                            <label for="hasil-sukses" style="cursor: pointer; margin-right: 20px;">Sukses/Sesuai Rencana</label>
+                        </div>
+                        <div style="margin: 10px 0;">
+                            <input type="radio" id="hasil-partial" name="hasil" value="partial">
+                            <label for="hasil-partial" style="cursor: pointer; margin-right: 20px;">Sebagian Berhasil</label>
+                        </div>
+                        <div style="margin: 10px 0;">
+                            <input type="radio" id="hasil-gagal" name="hasil" value="gagal">
+                            <label for="hasil-gagal" style="cursor: pointer;">Gagal</label>
+                        </div>
+                    </div>
+
+                    <div class="finding-item">
+                        <div class="finding-title"><i class="fas fa-stethoscope"></i> Respons Pasien Selama Tindakan</div>
+                        <textarea id="respons-pasien" placeholder="Respons vital sign, perubahan kondisi, toleransi pasien" required></textarea>
+                    </div>
+
+                    <div class="finding-item">
+                        <div class="finding-title"><i class="fas fa-file-prescription"></i> Kondisi Pasien Pasca-Tindakan</div>
+                        <textarea id="kondisi-pasca" placeholder="Keadaan pasien setelah tindakan selesai, kesadaran, pernapasan, dll" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Follow-up -->
+                <div class="form-section">
+                    <h3><i class="fas fa-calendar-check"></i> Perawatan Lanjutan & Follow-up</h3>
+                    
+                    <div class="form-group">
+                        <label for="instruksi-pasca">Instruksi Perawatan Pasca-Tindakan <span class="required">*</span></label>
+                        <textarea id="instruksi-pasca" placeholder="Instruksi istirahat, diet, mobilisasi, perawatan luka, dll" required></textarea>
+                    </div>
+
+                    <label style="display: block; margin-bottom: 12px; margin-top: 15px; font-weight: bold;">Pemantauan Diperlukan?</label>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="monitor-vital" name="monitor">
+                        <label for="monitor-vital">Pemantauan Vital Sign Berkala</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="monitor-balut" name="monitor">
+                        <label for="monitor-balut">Pemantauan Luka/Balutan</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="monitor-drain" name="monitor">
+                        <label for="monitor-drain">Pemantauan Drain/Output</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="monitor-infus" name="monitor">
+                        <label for="monitor-infus">Pemantauan Infus/IV Line</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="monitor-nyeri" name="monitor">
+                        <label for="monitor-nyeri">Manajemen Nyeri</label>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label for="follow-up-perlu">Follow-up Diperlukan? <span class="required">*</span></label>
+                        <select id="follow-up-perlu" onchange="updateFollowUp()" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="tidak">Tidak</option>
+                            <option value="ya">Ya</option>
+                        </select>
+                    </div>
+
+                    <div id="follow-up-detail" style="display: none;">
+                        <div class="form-group">
+                            <label for="jadwal-follow-up">Jadwal Follow-up <span class="required">*</span></label>
+                            <input type="text" id="jadwal-follow-up" placeholder="Contoh: 3 hari, 1 minggu, 2 minggu">
+                        </div>
+                        <div class="form-group">
+                            <label for="tujuan-follow-up">Tujuan Follow-up <span class="required">*</span></label>
+                            <textarea id="tujuan-follow-up" placeholder="Evaluasi luka, melepas jahitan, kontrol nyeri, dll"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Healthcare Provider -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user-md"></i> Data Petugas Pelaksana</h3>
+                    
+                    <div class="performer-info">
+                        <label style="font-weight: bold; display: block; margin-bottom: 12px;">Petugas Pelaksana Tindakan:</label>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nama-operator">Nama Operator/Ahli <span class="required">*</span></label>
+                                <input type="text" id="nama-operator" placeholder="Dokter Spesialis/Operator" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nip-operator">NIP <span class="required">*</span></label>
+                                <input type="text" id="nip-operator" placeholder="NIP" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label style="font-weight: bold; display: block; margin-bottom: 12px;">Petugas Pendamping:</label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nama-asisten">Nama Asisten/Perawat</label>
+                            <input type="text" id="nama-asisten" placeholder="Nama asisten">
+                        </div>
+                        <div class="form-group">
+                            <label for="nip-asisten">NIP Asisten</label>
+                            <input type="text" id="nip-asisten" placeholder="NIP">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tanggal-dokumentasi">Tanggal Dokumentasi <span class="required">*</span></label>
+                        <input type="date" id="tanggal-dokumentasi" required>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" onclick="window.print()" class="btn btn-secondary">
+                        <i class="fas fa-print"></i> Cetak Instruksi Terapi
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Instruksi Terapi
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/role-manager.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggal-tindakan-terapi').value = today;
+            document.getElementById('tanggal-dokumentasi').value = today;
+            
+            roleManager.requireLogin(['pasien', 'dokter', 'pmik', 'admin']);
+            roleManager.updateNavbarProfile();
+        });
+
+        function updateJenisTerapi() {
+            const jenis = document.getElementById('jenis-terapi').value;
+            console.log('Jenis Terapi:', jenis);
+        }
+
+        function updateKomplikasi() {
+            const ada = document.getElementById('komplikasi-ya').checked;
+            document.getElementById('komplikasi-detail').style.display = ada ? 'block' : 'none';
+        }
+
+        function updateFollowUp() {
+            const perlu = document.getElementById('follow-up-perlu').value === 'ya';
+            document.getElementById('follow-up-detail').style.display = perlu ? 'block' : 'none';
+        }
+
+        function handleTerapi(event) {
+            event.preventDefault();
+
+            const requiredFields = [
+                'no-rm-terapi',
+                'nama-pasien-terapi',
+                'jenis-terapi',
+                'tanggal-tindakan-terapi',
+                'jam-mulai',
+                'jam-selesai',
+                'lokasi-tindakan-terapi',
+                'indikasi-tindakan',
+                'tujuan-tindakan',
+                'instrumen-utama',
+                'bahan-habis',
+                'cairan-obat',
+                'langkah-tindakan',
+                'temuan-intra',
+                'hasil',
+                'respons-pasien',
+                'kondisi-pasca',
+                'instruksi-pasca',
+                'nama-operator',
+                'nip-operator',
+                'tanggal-dokumentasi'
+            ];
+
+            for (let field of requiredFields) {
+                const element = document.getElementById(field);
+                if (element && !element.value.trim()) {
+                    alert(`⚠️ Kolom "${element.previousElementSibling?.textContent || field}" harus diisi!`);
+                    return;
+                }
+            }
+
+            // Check follow-up details if needed
+            if (document.getElementById('follow-up-perlu').value === 'ya') {
+                const followUpFields = ['jadwal-follow-up', 'tujuan-follow-up'];
+                for (let field of followUpFields) {
+                    const element = document.getElementById(field);
+                    if (element && !element.value.trim()) {
+                        alert(`⚠️ Kolom Follow-up "${element.previousElementSibling?.textContent || field}" harus diisi!`);
+                        return;
+                    }
+                }
+            }
+
+            const data = {
+                noRM: document.getElementById('no-rm-terapi').value,
+                namaPasien: document.getElementById('nama-pasien-terapi').value,
+                jenisTerapi: document.getElementById('jenis-terapi').value,
+                tanggal: document.getElementById('tanggal-tindakan-terapi').value,
+                hasil: document.getElementById('hasil').value || 'belum dipilih'
+            };
+
+            console.log('Data Terapi & Tindakan:', data);
+            alert(`✅ Dokumentasi Terapi & Tindakan berhasil disimpan!\n\nNo RM: ${data.noRM}\nTerapi: ${data.jenisTerapi}\nHasil: ${data.hasil}`);
+            resetForm();
+        }
+    </script>
+</body>
+</html>

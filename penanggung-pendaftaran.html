@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identitas Penanggung Jawab & Pendaftaran - RS Jaya Sehat</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="form-header">
+                <h1>Identitas Penanggung Jawab & Pendaftaran</h1>
+                <p>Isi data penanggung jawab pasien dan pendaftaran kunjungan</p>
+            </div>
+
+            <form class="patient-form" id="penanggung-pendaftaran-form" onsubmit="handleSubmit(event)" novalidate>
+                <!-- Penanggung Jawab -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user-shield"></i> Identitas Penanggung Jawab</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nama-pj"><span class="required">*</span> Nama Penanggung Jawab</label>
+                            <input type="text" id="nama-pj" name="nama-pj" placeholder="Nama penanggung jawab" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="hubungan-pj"><span class="required">*</span> Hubungan dengan Pasien</label>
+                            <select id="hubungan-pj" name="hubungan-pj" required>
+                                <option value="">Pilih Hubungan</option>
+                                <option value="suami">Suami</option>
+                                <option value="istri">Istri</option>
+                                <option value="ayah">Ayah</option>
+                                <option value="ibu">Ibu</option>
+                                <option value="anak">Anak</option>
+                                <option value="kakak">Kakak</option>
+                                <option value="adik">Adik</option>
+                                <option value="wali">Wali</option>
+                                <option value="lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nik-pj">NIK Penanggung Jawab</label>
+                            <input type="text" id="nik-pj" name="nik-pj" placeholder="16 digit NIK" maxlength="16">
+                        </div>
+                        <div class="form-group">
+                            <label for="pekerjaan-pj">Pekerjaan</label>
+                            <input type="text" id="pekerjaan-pj" name="pekerjaan-pj" placeholder="Pekerjaan">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="alamat-pj"><span class="required">*</span> Alamat Penanggung Jawab</label>
+                            <textarea id="alamat-pj" name="alamat-pj" rows="2" placeholder="Alamat lengkap" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="telepon-pj"><span class="required">*</span> Nomor Telepon Penanggung Jawab</label>
+                            <input type="tel" id="telepon-pj" name="telepon-pj" placeholder="Nomor aktif" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email-pj">Email (Opsional)</label>
+                            <input type="email" id="email-pj" name="email-pj" placeholder="email@example.com">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pendaftaran Pasien -->
+                <div class="form-section">
+                    <h3><i class="fas fa-clipboard-check"></i> Pendaftaran Pasien</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-registrasi"><span class="required">*</span> No Registrasi</label>
+                            <input type="text" id="no-registrasi" name="no-registrasi" placeholder="Auto generated" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal-registrasi"><span class="required">*</span> Tanggal Registrasi</label>
+                            <input type="date" id="tanggal-registrasi" name="tanggal-registrasi" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="jam-registrasi"><span class="required">*</span> Jam Registrasi</label>
+                            <input type="time" id="jam-registrasi" name="jam-registrasi" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cara-pembayaran"><span class="required">*</span> Cara Pembayaran</label>
+                            <select id="cara-pembayaran" name="cara-pembayaran" required>
+                                <option value="">Pilih Cara Pembayaran</option>
+                                <option value="jkn">JKN / BPJS</option>
+                                <option value="asuransi">Asuransi Swasta</option>
+                                <option value="pribadi">Pribadi / Tunai</option>
+                                <option value="kredit">Kartu Kredit</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dpjp"><span class="required">*</span> DPJP (Dokter Penanggung Jawab)</label>
+                            <select id="dpjp" name="dpjp" required>
+                                <option value="">Pilih Dokter</option>
+                                <option value="dr-ahmad">Dr. Ahmad Sutrisno (Kardiologi)</option>
+                                <option value="dr-siti">Dr. Siti Nurhaliza (Pediatri)</option>
+                                <option value="dr-budi">Dr. Budi Santoso (Neurologi)</option>
+                                <option value="dr-dewi">Dr. Dewi Lestari (Obstetri)</option>
+                                <option value="dr-rifa">Dr. Rifa'i Rahman (Ortopedi)</option>
+                                <option value="dr-indah">Dr. Indah Kusuma (Paru)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="jenis-kunjungan"><span class="required">*</span> Jenis Kunjungan</label>
+                            <select id="jenis-kunjungan" name="jenis-kunjungan" required>
+                                <option value="">Pilih</option>
+                                <option value="rawat-jalan">Rawat Jalan</option>
+                                <option value="rawat-inap">Rawat Inap</option>
+                                <option value="igd">IGD (Gawat Darurat)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-antrian">No Antrian</label>
+                            <input type="text" id="no-antrian" name="no-antrian" placeholder="Auto generated" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="catatan">Catatan Khusus</label>
+                            <textarea id="catatan" name="catatan" rows="2" placeholder="Alergi, kondisi khusus, dsb."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">
+                        <i class="fas fa-arrow-left"></i> Sebelumnya
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('penanggung-pendaftaran-form').reset()">
+                        <i class="fas fa-redo"></i> Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Pendaftaran
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/role-manager.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        function generateNoRegistrasi() {
+            const date = new Date();
+            const y = date.getFullYear();
+            const m = String(date.getMonth() + 1).padStart(2, '0');
+            const d = String(date.getDate()).padStart(2, '0');
+            const rand = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
+            return `REG-${y}${m}${d}-${rand}`;
+        }
+
+        function generateNoAntrian() {
+            return String(Math.floor(Math.random() * 300) + 1).padStart(3, '0');
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            const required = ['nama-pj','hubungan-pj','alamat-pj','telepon-pj','no-registrasi','tanggal-registrasi','jam-registrasi','cara-pembayaran','dpjp','jenis-kunjungan'];
+            for (const id of required) {
+                const el = document.getElementById(id);
+                if (!el || !el.value.trim()) {
+                    alert('Kolom wajib belum lengkap.');
+                    return;
+                }
+            }
+            alert('✅ Data penanggung jawab dan pendaftaran tersimpan.');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('no-registrasi').value = generateNoRegistrasi();
+            document.getElementById('no-antrian').value = generateNoAntrian();
+            roleManager.requireLogin(['admin','pmik','perawat','dokter']);
+            roleManager.updateNavbarProfile();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Pasien - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .register-section {
+            background: linear-gradient(135deg, #f0f4f8 0%, #e8f0f7 100%);
+            min-height: 100vh;
+            padding: 3rem 0;
+        }
+
+        .register-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .register-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 30px rgba(0, 102, 204, 0.1);
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 1.5rem;
+        }
+
+        .register-header i {
+            font-size: 3rem;
+            color: #0066cc;
+            margin-bottom: 0.8rem;
+        }
+
+        .register-header h1 {
+            color: #0066cc;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        .register-header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .password-input-group {
+            position: relative;
+        }
+
+        .password-input-group input {
+            padding-right: 45px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #0066cc;
+            font-size: 1.1rem;
+        }
+
+        .btn {
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .register-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .register-footer p {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .register-footer a {
+            color: #0066cc;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .register-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .required {
+            color: #ff4444;
+        }
+
+        @media (max-width: 768px) {
+            .register-section {
+                padding: 2rem 0;
+            }
+
+            .register-card {
+                padding: 2rem;
+            }
+
+            .register-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-logo">
+                <i class="fas fa-hospital"></i>
+                <span>RUMAH SAKIT JAYA SEHAT</span>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="index.html" class="nav-link">Beranda</a></li>
+                <li><a href="pendaftaran-pasien.html" class="nav-link active">Daftar Pasien</a></li>
+                <li><a href="login-pasien.html" class="nav-link">Login Pasien</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Register Section -->
+    <section class="register-section">
+        <div class="register-container">
+            <div class="register-card">
+                <div class="register-header">
+                    <i class="fas fa-user-plus"></i>
+                    <h1>Pendaftaran Pasien Baru</h1>
+                    <p>Buat akun untuk mengakses layanan kesehatan online</p>
+                </div>
+
+                <form id="pendaftaran-form" onsubmit="handlePendaftaranPasien(event)" novalidate>
+                    <div class="form-group">
+                        <label for="nama-lengkap">
+                            <span class="required">*</span> Nama Lengkap
+                        </label>
+                        <input 
+                            type="text" 
+                            id="nama-lengkap" 
+                            name="nama-lengkap" 
+                            placeholder="Masukkan nama lengkap sesuai KTP"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nik">
+                            <span class="required">*</span> NIK (Nomor Induk Kependudukan)
+                        </label>
+                        <input 
+                            type="text" 
+                            id="nik" 
+                            name="nik" 
+                            placeholder="Masukkan 16 digit NIK"
+                            maxlength="16"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tempat-lahir">
+                                <span class="required">*</span> Tempat Lahir
+                            </label>
+                            <input 
+                                type="text" 
+                                id="tempat-lahir" 
+                                name="tempat-lahir" 
+                                placeholder="Kota kelahiran"
+                                required
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal-lahir">
+                                <span class="required">*</span> Tanggal Lahir
+                            </label>
+                            <input 
+                                type="date" 
+                                id="tanggal-lahir" 
+                                name="tanggal-lahir"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="jenis-kelamin">
+                                <span class="required">*</span> Jenis Kelamin
+                            </label>
+                            <select id="jenis-kelamin" name="jenis-kelamin" required>
+                                <option value="">Pilih</option>
+                                <option value="laki-laki">Laki-laki</option>
+                                <option value="perempuan">Perempuan</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="no-telepon">
+                                <span class="required">*</span> No. Telepon
+                            </label>
+                            <input 
+                                type="tel" 
+                                id="no-telepon" 
+                                name="no-telepon" 
+                                placeholder="08xxxxxxxxxx"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">
+                            Email (Opsional)
+                        </label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="email@example.com"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="alamat">
+                            <span class="required">*</span> Alamat Lengkap
+                        </label>
+                        <input 
+                            type="text" 
+                            id="alamat" 
+                            name="alamat" 
+                            placeholder="Jalan, RT/RW, Kelurahan, Kecamatan"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">
+                            <span class="required">*</span> Password
+                        </label>
+                        <div class="password-input-group">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                placeholder="Minimal 6 karakter"
+                                minlength="6"
+                                required
+                            >
+                            <span class="toggle-password" onclick="togglePassword('password')">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="konfirmasi-password">
+                            <span class="required">*</span> Konfirmasi Password
+                        </label>
+                        <div class="password-input-group">
+                            <input 
+                                type="password" 
+                                id="konfirmasi-password" 
+                                name="konfirmasi-password" 
+                                placeholder="Ulangi password"
+                                minlength="6"
+                                required
+                            >
+                            <span class="toggle-password" onclick="togglePassword('konfirmasi-password')">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-user-plus"></i> Daftar Sekarang
+                    </button>
+                </form>
+
+                <div class="register-footer">
+                    <p>Sudah punya akun? <a href="login-pasien.html">Login di sini</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 RUMAH SAKIT JAYA SEHAT. Semua hak dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/role-manager.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const icon = field.nextElementSibling.querySelector('i');
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function handlePendaftaranPasien(event) {
+            event.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const konfirmasi = document.getElementById('konfirmasi-password').value;
+            
+            if (password !== konfirmasi) {
+                alert('Password dan konfirmasi password tidak cocok!');
+                return false;
+            }
+
+            const nik = document.getElementById('nik').value;
+            if (nik.length !== 16) {
+                alert('NIK harus 16 digit!');
+                return false;
+            }
+
+            // Generate No RM
+            const noRM = 'RM-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 99999) + 1).padStart(5, '0');
+            
+            // Simpan data ke localStorage
+            const pasienData = {
+                noRM: noRM,
+                nama: document.getElementById('nama-lengkap').value,
+                nik: nik,
+                tempatLahir: document.getElementById('tempat-lahir').value,
+                tanggalLahir: document.getElementById('tanggal-lahir').value,
+                jenisKelamin: document.getElementById('jenis-kelamin').value,
+                noTelepon: document.getElementById('no-telepon').value,
+                email: document.getElementById('email').value,
+                alamat: document.getElementById('alamat').value,
+                password: password,
+                role: 'pasien',
+                registrationDate: new Date().toISOString()
+            };
+
+            // Simpan ke localStorage
+            localStorage.setItem('pasien_' + nik, JSON.stringify(pasienData));
+            
+            alert(`Pendaftaran Berhasil!\n\nNomor Rekam Medis Anda: ${noRM}\nSilakan login menggunakan NIK dan password yang telah dibuat.`);
+            
+            // Redirect ke login
+            window.location.href = 'login-pasien.html';
+            
+            return false;
+        }
+    </script>
+</body>
+</html>

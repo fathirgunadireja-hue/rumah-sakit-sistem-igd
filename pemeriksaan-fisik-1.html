@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemeriksaan Fisik Part 1 - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .body-diagram {
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .body-diagram-svg {
+            max-width: 200px;
+            margin: 0 auto 15px;
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+        }
+        .body-parts-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .body-part {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+        .body-part input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+        }
+        .exam-field {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border-left: 3px solid #0066cc;
+        }
+        .exam-field h4 {
+            margin-top: 0;
+            color: #0066cc;
+            font-size: 1.05em;
+        }
+        .finding-option {
+            display: flex;
+            align-items: flex-start;
+            padding: 10px;
+            margin: 8px 0;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+        .finding-option input[type="checkbox"],
+        .finding-option input[type="radio"] {
+            margin-right: 10px;
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .finding-option label {
+            cursor: pointer;
+            flex: 1;
+            margin: 0;
+        }
+        .normal-abnormal-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        @media (max-width: 768px) {
+            .body-parts-list {
+                grid-template-columns: 1fr;
+            }
+            .normal-abnormal-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard-admin.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="identitas-pasien.html" class="nav-item">
+                    <i class="fas fa-id-card"></i>
+                    <span>Identifikasi Pasien</span>
+                </a>
+                <a href="daftar-kunjungan.html" class="nav-item">
+                    <i class="fas fa-list"></i>
+                    <span>Daftar Kunjungan</span>
+                </a>
+                <a href="general-consent.html" class="nav-item">
+                    <i class="fas fa-file-contract"></i>
+                    <span>General Consent</span>
+                </a>
+                <a href="triase-igd.html" class="nav-item">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>Triase IGD</span>
+                </a>
+                <a href="assessment-igd.html" class="nav-item">
+                    <i class="fas fa-stethoscope"></i>
+                    <span>Assessment IGD</span>
+                </a>
+                <a href="pemeriksaan-fisik-1.html" class="nav-item active">
+                    <i class="fas fa-procedures"></i>
+                    <span>Pemeriksaan Fisik</span>
+                </a>
+                <a href="laboratorium-1.html" class="nav-item">
+                    <i class="fas fa-flask"></i>
+                    <span>Laboratorium</span>
+                </a>
+                <a href="diagnosis.html" class="nav-item">
+                    <i class="fas fa-file-medical"></i>
+                    <span>Diagnosis</span>
+                </a>
+                <a href="farmasi.html" class="nav-item">
+                    <i class="fas fa-prescription-bottle"></i>
+                    <span>Farmasi</span>
+                </a>
+                <a href="keuangan.html" class="nav-item">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Keuangan</span>
+                </a>
+                <a href="setting.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Pengaturan</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="form-header">
+                <h1><i class="fas fa-procedures"></i> Pemeriksaan Fisik (Bagian 1)</h1>
+                <p>Pemeriksaan fisik sistematis dari kepala hingga leher</p>
+            </div>
+
+            <!-- Physical Examination Form -->
+            <form class="patient-form" onsubmit="handlePemeriksaanFisik1(event)" novalidate>
+                
+                <!-- Data Pasien Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user-circle"></i> Data Pasien</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-rm-fisik">No RM <span class="required">*</span></label>
+                            <input type="text" id="no-rm-fisik" placeholder="RM-2024-001" value="RM-2024-001" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama-pasien-fisik">Nama Pasien <span class="required">*</span></label>
+                            <input type="text" id="nama-pasien-fisik" placeholder="Nama lengkap pasien" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tanggal-pemeriksaan">Tanggal Pemeriksaan <span class="required">*</span></label>
+                            <input type="datetime-local" id="tanggal-pemeriksaan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dokter-pemeriksaan">Dokter Pemeriksa <span class="required">*</span></label>
+                            <input type="text" id="dokter-pemeriksaan" placeholder="Nama dokter" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- General Appearance / Penampilan Umum -->
+                <div class="form-section">
+                    <h3><i class="fas fa-eye"></i> Penampilan Umum & Status Gizi</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="keadaan-umum">Keadaan Umum <span class="required">*</span></label>
+                            <select id="keadaan-umum" required>
+                                <option value="">-- Pilih Keadaan --</option>
+                                <option value="baik">Baik</option>
+                                <option value="sedang">Sedang</option>
+                                <option value="lemah">Lemah</option>
+                                <option value="buruk">Buruk</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="status-gizi">Status Gizi <span class="required">*</span></label>
+                            <select id="status-gizi" required>
+                                <option value="">-- Pilih Status Gizi --</option>
+                                <option value="baik">Baik</option>
+                                <option value="kurang">Kurang</option>
+                                <option value="lebih">Lebih</option>
+                                <option value="sangat-kurang">Sangat Kurang</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Head Examination / Pemeriksaan Kepala -->
+                <div class="form-section">
+                    <h3><i class="fas fa-head-side-virus"></i> Pemeriksaan Kepala</h3>
+                    
+                    <div class="exam-field">
+                        <h4><i class="fas fa-circle"></i> Kulit Kepala & Rambut</h4>
+                        <div class="form-group">
+                            <label for="kondisi-rambut">Kondisi Rambut</label>
+                            <select id="kondisi-rambut">
+                                <option value="normal">Normal</option>
+                                <option value="rontok">Rontok</option>
+                                <option value="kusam">Kusam</option>
+                                <option value="lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                        <div class="finding-option">
+                            <input type="checkbox" id="head-luka" name="head">
+                            <label for="head-luka">Ada luka/cedera di kepala</label>
+                        </div>
+                        <div class="finding-option">
+                            <input type="checkbox" id="head-bengkak" name="head">
+                            <label for="head-bengkak">Pembengkakan/edema</label>
+                        </div>
+                        <div class="finding-option">
+                            <input type="checkbox" id="head-kerontokan" name="head">
+                            <label for="head-kerontokan">Kerontokan abnormal</label>
+                        </div>
+                    </div>
+
+                    <div class="exam-field">
+                        <h4><i class="fas fa-eye"></i> Mata</h4>
+                        <div class="normal-abnormal-group">
+                            <div>
+                                <label style="font-weight: bold; color: #0066cc;">Kondisi Mata Kiri</label>
+                                <div class="finding-option">
+                                    <input type="radio" id="mata-kiri-normal" name="mata-kiri" value="normal">
+                                    <label for="mata-kiri-normal">Normal</label>
+                                </div>
+                                <div class="finding-option">
+                                    <input type="radio" id="mata-kiri-abnormal" name="mata-kiri" value="abnormal">
+                                    <label for="mata-kiri-abnormal">Abnormal</label>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <input type="text" id="mata-kiri-desc" placeholder="Deskripsi temuan" style="width: 100%;">
+                                </div>
+                            </div>
+                            <div>
+                                <label style="font-weight: bold; color: #0066cc;">Kondisi Mata Kanan</label>
+                                <div class="finding-option">
+                                    <input type="radio" id="mata-kanan-normal" name="mata-kanan" value="normal">
+                                    <label for="mata-kanan-normal">Normal</label>
+                                </div>
+                                <div class="finding-option">
+                                    <input type="radio" id="mata-kanan-abnormal" name="mata-kanan" value="abnormal">
+                                    <label for="mata-kanan-abnormal">Abnormal</label>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <input type="text" id="mata-kanan-desc" placeholder="Deskripsi temuan" style="width: 100%;">
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <label style="font-weight: bold;">Pemeriksaan Mata Lanjutan:</label>
+                            <div class="finding-option">
+                                <input type="checkbox" id="mata-konjungtiva" name="mata-extra">
+                                <label for="mata-konjungtiva">Konjungtiva pucat/ikterik/injeksi</label>
+                            </div>
+                            <div class="finding-option">
+                                <input type="checkbox" id="mata-pupil" name="mata-extra">
+                                <label for="mata-pupil">Pupil anisokor (tidak sama besar)</label>
+                            </div>
+                            <div class="finding-option">
+                                <input type="checkbox" id="mata-refleks" name="mata-extra">
+                                <label for="mata-refleks">Refleks cahaya abnormal</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exam-field">
+                        <h4><i class="fas fa-ear"></i> Telinga</h4>
+                        <div class="normal-abnormal-group">
+                            <div>
+                                <label style="font-weight: bold; color: #0066cc;">Telinga Kiri</label>
+                                <div class="finding-option">
+                                    <input type="radio" id="telinga-kiri-normal" name="telinga-kiri" value="normal">
+                                    <label for="telinga-kiri-normal">Normal</label>
+                                </div>
+                                <div class="finding-option">
+                                    <input type="radio" id="telinga-kiri-abnormal" name="telinga-kiri" value="abnormal">
+                                    <label for="telinga-kiri-abnormal">Abnormal</label>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <input type="text" id="telinga-kiri-desc" placeholder="Deskripsi" style="width: 100%;">
+                                </div>
+                            </div>
+                            <div>
+                                <label style="font-weight: bold; color: #0066cc;">Telinga Kanan</label>
+                                <div class="finding-option">
+                                    <input type="radio" id="telinga-kanan-normal" name="telinga-kanan" value="normal">
+                                    <label for="telinga-kanan-normal">Normal</label>
+                                </div>
+                                <div class="finding-option">
+                                    <input type="radio" id="telinga-kanan-abnormal" name="telinga-kanan" value="abnormal">
+                                    <label for="telinga-kanan-abnormal">Abnormal</label>
+                                </div>
+                                <div style="margin-top: 8px;">
+                                    <input type="text" id="telinga-kanan-desc" placeholder="Deskripsi" style="width: 100%;">
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <label style="font-weight: bold;">Pemeriksaan Telinga Lanjutan:</label>
+                            <div class="finding-option">
+                                <input type="checkbox" id="telinga-nyeri" name="telinga-extra">
+                                <label for="telinga-nyeri">Nyeri tekan tragus/aurikula</label>
+                            </div>
+                            <div class="finding-option">
+                                <input type="checkbox" id="telinga-serumen" name="telinga-extra">
+                                <label for="telinga-serumen">Serumen impaksi</label>
+                            </div>
+                            <div class="finding-option">
+                                <input type="checkbox" id="telinga-cairan" name="telinga-extra">
+                                <label for="telinga-cairan">Cairan dari telinga</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exam-field">
+                        <h4><i class="fas fa-nose"></i> Hidung</h4>
+                        <div class="form-group">
+                            <label for="kondisi-hidung">Kondisi Hidung</label>
+                            <select id="kondisi-hidung">
+                                <option value="normal">Normal</option>
+                                <option value="tersumbat">Tersumbat</option>
+                                <option value="polip">Ada polip</option>
+                                <option value="deviasi">Deviasi septum</option>
+                                <option value="epistaksis">Epistaksis</option>
+                                <option value="lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                        <div class="finding-option">
+                            <input type="checkbox" id="hidung-sekret" name="hidung">
+                            <label for="hidung-sekret">Ada sekret/cairan</label>
+                        </div>
+                        <div class="finding-option">
+                            <input type="checkbox" id="hidung-pendarahan" name="hidung">
+                            <label for="hidung-pendarahan">Tanda pendarahan</label>
+                        </div>
+                        <div class="finding-option">
+                            <input type="checkbox" id="hidung-aroma" name="hidung">
+                            <label for="hidung-aroma">Aroma tidak normal dari hidung</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mouth & Throat / Pemeriksaan Mulut & Tenggorokan -->
+                <div class="form-section">
+                    <h3><i class="fas fa-mouth"></i> Pemeriksaan Mulut & Tenggorokan</h3>
+                    
+                    <div class="exam-field">
+                        <h4><i class="fas fa-tooth"></i> Gigi & Gusi</h4>
+                        <div class="form-group">
+                            <label for="kondisi-gigi">Kondisi Gigi</label>
+                            <select id="kondisi-gigi">
+                                <option value="baik">Baik</option>
+                                <option value="caries">Ada caries</option>
+                                <option value="tanggal">Ada gigi tanggal</option>
+                                <option value="protesa">Pakai protesa/gigi palsu</option>
+                                <option value="lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                        <div class="finding-option">
+                            <input type="checkbox" id="gigi-karang" name="gigi">
+                            <label for="gigi-karang">Ada karang gigi</label>
+                        </div>
+                        <div class="finding-option">
+                            <input type="checkbox" id="gigi-gusi" name="gigi">
+                            <label for="gigi-gusi">Gusi merah/berdarah</label>
+                        </div>
+                        <div class="finding-option">
+                            <input type="checkbox" id="gigi-mulut" name="gigi">
+                            <label for="gigi-mulut">Luka/infeksi mulut</label>
+                        </div>
+                    </div>
+
+                    <div class="exam-field">
+                        <h4><i class="fas fa-mouth"></i> Lidah & Palatum</h4>
+                        <div class="finding-option">
+                            <input type="checkbox" id="lidah-koating" name="lidah">
+                            <label for="lidah-koating">Ada koating putih/tebal pada lidah</label>
+                        </div>
+                        <div class="finding-option">
+                            <input type="checkbox" id="lidah-pucat" name="lidah">
+                            <label for="lidah-pucat">Lidah pucat/tidak normal</label>
+                        </div>
+                        <div class="finding-option">
+                            <input type="checkbox" id="lidah-tremor" name="lidah">
+                            <label for="lidah-tremor">Ada tremor lidah</label>
+                        </div>
+                        <div class="finding-option">
+                            <input type="checkbox" id="palatum-luka" name="lidah">
+                            <label for="palatum-luka">Luka/ulserasi di palatum</label>
+                        </div>
+                    </div>
+
+                    <div class="exam-field">
+                        <h4><i class="fas fa-wind"></i> Tenggorokan & Tonsil</h4>
+                        <div class="form-group">
+                            <label for="kondisi-tonsil">Kondisi Tonsil <span class="required">*</span></label>
+                            <select id="kondisi-tonsil" required>
+                                <option value="">-- Pilih Kondisi --</option>
+                                <option value="normal">Normal</option>
+                                <option value="membesar-T1">Membesar T1</option>
+                                <option value="membesar-T2">Membesar T2</option>
+                                <option value="membesar-T3">Membesar T3</option>
+                                <option value="membesar-T4">Membesar T4</option>
+                                <option value="inflamed">Radang (eksudasi/merah)</option>
+                            </select>
+                        </div>
+                        <div class="finding-option">
+                            <input type="checkbox" id="tonsil-eksudasi" name="tonsil">
+                            <label for="tonsil-eksudasi">Ada eksudasi putih/kuning</label>
+                        </div>
+                        <div class="finding-option">
+                            <input type="checkbox" id="tonsil-pus" name="tonsil">
+                            <label for="tonsil-pus">Ada nanah/abses</label>
+                        </div>
+                        <div class="finding-option">
+                            <input type="checkbox" id="pharynx-merah" name="tonsil">
+                            <label for="pharynx-merah">Faring merah/radang</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="catatan-mulut-tenggorokan">Catatan Pemeriksaan Mulut & Tenggorokan</label>
+                        <textarea id="catatan-mulut-tenggorokan" placeholder="Deskripsi temuan pemeriksaan mulut & tenggorokan"></textarea>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="goBack()">
+                        <i class="fas fa-times"></i> Batal
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='laboratorium-1.html'">
+                        <i class="fas fa-arrow-right"></i> Lanjut ke Laboratorium
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Pemeriksaan Fisik
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default datetime to now
+            const now = new Date();
+            const formattedDate = now.toISOString().slice(0, 16);
+            document.getElementById('tanggal-pemeriksaan').value = formattedDate;
+        });
+
+        function handlePemeriksaanFisik1(event) {
+            event.preventDefault();
+
+            const data = {
+                noRm: document.getElementById('no-rm-fisik').value,
+                namaPasien: document.getElementById('nama-pasien-fisik').value,
+                tanggal: document.getElementById('tanggal-pemeriksaan').value,
+                dokter: document.getElementById('dokter-pemeriksaan').value,
+                keadaanUmum: document.getElementById('keadaan-umum').value,
+                statusGizi: document.getElementById('status-gizi').value,
+                kondisiRambut: document.getElementById('kondisi-rambut').value,
+                matakiri: document.getElementById('mata-kiri-normal')?.checked ? 'normal' : 'abnormal',
+                matakanan: document.getElementById('mata-kanan-normal')?.checked ? 'normal' : 'abnormal',
+                kondisiHidung: document.getElementById('kondisi-hidung').value,
+                kondisiGigi: document.getElementById('kondisi-gigi').value,
+                kondisiTonsil: document.getElementById('kondisi-tonsil').value,
+                catatanMulut: document.getElementById('catatan-mulut-tenggorokan').value
+            };
+
+            console.log('Data Pemeriksaan Fisik Part 1:', data);
+
+            // Show success message
+            alert(`✅ Pemeriksaan Fisik (Part 1) berhasil disimpan!\n\nNo RM: ${data.noRm}\nNama: ${data.namaPasien}\nKeadaan Umum: ${data.keadaanUmum}`);
+
+            // Reset form
+            resetForm();
+        }
+    </script>
+    <script src="js/role-manager.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            roleManager.requireLogin(['perawat', 'dokter', 'pmik', 'admin']);
+            roleManager.updateNavbarProfile();
+        });
+    </script>
+</body>
+</html>

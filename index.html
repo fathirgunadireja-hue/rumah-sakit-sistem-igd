@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RUMAH SAKIT JAYA SEHAT - Layanan Kesehatan Terpadu</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-logo">
+                <i class="fas fa-hospital"></i>
+                <span>RUMAH SAKIT JAYA SEHAT</span>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="#home" class="nav-link">Beranda</a></li>
+                <li><a href="#services" class="nav-link">Layanan</a></li>
+                <li><a href="#departments" class="nav-link">Poliklinik</a></li>
+                <li><a href="#contact" class="nav-link">Kontak</a></li>
+                <li><a href="login-pasien.html" class="btn btn-primary" style="padding: 10px 24px; border-radius: 6px; margin-left: 15px;">Login Pasien</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-wrapper">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Kesehatan Anda,<br/>
+                        <span class="highlight">Prioritas Utama Kami</span>
+                    </h1>
+                    <p class="hero-description">
+                        Rumah Sakit Jaya Sehat menyediakan layanan kesehatan dengan tenaga medis profesional dan fasilitas yang nyaman.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="pendaftaran-pasien.html" class="btn btn-primary btn-large">
+                            <i class="fas fa-user-plus"></i> Daftar Pasien Baru
+                        </a>
+                        <a href="login-pasien.html" class="btn btn-outline btn-large">
+                            <i class="fas fa-sign-in-alt"></i> Login Pasien
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="hero-placeholder">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Access Cards -->
+    <section class="quick-access">
+        <div class="container">
+            <h2>Akses Cepat</h2>
+            <div class="card-grid">
+                <div class="quick-card" onclick="scrollToSection('services')">
+                    <div class="card-icon">
+                        <i class="fas fa-clinic-medical"></i>
+                    </div>
+                    <h3>Layanan Medis</h3>
+                    <p>Berbagai layanan kesehatan lengkap</p>
+                </div>
+                <div class="quick-card" onclick="scrollToSection('departments')">
+                    <div class="card-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3>Poliklinik</h3>
+                    <p>Tim dokter spesialis profesional</p>
+                </div>
+                <div class="quick-card" onclick="showModal('appointment')">
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3>Jadwal Periksa</h3>
+                    <p>Buat janji temu online</p>
+                </div>
+                <div class="quick-card" onclick="showModal('emergency')">
+                    <div class="card-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3>Darurat</h3>
+                    <p>Hubungi layanan darurat</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2>Layanan Kami</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-procedures"></i>
+                    </div>
+                    <h3>Rawat Inap</h3>
+                    <p>Fasilitas rawat inap lengkap dengan perawatan 24 jam</p>
+                    <button class="btn btn-link" onclick="showModal('service-inap')">Pelajari Lebih Lanjut</button>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <h3>Pemeriksaan Umum</h3>
+                    <p>Konsultasi dengan dokter umum dan pemeriksaan rutin</p>
+                    <button class="btn btn-link" onclick="showModal('service-umum')">Pelajari Lebih Lanjut</button>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-vial"></i>
+                    </div>
+                    <h3>Laboratorium</h3>
+                    <p>Pemeriksaan laboratorium dengan teknologi terkini</p>
+                    <button class="btn btn-link" onclick="showModal('service-lab')">Pelajari Lebih Lanjut</button>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <h3>Radiologi</h3>
+                    <p>Pemeriksaan CT Scan, X-Ray, dan USG terlengkap</p>
+                    <button class="btn btn-link" onclick="showModal('service-radiologi')">Pelajari Lebih Lanjut</button>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-pills"></i>
+                    </div>
+                    <h3>Apotek</h3>
+                    <p>Apotek lengkap dengan obat-obatan berkualitas</p>
+                    <button class="btn btn-link" onclick="showModal('service-apotek')">Pelajari Lebih Lanjut</button>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <h3>Wellness</h3>
+                    <p>Program kesehatan dan kebugaran untuk gaya hidup sehat</p>
+                    <button class="btn btn-link" onclick="showModal('service-wellness')">Pelajari Lebih Lanjut</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Departments Section -->
+    <section id="departments" class="departments">
+        <div class="container">
+            <h2>Poliklinik Kami</h2>
+            <div class="departments-grid">
+                <div class="dept-card" onclick="toggleDepartment(this)">
+                    <div class="dept-header">
+                        <i class="fas fa-heart"></i>
+                        <h3>Kardiologi</h3>
+                    </div>
+                    <div class="dept-content">
+                        <p>Spesialis jantung dan pembuluh darah dengan peralatan modern</p>
+                        <ul>
+                            <li>Ekokardiografi</li>
+                            <li>EKG</li>
+                            <li>Kateterisasi Jantung</li>
+                        </ul>
+                        <button class="btn btn-link" onclick="showModal('dept-cardio'); event.stopPropagation();">Hubungi Poliklinik</button>
+                    </div>
+                </div>
+                <div class="dept-card" onclick="toggleDepartment(this)">
+                    <div class="dept-header">
+                        <i class="fas fa-brain"></i>
+                        <h3>Neurologi</h3>
+                    </div>
+                    <div class="dept-content">
+                        <p>Penanganan penyakit saraf dan otak</p>
+                        <ul>
+                            <li>MRI Otak</li>
+                            <li>EEG</li>
+                            <li>Konsultasi Saraf</li>
+                        </ul>
+                        <button class="btn btn-link" onclick="showModal('dept-neuro'); event.stopPropagation();">Hubungi Poliklinik</button>
+                    </div>
+                </div>
+                <div class="dept-card" onclick="toggleDepartment(this)">
+                    <div class="dept-header">
+                        <i class="fas fa-bone"></i>
+                        <h3>Ortopedi</h3>
+                    </div>
+                    <div class="dept-content">
+                        <p>Spesialis tulang dan persendian</p>
+                        <ul>
+                            <li>Operasi Tulang</li>
+                            <li>Fisioterapi</li>
+                            <li>Arthroscopy</li>
+                        </ul>
+                        <button class="btn btn-link" onclick="showModal('dept-ortho'); event.stopPropagation();">Hubungi Poliklinik</button>
+                    </div>
+                </div>
+                <div class="dept-card" onclick="toggleDepartment(this)">
+                    <div class="dept-header">
+                        <i class="fas fa-lungs"></i>
+                        <h3>Paru-Paru</h3>
+                    </div>
+                    <div class="dept-content">
+                        <p>Penanganan penyakit pernapasan</p>
+                        <ul>
+                            <li>Spirometri</li>
+                            <li>Bronkoskopi</li>
+                            <li>Chest X-Ray</li>
+                        </ul>
+                        <button class="btn btn-link" onclick="showModal('dept-paru'); event.stopPropagation();">Hubungi Poliklinik</button>
+                    </div>
+                </div>
+                <div class="dept-card" onclick="toggleDepartment(this)">
+                    <div class="dept-header">
+                        <i class="fas fa-baby"></i>
+                        <h3>Pediatri</h3>
+                    </div>
+                    <div class="dept-content">
+                        <p>Layanan kesehatan anak-anak</p>
+                        <ul>
+                            <li>Vaksinasi</li>
+                            <li>Pemeriksaan Tumbuh Kembang</li>
+                            <li>Rawat Anak</li>
+                        </ul>
+                        <button class="btn btn-link" onclick="showModal('dept-pedia'); event.stopPropagation();">Hubungi Poliklinik</button>
+                    </div>
+                </div>
+                <div class="dept-card" onclick="toggleDepartment(this)">
+                    <div class="dept-header">
+                        <i class="fas fa-female"></i>
+                        <h3>Obstetri & Ginekologi</h3>
+                    </div>
+                    <div class="dept-content">
+                        <p>Layanan kesehatan ibu dan wanita</p>
+                        <ul>
+                            <li>Persalinan</li>
+                            <li>USG Kehamilan</li>
+                            <li>Kontrasepsi</li>
+                        </ul>
+                        <button class="btn btn-link" onclick="showModal('dept-obgyn'); event.stopPropagation();">Hubungi Poliklinik</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Doctors Section -->
+    <section id="doctors" class="doctors">
+        <div class="container">
+            <h2>Tim Dokter Kami</h2>
+            <div class="doctors-grid">
+                <div class="doctor-card" onclick="showModal('doctor-1')">
+                    <div class="doctor-image">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Dr. Ahmad Sutrisno</h3>
+                    <p class="specialty">Spesialis Jantung</p>
+                    <p class="experience">Pengalaman 15 tahun</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="doctor-card" onclick="showModal('doctor-2')">
+                    <div class="doctor-image">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Dr. Siti Nurhaliza</h3>
+                    <p class="specialty">Spesialis Anak</p>
+                    <p class="experience">Pengalaman 12 tahun</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="doctor-card" onclick="showModal('doctor-3')">
+                    <div class="doctor-image">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Dr. Budi Santoso</h3>
+                    <p class="specialty">Spesialis Saraf</p>
+                    <p class="experience">Pengalaman 18 tahun</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+                <div class="doctor-card" onclick="showModal('doctor-4')">
+                    <div class="doctor-image">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Dr. Dewi Lestari</h3>
+                    <p class="specialty">Spesialis Kandungan</p>
+                    <p class="experience">Pengalaman 14 tahun</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="doctor-card" onclick="showModal('doctor-5')">
+                    <div class="doctor-image">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Dr. Rifa'i Rahman</h3>
+                    <p class="specialty">Spesialis Tulang</p>
+                    <p class="experience">Pengalaman 11 tahun</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="doctor-card" onclick="showModal('doctor-6')">
+                    <div class="doctor-image">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Dr. Indah Kusuma</h3>
+                    <p class="specialty">Spesialis Paru</p>
+                    <p class="experience">Pengalaman 13 tahun</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Hubungi Kami</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Informasi Kontak</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Alamat</h4>
+                            <p>Jl. Kesehatan No. 123, Jakarta Pusat 12345</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Telepon</h4>
+                            <p>(021) 5555-0123</p>
+                            <p>Darurat: 112</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>info@rumahsakitmodern.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Jam Operasional</h4>
+                            <p>Senin - Jumat: 08:00 - 20:00</p>
+                            <p>Sabtu - Minggu: 09:00 - 18:00</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" onsubmit="handleContactForm(event)" novalidate>
+                    <h3>Kirim Pesan</h3>
+                    <div class="form-group">
+                        <input type="text" placeholder="Nama Anda" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email Anda" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" placeholder="No. Telepon" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Pesan Anda" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Kirim Pesan</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Tentang Kami</h4>
+                    <p>RUMAH SAKIT JAYA SEHAT adalah fasilitas kesehatan terdepan dengan tim profesional dan peralatan modern.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Layanan Cepat</h4>
+                    <ul>
+                        <li><a href="#services">Layanan Medis</a></li>
+                        <li><a href="#departments">Poliklinik</a></li>
+                        <li><a href="#doctors">Dokter</a></li>
+                        <li><a href="#contact">Kontak</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Media Sosial</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 RUMAH SAKIT JAYA SEHAT. Semua hak dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay" onclick="closeModal()"></div>
+    
+    <div id="appointment-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h2>Buat Janji Temu</h2>
+            <form onsubmit="handleAppointment(event)" novalidate>
+                <div class="form-group">
+                    <label>Nama Pasien</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Nomor Telepon</label>
+                    <input type="tel" required>
+                </div>
+                <div class="form-group">
+                    <label>Pilih Dokter</label>
+                    <select required>
+                        <option>Dr. Ahmad Sutrisno (Kardiologi)</option>
+                        <option>Dr. Siti Nurhaliza (Pediatri)</option>
+                        <option>Dr. Budi Santoso (Neurologi)</option>
+                        <option>Dr. Dewi Lestari (Obstetri)</option>
+                        <option>Dr. Rifa'i Rahman (Ortopedi)</option>
+                        <option>Dr. Indah Kusuma (Paru)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tanggal Periksa</label>
+                    <input type="date" required>
+                </div>
+                <div class="form-group">
+                    <label>Jam Periksa</label>
+                    <input type="time" required>
+                </div>
+                <div class="form-group">
+                    <label>Keluhan</label>
+                    <textarea rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Konfirmasi Janji Temu</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="emergency-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h2>Informasi Darurat</h2>
+            <div class="emergency-info">
+                <div class="emergency-item">
+                    <i class="fas fa-phone-volume"></i>
+                    <h3>Panggilan Darurat</h3>
+                    <p class="phone-number">112</p>
+                </div>
+                <div class="emergency-item">
+                    <i class="fas fa-ambulance"></i>
+                    <h3>Ambulans</h3>
+                    <p class="phone-number">(021) 5555-0999</p>
+                </div>
+                <div class="emergency-item">
+                    <i class="fas fa-hospital"></i>
+                    <h3>Rumah Sakit</h3>
+                    <p class="phone-number">(021) 5555-0123</p>
+                </div>
+            </div>
+            <p class="emergency-note"><strong>⚠️ Untuk keadaan darurat medis, segera hubungi 112 atau datang langsung ke UGD kami.</strong></p>
+            <button class="btn btn-primary" onclick="closeModal()">Tutup</button>
+        </div>
+    </div>
+
+    <div id="contact-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h2>Chat dengan Admin</h2>
+            <form onsubmit="handleChat(event)" novalidate>
+                <div class="form-group">
+                    <label>Nama Anda</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Pesan</label>
+                    <textarea rows="4" placeholder="Tanyakan sesuatu..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Kirim Chat</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Generic Modal for Services and Details -->
+    <div id="generic-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div id="generic-modal-body"></div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

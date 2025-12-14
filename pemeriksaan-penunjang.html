@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemeriksaan Penunjang - RS Jaya Sehat</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="form-header">
+                <h1>Pemeriksaan Penunjang (Umum)</h1>
+                <p>Permintaan pemeriksaan penunjang non-lab/radiologi</p>
+            </div>
+
+            <form class="patient-form" id="penunjang-form" onsubmit="handleSubmit(event)" novalidate>
+                <!-- Data Pasien -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user-injured"></i> Data Pasien</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-rm"><span class="required">*</span> No RM</label>
+                            <input type="text" id="no-rm" name="no-rm" placeholder="Nomor rekam medis" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama-pasien"><span class="required">*</span> Nama Pasien</label>
+                            <input type="text" id="nama-pasien" name="nama-pasien" placeholder="Nama pasien" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tanggal-order"><span class="required">*</span> Tanggal Order</label>
+                            <input type="date" id="tanggal-order" name="tanggal-order" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jam-order"><span class="required">*</span> Jam Order</label>
+                            <input type="time" id="jam-order" name="jam-order" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="status-puasa">Status Puasa</label>
+                            <select id="status-puasa" name="status-puasa">
+                                <option value="">Pilih</option>
+                                <option value="puasa">Puasa</option>
+                                <option value="tidak">Tidak Puasa</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dokter-pengirim">Dokter Pengirim</label>
+                            <input type="text" id="dokter-pengirim" name="dokter-pengirim" placeholder="Nama dokter pengirim">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Permintaan Penunjang -->
+                <div class="form-section">
+                    <h3><i class="fas fa-clipboard-list"></i> Permintaan Pemeriksaan</h3>
+                    <div class="form-group">
+                        <label for="jenis-pemeriksaan"><span class="required">*</span> Jenis Pemeriksaan</label>
+                        <select id="jenis-pemeriksaan" name="jenis-pemeriksaan" required>
+                            <option value="">Pilih pemeriksaan</option>
+                            <option value="ekg">EKG</option>
+                            <option value="usg">USG Non Obstetri</option>
+                            <option value="endoskopi">Endoskopi</option>
+                            <option value="spirometri">Spirometri</option>
+                            <option value="audiometri">Audiometri</option>
+                            <option value="fisioterapi">Fisioterapi</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="prioritas">Prioritas</label>
+                            <select id="prioritas" name="prioritas">
+                                <option value="">Pilih</option>
+                                <option value="rutin">Rutin</option>
+                                <option value="cito">CITO</option>
+                                <option value="darurat">Darurat</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="status-pemeriksaan">Status</label>
+                            <select id="status-pemeriksaan" name="status-pemeriksaan">
+                                <option value="">Pilih</option>
+                                <option value="menunggu">Menunggu</option>
+                                <option value="proses">Sedang Diproses</option>
+                                <option value="selesai">Selesai</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="alasan">Alasan Klinis / Indikasi</label>
+                        <textarea id="alasan" name="alasan" rows="3" placeholder="Keluhan utama, indikasi klinis"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="instruksi">Instruksi Khusus</label>
+                        <textarea id="instruksi" name="instruksi" rows="2" placeholder="Persiapan pasien, instruksi khusus"></textarea>
+                    </div>
+                </div>
+
+                <!-- Hasil / Catatan -->
+                <div class="form-section">
+                    <h3><i class="fas fa-file-medical"></i> Catatan dan Hasil</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="hasil">Ringkasan Hasil</label>
+                            <textarea id="hasil" name="hasil" rows="3" placeholder="Nilai hasil, temuan penting"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="interpretasi">Interpretasi Dokter</label>
+                            <textarea id="interpretasi" name="interpretasi" rows="3" placeholder="Interpretasi, kesimpulan"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">
+                        <i class="fas fa-arrow-left"></i> Sebelumnya
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('penunjang-form').reset()">
+                        <i class="fas fa-redo"></i> Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Permintaan
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/role-manager.js"></script>
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault();
+            const required = ['no-rm','nama-pasien','tanggal-order','jam-order','jenis-pemeriksaan'];
+            for (const id of required) {
+                const el = document.getElementById(id);
+                if (!el || !el.value.trim()) {
+                    alert('Kolom wajib belum lengkap.');
+                    return;
+                }
+            }
+            alert('✅ Permintaan pemeriksaan penunjang tersimpan.');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            roleManager.requireLogin(['admin','pmik','perawat','dokter']);
+            roleManager.updateNavbarProfile();
+        });
+    </script>
+    <script src="js/script.js"></script>
+</body>
+</html>

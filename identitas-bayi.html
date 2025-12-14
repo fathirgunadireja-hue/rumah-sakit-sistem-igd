@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identitas Bayi Baru Lahir - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .birth-detail-box {
+            background: #e8f5e9;
+            border-left: 4px solid #00cc44;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .birth-detail-title {
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 12px;
+            font-size: 1.05em;
+        }
+        .apgar-score {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .apgar-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 10px 0;
+        }
+        .apgar-item {
+            background: white;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+        .apgar-item label {
+            font-weight: bold;
+            color: #ff9800;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        .apgar-item input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .screening-group {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        .screening-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 12px;
+            font-size: 1em;
+        }
+        .vaccination-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 4px;
+            border-left: 3px solid #0066cc;
+        }
+        .vaccination-item input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+        }
+        .vaccination-item label {
+            cursor: pointer;
+            flex: 1;
+            margin: 0;
+        }
+        .mother-info-box {
+            background: #f3e5f5;
+            border-left: 4px solid #9c27b0;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .info-important {
+            background: #ffebee;
+            border: 1px solid #ef5350;
+            padding: 12px;
+            border-radius: 4px;
+            margin: 10px 0;
+            color: #c62828;
+            font-size: 0.95em;
+        }
+        .role-indicator {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .role-indicator.pmik {
+            background: #cfe2ff;
+            color: #084298;
+        }
+        .role-indicator.perawat {
+            background: #d1e7dd;
+            color: #0a3622;
+        }
+        .role-indicator.dokter {
+            background: #f8d7da;
+            color: #842029;
+        }
+        .form-section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+        <div class="container">
+            <!-- Header -->
+            <div class="page-header">
+                <div>
+                    <h1><i class="fas fa-baby"></i> Identitas Bayi Baru Lahir</h1>
+                    <p>Formulir pencatatan identitas dan data bayi baru lahir di fasilitas kesehatan</p>
+                </div>
+            </div>
+
+            <!-- Newborn Data Form -->
+            <form class="patient-form" onsubmit="handleIdentitasBayi(event)" novalidate>
+                
+                <!-- Mother Information -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-female"></i> Data Ibu</h3>
+                    <span class="role-indicator pmik">PMIK</span>
+                </div>
+                    <div class="mother-info-box">
+                        <strong>Informasi lengkap ibu kandung untuk registrasi bayi</strong>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nik-ibu">NIK Ibu <span class="required">*</span></label>
+                            <input type="text" id="nik-ibu" placeholder="16 digit" maxlength="16" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama-ibu">Nama Ibu <span class="required">*</span></label>
+                            <input type="text" id="nama-ibu" placeholder="Nama lengkap ibu" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="umur-ibu">Umur Ibu (saat melahirkan) <span class="required">*</span></label>
+                            <input type="number" id="umur-ibu" placeholder="Tahun" min="15" max="50" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pekerjaan-ibu">Pekerjaan Ibu</label>
+                            <select id="pekerjaan-ibu">
+                                <option value="">-- Pilih --</option>
+                                <option value="tidak-bekerja">Tidak Bekerja/Ibu Rumah Tangga</option>
+                                <option value="petani">Petani</option>
+                                <option value="pedagang">Pedagang</option>
+                                <option value="karyawan">Karyawan Swasta</option>
+                                <option value="aparatur">Aparatur Pemerintah</option>
+                                <option value="profesional">Profesional (Dokter, Guru, dll)</option>
+                                <option value="pengusaha">Pengusaha</option>
+                                <option value="lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="alamat-ibu">Alamat Ibu <span class="required">*</span></label>
+                            <input type="text" id="alamat-ibu" placeholder="Jalan No. RT RW" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="kelurahan-ibu">Kelurahan <span class="required">*</span></label>
+                            <input type="text" id="kelurahan-ibu" placeholder="Kelurahan" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="kecamatan-ibu">Kecamatan <span class="required">*</span></label>
+                            <input type="text" id="kecamatan-ibu" placeholder="Kecamatan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="kabupaten-ibu">Kabupaten/Kota <span class="required">*</span></label>
+                            <input type="text" id="kabupaten-ibu" placeholder="Kabupaten/Kota" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="riwayat-kesehatan-ibu">Riwayat Kesehatan Ibu</label>
+                        <textarea id="riwayat-kesehatan-ibu" placeholder="Penyakit, alergi, operasi sebelumnya, dll"></textarea>
+                    </div>
+                </div>
+
+                <!-- Newborn Registration -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-baby"></i> Data Bayi Baru Lahir</h3>
+                    <span class="role-indicator perawat">Perawat</span>
+                </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nama-bayi">Nama Bayi <span class="required">*</span></label>
+                            <input type="text" id="nama-bayi" placeholder="Nama bayi (sesuai keinginan orang tua)" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jenis-kelamin-bayi">Jenis Kelamin <span class="required">*</span></label>
+                            <select id="jenis-kelamin-bayi" required>
+                                <option value="">-- Pilih --</option>
+                                <option value="laki-laki">Laki-Laki</option>
+                                <option value="perempuan">Perempuan</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="birth-detail-box">
+                        <div class="birth-detail-title"><i class="fas fa-calendar-alt"></i> Waktu & Tempat Lahir</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tanggal-lahir-bayi">Tanggal Lahir <span class="required">*</span></label>
+                                <input type="date" id="tanggal-lahir-bayi" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="jam-lahir-bayi">Jam Lahir <span class="required">*</span></label>
+                                <input type="time" id="jam-lahir-bayi" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tempat-lahir">Tempat Lahir <span class="required">*</span></label>
+                            <select id="tempat-lahir" required>
+                                <option value="">-- Pilih --</option>
+                                <option value="rs-modern">RS Modern</option>
+                                <option value="bidan">Praktik Bidan</option>
+                                <option value="puskesmas">Puskesmas</option>
+                                <option value="rumah">Rumah</option>
+                                <option value="lainnya">Tempat Lain</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="birth-detail-box">
+                        <div class="birth-detail-title"><i class="fas fa-balance-scale"></i> Antropometri Bayi</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="berat-lahir">Berat Badan Lahir (gram) <span class="required">*</span></label>
+                                <input type="number" id="berat-lahir" placeholder="2500-3500" min="500" max="6000" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="panjang-lahir">Panjang Badan Lahir (cm) <span class="required">*</span></label>
+                                <input type="number" id="panjang-lahir" placeholder="48-52" min="35" max="60" step="0.1" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="lingkar-kepala">Lingkar Kepala (cm)</label>
+                                <input type="number" id="lingkar-kepala" placeholder="32-36" min="25" max="40" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="lingkar-dada">Lingkar Dada (cm)</label>
+                                <input type="number" id="lingkar-dada" placeholder="30-35" min="25" max="40" step="0.1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Birth Condition -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-heartbeat"></i> Kondisi Kelahiran</h3>
+                    <span class="role-indicator dokter">Dokter</span>
+                </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="jenis-persalinan">Jenis Persalinan <span class="required">*</span></label>
+                            <select id="jenis-persalinan" onchange="updateJenisPersalinan()" required>
+                                <option value="">-- Pilih --</option>
+                                <option value="normal">Normal Spontan</option>
+                                <option value="ekstraksi">Ekstraksi Vakum/Forceps</option>
+                                <option value="section">Seksio Sesarea</option>
+                                <option value="other">Lain-Lain</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="komplikasi-persalinan">Komplikasi Persalinan</label>
+                            <select id="komplikasi-persalinan">
+                                <option value="">-- Tidak Ada --</option>
+                                <option value="asfiksia">Asfiksia</option>
+                                <option value="prematur">Prematur</option>
+                                <option value="berat-rendah">Berat Badan Rendah</option>
+                                <option value="cacat">Cacat Bawaan</option>
+                                <option value="infeksi">Infeksi</option>
+                                <option value="lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="uraian-komplikasi">Uraian Komplikasi (jika ada)</label>
+                        <textarea id="uraian-komplikasi" placeholder="Penjelasan detail komplikasi yang terjadi"></textarea>
+                    </div>
+
+                    <div class="apgar-score">
+                        <strong><i class="fas fa-star"></i> Skor APGAR (Appearance, Pulse, Grimace, Activity, Respiration)</strong>
+                        <p style="font-size: 0.9em; color: #666; margin: 10px 0;">Dinilai pada menit ke-1 dan menit ke-5 setelah lahir</p>
+                        
+                        <div>
+                            <strong style="font-size: 0.95em;">Skor APGAR Menit ke-1:</strong>
+                            <div class="apgar-row">
+                                <div class="apgar-item">
+                                    <label for="apgar1-appearance">Appearance (Warna)</label>
+                                    <select id="apgar1-appearance" onchange="hitungAPGAR(1)">
+                                        <option value="0">0 - Biru/Pucat</option>
+                                        <option value="1">1 - Biru Ujung</option>
+                                        <option value="2">2 - Merah Jambu</option>
+                                    </select>
+                                </div>
+                                <div class="apgar-item">
+                                    <label for="apgar1-pulse">Pulse (Denyut Jantung)</label>
+                                    <select id="apgar1-pulse" onchange="hitungAPGAR(1)">
+                                        <option value="0">0 - Tidak Ada</option>
+                                        <option value="1">1 - <100 bpm</option>
+                                        <option value="2">2 - >100 bpm</option>
+                                    </select>
+                                </div>
+                                <div class="apgar-item">
+                                    <label for="apgar1-grimace">Grimace (Refleks)</label>
+                                    <select id="apgar1-grimace" onchange="hitungAPGAR(1)">
+                                        <option value="0">0 - Tidak Ada</option>
+                                        <option value="1">1 - Grimace</option>
+                                        <option value="2">2 - Menangis</option>
+                                    </select>
+                                </div>
+                                <div class="apgar-item">
+                                    <label for="apgar1-activity">Activity (Tonus Otot)</label>
+                                    <select id="apgar1-activity" onchange="hitungAPGAR(1)">
+                                        <option value="0">0 - Lemas</option>
+                                        <option value="1">1 - Lemah</option>
+                                        <option value="2">2 - Aktif</option>
+                                    </select>
+                                </div>
+                                <div class="apgar-item">
+                                    <label for="apgar1-respiration">Respiration (Pernapasan)</label>
+                                    <select id="apgar1-respiration" onchange="hitungAPGAR(1)">
+                                        <option value="0">0 - Tidak Ada</option>
+                                        <option value="1">1 - Lemah</option>
+                                        <option value="2">2 - Kuat</option>
+                                    </select>
+                                </div>
+                                <div class="apgar-item">
+                                    <label for="total-apgar1" style="color: #ff9800;">Total Skor Menit ke-1</label>
+                                    <input type="text" id="total-apgar1" value="0" readonly style="background: #fff9c4; font-weight: bold; font-size: 1.1em; text-align: center;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 20px;">
+                            <strong style="font-size: 0.95em;">Skor APGAR Menit ke-5:</strong>
+                            <div class="apgar-row">
+                                <div class="apgar-item">
+                                    <label for="apgar5-appearance">Appearance (Warna)</label>
+                                    <select id="apgar5-appearance" onchange="hitungAPGAR(5)">
+                                        <option value="0">0 - Biru/Pucat</option>
+                                        <option value="1">1 - Biru Ujung</option>
+                                        <option value="2">2 - Merah Jambu</option>
+                                    </select>
+                                </div>
+                                <div class="apgar-item">
+                                    <label for="apgar5-pulse">Pulse (Denyut Jantung)</label>
+                                    <select id="apgar5-pulse" onchange="hitungAPGAR(5)">
+                                        <option value="0">0 - Tidak Ada</option>
+                                        <option value="1">1 - <100 bpm</option>
+                                        <option value="2">2 - >100 bpm</option>
+                                    </select>
+                                </div>
+                                <div class="apgar-item">
+                                    <label for="apgar5-grimace">Grimace (Refleks)</label>
+                                    <select id="apgar5-grimace" onchange="hitungAPGAR(5)">
+                                        <option value="0">0 - Tidak Ada</option>
+                                        <option value="1">1 - Grimace</option>
+                                        <option value="2">2 - Menangis</option>
+                                    </select>
+                                </div>
+                                <div class="apgar-item">
+                                    <label for="apgar5-activity">Activity (Tonus Otot)</label>
+                                    <select id="apgar5-activity" onchange="hitungAPGAR(5)">
+                                        <option value="0">0 - Lemas</option>
+                                        <option value="1">1 - Lemah</option>
+                                        <option value="2">2 - Aktif</option>
+                                    </select>
+                                </div>
+                                <div class="apgar-item">
+                                    <label for="apgar5-respiration">Respiration (Pernapasan)</label>
+                                    <select id="apgar5-respiration" onchange="hitungAPGAR(5)">
+                                        <option value="0">0 - Tidak Ada</option>
+                                        <option value="1">1 - Lemah</option>
+                                        <option value="2">2 - Kuat</option>
+                                    </select>
+                                </div>
+                                <div class="apgar-item">
+                                    <label for="total-apgar5" style="color: #ff9800;">Total Skor Menit ke-5</label>
+                                    <input type="text" id="total-apgar5" value="0" readonly style="background: #fff9c4; font-weight: bold; font-size: 1.1em; text-align: center;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feeding & Screening -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-heartbeat"></i> Menyusui & Skrining Kesehatan</h3>
+                    <span class="role-indicator perawat">Perawat</span>
+                </div>
+                    
+                    <div class="screening-group">
+                        <div class="screening-title"><i class="fas fa-baby-carriage"></i> Status Menyusui</div>
+                        <label style="display: block; margin-bottom: 10px;">Status Menyusui Bayi <span class="required">*</span></label>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="radio" id="menyusui-eksklusif" name="menyusui" value="eksklusif" required>
+                                <label for="menyusui-eksklusif" style="cursor: pointer;">ASI Eksklusif</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="radio" id="menyusui-campuran" name="menyusui" value="campuran">
+                                <label for="menyusui-campuran" style="cursor: pointer;">ASI + Susu Formula</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="radio" id="menyusui-formula" name="menyusui" value="formula">
+                                <label for="menyusui-formula" style="cursor: pointer;">Susu Formula</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="screening-group">
+                        <div class="screening-title"><i class="fas fa-flask"></i> Skrining Kesehatan Bayi</div>
+                        <label style="display: block; margin-bottom: 10px;">Pemeriksaan Skrining Neonatus:</label>
+                        <div class="vaccination-item">
+                            <input type="checkbox" id="screening-pku" name="screening">
+                            <label for="screening-pku">Skrining PKU (Penyakit Metabolik)</label>
+                        </div>
+                        <div class="vaccination-item">
+                            <input type="checkbox" id="screening-thyroid" name="screening">
+                            <label for="screening-thyroid">Skrining Fungsi Tiroid</label>
+                        </div>
+                        <div class="vaccination-item">
+                            <input type="checkbox" id="screening-g6pd" name="screening">
+                            <label for="screening-g6pd">Skrining G6PD (Defisiensi Enzim)</label>
+                        </div>
+                        <div class="vaccination-item">
+                            <input type="checkbox" id="screening-hearing" name="screening">
+                            <label for="screening-hearing">Skrining Pendengaran Bayi</label>
+                        </div>
+                        <div class="vaccination-item">
+                            <input type="checkbox" id="screening-hiv" name="screening">
+                            <label for="screening-hiv">Tes HIV (jika ibu positif)</label>
+                        </div>
+                    </div>
+
+                    <div class="screening-group">
+                        <div class="screening-title"><i class="fas fa-syringe"></i> Vaksinasi Bayi Baru Lahir</div>
+                        <label style="display: block; margin-bottom: 10px;">Vaksin yang Diberikan:</label>
+                        <div class="vaccination-item">
+                            <input type="checkbox" id="vaksin-bcg" name="vaksin">
+                            <label for="vaksin-bcg">BCG (Bacillus Calmette-Guérin)</label>
+                        </div>
+                        <div class="vaccination-item">
+                            <input type="checkbox" id="vaksin-hepb" name="vaksin">
+                            <label for="vaksin-hepb">Hepatitis B</label>
+                        </div>
+                        <div class="vaccination-item">
+                            <input type="checkbox" id="vaksin-polio" name="vaksin">
+                            <label for="vaksin-polio">Polio (OPV/IPV)</label>
+                        </div>
+                        <div class="vaccination-item">
+                            <input type="checkbox" id="vaksin-vita-k" name="vaksin">
+                            <label for="vaksin-vita-k">Vitamin K</label>
+                        </div>
+                        <div class="vaccination-item">
+                            <input type="checkbox" id="vaksin-mata" name="vaksin">
+                            <label for="vaksin-mata">Obat Mata (Tetes mata profilaksis)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hospitalization Data (Inap) -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-hospital-alt"></i> Data Rawat Inap (Inap)</h3>
+                    <span class="role-indicator perawat">Perawat</span>
+                </div>
+                    
+                    <div style="background: #e3f2fd; border-left: 4px solid #2196f3; padding: 12px; margin-bottom: 15px; border-radius: 4px;">
+                        <strong><i class="fas fa-info-circle"></i> Catatan:</strong> 
+                        <p style="margin: 5px 0; font-size: 0.95em;">Data ini mencatat bayi-bayi yang dirawat inap selama periode kelahiran, termasuk statistik bayi yang meninggal dan jenis persalinan khusus.</p>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bayi-dirawat-inap">Jumlah Bayi Dirawat Inap</label>
+                            <input type="number" id="bayi-dirawat-inap" min="0" placeholder="0" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="bayi-meninggal">Jumlah Bayi Meninggal <span class="required">*</span></label>
+                            <input type="number" id="bayi-meninggal" min="0" placeholder="0" value="0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bayi-sc">Bayi lahir Seksio Sesarea (SC) <span class="required">*</span></label>
+                            <input type="number" id="bayi-sc" min="0" placeholder="0" value="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bayi-vakum">Bayi lahir Ekstraksi Vakum <span class="required">*</span></label>
+                            <input type="number" id="bayi-vakum" min="0" placeholder="0" value="0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="catatan-inap">Catatan Perawatan Inap</label>
+                        <textarea id="catatan-inap" placeholder="Catatan tambahan mengenai perawatan bayi selama dirawat inap"></textarea>
+                    </div>
+                </div>
+
+                <!-- Provider Information -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-stethoscope"></i> Data Penolong Kelahiran</h3>
+                    <span class="role-indicator perawat">Perawat</span>
+                </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nama-dokter-bayi">Nama Dokter/Bidan <span class="required">*</span></label>
+                            <input type="text" id="nama-dokter-bayi" placeholder="Dokter atau Bidan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nip-dokter-bayi">NIP/NIB <span class="required">*</span></label>
+                            <input type="text" id="nip-dokter-bayi" placeholder="NIP/NIB" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tanggal-pencatatan">Tanggal Pencatatan <span class="required">*</span></label>
+                        <input type="date" id="tanggal-pencatatan" required>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" onclick="window.print()" class="btn btn-secondary">
+                        <i class="fas fa-print"></i> Cetak
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Data Bayi
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/role-manager.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggal-lahir-bayi').value = today;
+            document.getElementById('tanggal-pencatatan').value = today;
+            
+            roleManager.requireLogin(['perawat', 'dokter', 'pmik', 'admin']);
+            roleManager.updateNavbarProfile();
+        });
+
+        function updateJenisPersalinan() {
+            const jenis = document.getElementById('jenis-persalinan').value;
+            console.log('Jenis Persalinan:', jenis);
+        }
+
+        function hitungAPGAR(menit) {
+            const values = [
+                parseInt(document.getElementById(`apgar${menit}-appearance`).value) || 0,
+                parseInt(document.getElementById(`apgar${menit}-pulse`).value) || 0,
+                parseInt(document.getElementById(`apgar${menit}-grimace`).value) || 0,
+                parseInt(document.getElementById(`apgar${menit}-activity`).value) || 0,
+                parseInt(document.getElementById(`apgar${menit}-respiration`).value) || 0
+            ];
+
+            const total = values.reduce((a, b) => a + b, 0);
+            document.getElementById(`total-apgar${menit}`).value = total;
+            
+            // Color coding based on APGAR score
+            const element = document.getElementById(`total-apgar${menit}`);
+            if (total >= 7) {
+                element.style.background = '#c8e6c9';
+                element.style.color = '#1b5e20';
+            } else if (total >= 4) {
+                element.style.background = '#fff9c4';
+                element.style.color = '#f57f17';
+            } else {
+                element.style.background = '#ffcdd2';
+                element.style.color = '#c62828';
+            }
+        }
+
+        function handleIdentitasBayi(event) {
+            event.preventDefault();
+
+            const requiredFields = [
+                'nik-ibu',
+                'nama-ibu',
+                'umur-ibu',
+                'alamat-ibu',
+                'kelurahan-ibu',
+                'kecamatan-ibu',
+                'kabupaten-ibu',
+                'nama-bayi',
+                'jenis-kelamin-bayi',
+                'tanggal-lahir-bayi',
+                'jam-lahir-bayi',
+                'tempat-lahir',
+                'berat-lahir',
+                'panjang-lahir',
+                'jenis-persalinan',
+                'menyusui',
+                'nama-dokter-bayi',
+                'nip-dokter-bayi',
+                'tanggal-pencatatan'
+            ];
+
+            for (let field of requiredFields) {
+                const element = document.getElementById(field);
+                if (element && !element.value.trim()) {
+                    alert(`⚠️ Kolom "${element.previousElementSibling?.textContent || field}" harus diisi!`);
+                    return;
+                }
+            }
+
+            const data = {
+                namaIbu: document.getElementById('nama-ibu').value,
+                namaBayi: document.getElementById('nama-bayi').value,
+                jenisKelamin: document.getElementById('jenis-kelamin-bayi').value,
+                tglLahir: document.getElementById('tanggal-lahir-bayi').value,
+                beratLahir: document.getElementById('berat-lahir').value,
+                panjangLahir: document.getElementById('panjang-lahir').value,
+                apgar1: document.getElementById('total-apgar1').value,
+                apgar5: document.getElementById('total-apgar5').value
+            };
+
+            console.log('Data Bayi Baru Lahir:', data);
+            alert(`✅ Data bayi baru lahir berhasil disimpan!\n\nNama Bayi: ${data.namaBayi}\nTanggal Lahir: ${data.tglLahir}\nAPGAR 1min: ${data.apgar1} | APGAR 5min: ${data.apgar5}`);
+            resetForm();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Pasien - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+
+        /* Sidebar Pasien */
+        .sidebar-patient {
+            width: 280px;
+            background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%);
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            padding: 20px;
+            color: white;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        
+        .sidebar-patient .logo {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-patient .logo i {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #00d4ff;
+        }
+        
+        .sidebar-patient .logo h2 {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .patient-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .patient-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .patient-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .patient-menu a:hover {
+            background: rgba(255,255,255,0.1);
+            padding-left: 20px;
+        }
+        
+        .patient-menu a.active {
+            background: rgba(0,212,255,0.2);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .patient-menu a i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Topbar */
+        .topbar-patient {
+            position: fixed;
+            top: 0;
+            left: 280px;
+            right: 0;
+            height: 70px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 99;
+        }
+
+        .topbar-title h1 {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification-icon {
+            position: relative;
+            font-size: 1.3em;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e74c3c;
+            color: white;
+            font-size: 0.6em;
+            padding: 2px 5px;
+            border-radius: 10px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-info .name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .user-info .role {
+            font-size: 0.85em;
+            color: #666;
+        }
+        
+        /* Main Content */
+        .main-content-patient {
+            margin-left: 280px;
+            margin-top: 70px;
+            padding: 0;
+            min-height: calc(100vh - 70px);
+            background: #f5f7fa;
+        }
+        
+        /* Welcome Section */
+        .welcome-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-30px, 30px) rotate(180deg); }
+        }
+        
+        .welcome-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+            z-index: 1;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .patient-greeting h2 {
+            font-size: 2.5em;
+            margin: 0 0 10px 0;
+            font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .patient-greeting p {
+            color: #eaf6ff;
+            font-size: 1.15em;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+        
+        .patient-rm {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 20px 35px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .patient-rm .label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .patient-rm .value {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        /* Quick Stats */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.12);
+            padding: 25px;
+            border-radius: 14px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            background: rgba(255,255,255,0.18);
+            transform: translateY(-4px);
+            border-color: rgba(255,255,255,0.25);
+        }
+        
+        .stat-card .icon {
+            font-size: 2.5em;
+            margin-bottom: 12px;
+            opacity: 0.95;
+        }
+        
+        .stat-card .number {
+            font-size: 2.3em;
+            font-weight: 800;
+            margin: 8px 0;
+        }
+        
+        .stat-card .label {
+            font-size: 0.95em;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+        
+        /* Dashboard Content */
+        .dashboard-content {
+            padding: 30px 40px;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #667eea;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            border-color: rgba(102, 126, 234, 0.2);
+        }
+        
+        .card-header {
+            display: grid;
+            grid-template-columns: 52px 1fr;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+        
+        .card-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4em;
+            flex-shrink: 0;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+        }
+        
+        .card-icon.blue {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .card-icon.green {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+        
+        .card-icon.orange {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .card-icon.purple {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .card-icon.yellow {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+        }
+
+        .card-icon.red {
+            background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+            color: white;
+        }
+        
+        .card-title {
+            font-size: 1.32em;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0;
+            line-height: 1;
+            text-align: left;
+            white-space: nowrap;
+        }
+        
+        .card-content {
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 18px;
+            font-size: 0.95em;
+        }
+        
+        .card-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #667eea;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .card-button i {
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar-patient">
+        <div class="logo">
+            <i class="fas fa-hospital"></i>
+            <h2>RS JAYA SEHAT</h2>
+        </div>
+        
+        <ul class="patient-menu">
+            <li><a href="portal-pasien.html" class="active"><i class="fas fa-home"></i> Beranda</a></li>
+
+            <li><a href="riwayat-kunjungan-pasien.html"><i class="fas fa-history"></i> Riwayat Kunjungan</a></li>
+            <li><a href="janji-temu-pasien.html"><i class="fas fa-calendar-check"></i> Janji Temu</a></li>
+            <li><a href="hasil-lab-pasien.html"><i class="fas fa-flask"></i> Hasil Laboratorium</a></li>
+            <li><a href="resep-obat-pasien.html"><i class="fas fa-pills"></i> Resep & Obat</a></li>
+            <li><a href="pembayaran-pasien.html"><i class="fas fa-credit-card"></i> Pembayaran</a></li>
+            <li><a href="profil-pasien.html"><i class="fas fa-cog"></i> Pengaturan Profil</a></li>
+            <li><a href="index.html"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
+        </ul>
+    </aside>
+
+    <!-- Topbar -->
+    <div class="topbar-patient">
+        <div class="topbar-title">
+            <h1>Portal Pasien</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="notification-icon">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <div class="user-avatar">P</div>
+                <div class="user-info">
+                    <div class="name">Pasien</div>
+                    <div class="role">Pasien</div>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content-patient">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <div class="welcome-header">
+                <div class="patient-greeting">
+                    <h2>Selamat Datang! 👋</h2>
+                    <p>Semoga Anda dalam keadaan sehat</p>
+                </div>
+                <div class="patient-rm">
+                    <div class="label">No. Rekam Medis</div>
+                    <div class="value">RM-2025-00001</div>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="quick-stats">
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-calendar-check"></i></div>
+                    <div class="number">3</div>
+                    <div class="label">Kunjungan Bulan Ini</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-clock"></i></div>
+                    <div class="number">1</div>
+                    <div class="label">Janji Temu Pending</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-flask"></i></div>
+                    <div class="number">2</div>
+                    <div class="label">Hasil Lab Baru</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                    <div class="number">0</div>
+                    <div class="label">Tagihan Belum Lunas</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Content -->
+        <section class="dashboard-content">
+            <h3 class="section-title"><i class="fas fa-th-large"></i> Menu Layanan Pasien</h3>
+            
+            <div class="dashboard-grid">
+                <!-- Identitas Pasien -->
+                <a href="profil-pasien.html" class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon blue">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="card-title">Identitas Saya</div>
+                    </div>
+                    <div class="card-content">
+                        Lihat dan lengkapi data identitas diri, alamat, kontak darurat, dan informasi pribadi lainnya.
+                    </div>
+                    <span class="card-button">Lihat Detail <i class="fas fa-arrow-right"></i></span>
+                </a>
+
+                <!-- Riwayat Kunjungan -->
+                <a href="riwayat-kunjungan-pasien.html" class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon green">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <div class="card-title">Riwayat Kunjungan</div>
+                    </div>
+                    <div class="card-content">
+                        Akses seluruh riwayat kunjungan, diagnosis, tindakan medis, dan catatan pemeriksaan Anda.
+                    </div>
+                    <span class="card-button">Lihat Riwayat <i class="fas fa-arrow-right"></i></span>
+                </a>
+
+                <!-- Janji Temu -->
+                <a href="janji-temu-pasien.html" class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon orange">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="card-title">Janji Temu</div>
+                    </div>
+                    <div class="card-content">
+                        Buat janji temu baru, lihat jadwal konsultasi, atau batalkan janji yang sudah ada.
+                    </div>
+                    <span class="card-button">Buat Janji <i class="fas fa-arrow-right"></i></span>
+                </a>
+
+                <!-- Hasil Lab -->
+                <a href="hasil-lab-pasien.html" class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon purple">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <div class="card-title">Hasil Laboratorium</div>
+                    </div>
+                    <div class="card-content">
+                        Download dan lihat hasil pemeriksaan laboratorium lengkap dengan interpretasi nilai normal.
+                    </div>
+                    <span class="card-button">Lihat Hasil <i class="fas fa-arrow-right"></i></span>
+                </a>
+
+                <!-- Resep & Obat -->
+                <a href="resep-obat-pasien.html" class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon yellow">
+                            <i class="fas fa-pills"></i>
+                        </div>
+                        <div class="card-title">Resep & Obat</div>
+                    </div>
+                    <div class="card-content">
+                        Lihat resep obat yang diberikan dokter, aturan pakai, dan riwayat pengambilan obat di farmasi.
+                    </div>
+                    <span class="card-button">Lihat Resep <i class="fas fa-arrow-right"></i></span>
+                </a>
+
+                <!-- Pembayaran -->
+                <a href="pembayaran-pasien.html" class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon red">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <div class="card-title">Pembayaran</div>
+                    </div>
+                    <div class="card-content">
+                        Cek tagihan, riwayat pembayaran, dan lakukan pembayaran online untuk layanan kesehatan.
+                    </div>
+                    <span class="card-button">Lihat Tagihan <i class="fas fa-arrow-right"></i></span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/role-manager.js"></script>
+    <script>
+        // Cek akses halaman - hanya untuk role pasien
+        checkPageAccess('pasien');
+    </script>
+</body>
+</html>

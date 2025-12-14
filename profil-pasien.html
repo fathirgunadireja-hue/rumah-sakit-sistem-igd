@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan Profil - Portal Pasien</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+
+        .sidebar-patient {
+            width: 280px;
+            background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%);
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            padding: 20px;
+            color: white;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        
+        .sidebar-patient .logo {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-patient .logo i {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #00d4ff;
+        }
+        
+        .sidebar-patient .logo h2 {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .patient-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .patient-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .patient-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .patient-menu a:hover {
+            background: rgba(255,255,255,0.1);
+            padding-left: 20px;
+        }
+        
+        .patient-menu a.active {
+            background: rgba(0,212,255,0.2);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .patient-menu a i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .topbar-patient {
+            position: fixed;
+            top: 0;
+            left: 280px;
+            right: 0;
+            height: 70px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 99;
+        }
+
+        .topbar-title h1 {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification-icon {
+            position: relative;
+            font-size: 1.3em;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e74c3c;
+            color: white;
+            font-size: 0.6em;
+            padding: 2px 5px;
+            border-radius: 10px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-info .name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .user-info .role {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .main-content-patient {
+            margin-left: 280px;
+            margin-top: 70px;
+            padding: 30px 40px;
+            min-height: calc(100vh - 70px);
+        }
+
+        .page-header {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .page-header h2 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .page-header p {
+            color: #666;
+        }
+
+        .profile-container {
+            display: grid;
+            gap: 25px;
+        }
+
+        .profile-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .section-header h3 {
+            color: #333;
+            font-size: 1.3em;
+        }
+
+        .section-header i {
+            color: #667eea;
+            font-size: 1.5em;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-grid.single {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px 14px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fafbfc;
+            transition: all 0.3s ease;
+            color: #333;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder,
+        .form-group select {
+            color: #999;
+        }
+
+        .form-group input:hover,
+        .form-group select:hover,
+        .form-group textarea:hover {
+            border-color: #d0d0d0;
+            background: #f5f7fa;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.08);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+            line-height: 1.5;
+        }
+
+        .profile-photo-section {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .current-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3em;
+            font-weight: bold;
+        }
+
+        .photo-actions {
+            flex: 1;
+        }
+
+        .photo-actions h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .photo-actions p {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-upload {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-upload:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-remove {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        .btn-remove:hover {
+            background: #dee2e6;
+        }
+
+        .password-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 12px 30px;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(17, 153, 142, 0.4);
+        }
+
+        .btn-cancel {
+            background: #e9ecef;
+            color: #333;
+            padding: 12px 30px;
+        }
+
+        .btn-cancel:hover {
+            background: #dee2e6;
+        }
+
+        .alert-section {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-section i {
+            color: #856404;
+            margin-right: 10px;
+        }
+
+        .alert-section p {
+            color: #856404;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar-patient">
+        <div class="logo">
+            <i class="fas fa-hospital"></i>
+            <h2>RS JAYA SEHAT</h2>
+        </div>
+        
+        <ul class="patient-menu">
+            <li><a href="portal-pasien.html"><i class="fas fa-home"></i> Beranda</a></li>
+            <li><a href="riwayat-kunjungan-pasien.html"><i class="fas fa-history"></i> Riwayat Kunjungan</a></li>
+            <li><a href="janji-temu-pasien.html"><i class="fas fa-calendar-check"></i> Janji Temu</a></li>
+            <li><a href="hasil-lab-pasien.html"><i class="fas fa-flask"></i> Hasil Laboratorium</a></li>
+            <li><a href="resep-obat-pasien.html"><i class="fas fa-pills"></i> Resep & Obat</a></li>
+            <li><a href="pembayaran-pasien.html"><i class="fas fa-credit-card"></i> Pembayaran</a></li>
+            <li><a href="profil-pasien.html" class="active"><i class="fas fa-cog"></i> Pengaturan Profil</a></li>
+            <li><a href="index.html"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
+        </ul>
+    </aside>
+
+    <div class="topbar-patient">
+        <div class="topbar-title">
+            <h1>Pengaturan Profil</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="notification-icon">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <div class="user-avatar">P</div>
+                <div class="user-info">
+                    <div class="name">Pasien</div>
+                    <div class="role">Pasien</div>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </div>
+
+    <main class="main-content-patient">
+        <div class="page-header">
+            <h2><i class="fas fa-cog"></i> Pengaturan Profil</h2>
+            <p>Kelola informasi pribadi dan keamanan akun Anda</p>
+        </div>
+
+        <div class="profile-container">
+            <!-- Foto Profil -->
+            <div class="profile-section">
+                <div class="section-header">
+                    <i class="fas fa-camera"></i>
+                    <h3>Foto Profil</h3>
+                </div>
+
+                <div class="profile-photo-section">
+                    <div class="current-photo">P</div>
+                    <div class="photo-actions">
+                        <h4>Foto Profil Anda</h4>
+                        <p>Format: JPG, PNG (Max 2MB). Foto akan ditampilkan di profil Anda.</p>
+                        <div class="btn-group">
+                            <button class="btn btn-upload">
+                                <i class="fas fa-upload"></i> Upload Foto Baru
+                            </button>
+                            <button class="btn btn-remove">
+                                <i class="fas fa-trash"></i> Hapus Foto
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Pribadi -->
+            <div class="profile-section">
+                <div class="section-header">
+                    <i class="fas fa-user"></i>
+                    <h3>Data Pribadi</h3>
+                </div>
+
+                <form id="profileForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><span class="required">*</span> Nama Lengkap</label>
+                            <input type="text" value="Ahmad Pasien" placeholder="Nama lengkap">
+                        </div>
+
+                        <div class="form-group">
+                            <label><span class="required">*</span> NIK</label>
+                            <input type="text" value="3201012345678901" placeholder="16 digit NIK">
+                        </div>
+
+                        <div class="form-group">
+                            <label><span class="required">*</span> Tanggal Lahir</label>
+                            <input type="date" value="1990-05-15">
+                        </div>
+
+                        <div class="form-group">
+                            <label><span class="required">*</span> Jenis Kelamin</label>
+                            <select>
+                                <option>Laki-laki</option>
+                                <option>Perempuan</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label><span class="required">*</span> Email</label>
+                            <input type="email" value="ahmad.pasien@email.com" placeholder="email@example.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label><span class="required">*</span> Nomor Telepon</label>
+                            <input type="tel" value="081234567890" placeholder="08xxxxxxxxxx">
+                        </div>
+                    </div>
+
+                    <div class="form-grid single" style="margin-top: 20px;">
+                        <div class="form-group">
+                            <label><span class="required">*</span> Alamat Lengkap</label>
+                            <textarea placeholder="Alamat lengkap">Jl. Merdeka No. 123, RT 01/RW 05, Kelurahan Sukamaju, Kecamatan Bandung Selatan, Kota Bandung, Jawa Barat 40123</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-cancel">
+                            <i class="fas fa-times"></i> Batal
+                        </button>
+                        <button type="submit" class="btn btn-save">
+                            <i class="fas fa-save"></i> Simpan Perubahan
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Kontak Darurat -->
+            <div class="profile-section">
+                <div class="section-header">
+                    <i class="fas fa-phone-alt"></i>
+                    <h3>Kontak Darurat</h3>
+                </div>
+
+                <form id="emergencyForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><span class="required">*</span> Nama Kontak</label>
+                            <input type="text" value="Budi Santoso" placeholder="Nama lengkap">
+                        </div>
+
+                        <div class="form-group">
+                            <label><span class="required">*</span> Hubungan</label>
+                            <select>
+                                <option>Suami/Istri</option>
+                                <option>Orang Tua</option>
+                                <option>Anak</option>
+                                <option>Saudara</option>
+                                <option>Teman</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label><span class="required">*</span> Nomor Telepon</label>
+                            <input type="tel" value="082198765432" placeholder="08xxxxxxxxxx">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email (Opsional)</label>
+                            <input type="email" value="budi.santoso@email.com" placeholder="email@example.com">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-cancel">
+                            <i class="fas fa-times"></i> Batal
+                        </button>
+                        <button type="submit" class="btn btn-save">
+                            <i class="fas fa-save"></i> Simpan Perubahan
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Riwayat Kesehatan -->
+            <div class="profile-section">
+                <div class="section-header">
+                    <i class="fas fa-notes-medical"></i>
+                    <h3>Riwayat Kesehatan</h3>
+                </div>
+
+                <form id="healthForm">
+                    <div class="form-grid single">
+                        <div class="form-group">
+                            <label>Riwayat Alergi</label>
+                            <textarea placeholder="Contoh: Alergi obat penisilin, alergi seafood, dll.">Tidak ada riwayat alergi</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Riwayat Penyakit</label>
+                            <textarea placeholder="Contoh: Diabetes, hipertensi, asma, dll.">Hipertensi Grade 1 (sejak 2020)</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Obat yang Sedang Dikonsumsi</label>
+                            <textarea placeholder="Nama obat dan dosis">Amlodipine 5mg (1x sehari), Simvastatin 20mg (malam hari)</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-cancel">
+                            <i class="fas fa-times"></i> Batal
+                        </button>
+                        <button type="submit" class="btn btn-save">
+                            <i class="fas fa-save"></i> Simpan Perubahan
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Keamanan -->
+            <div class="profile-section">
+                <div class="section-header">
+                    <i class="fas fa-lock"></i>
+                    <h3>Keamanan Akun</h3>
+                </div>
+
+                <div class="alert-section">
+                    <i class="fas fa-info-circle"></i>
+                    <p>Untuk keamanan akun Anda, pastikan password minimal 8 karakter dengan kombinasi huruf dan angka.</p>
+                </div>
+
+                <form id="securityForm">
+                    <div class="password-grid">
+                        <div class="form-group">
+                            <label><span class="required">*</span> Password Lama</label>
+                            <input type="password" placeholder="Masukkan password lama">
+                        </div>
+
+                        <div class="form-group">
+                            <label><span class="required">*</span> Password Baru</label>
+                            <input type="password" placeholder="Minimal 8 karakter">
+                        </div>
+
+                        <div class="form-group">
+                            <label><span class="required">*</span> Konfirmasi Password Baru</label>
+                            <input type="password" placeholder="Ulangi password baru">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-cancel">
+                            <i class="fas fa-times"></i> Batal
+                        </button>
+                        <button type="submit" class="btn btn-save">
+                            <i class="fas fa-key"></i> Ubah Password
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/role-manager.js"></script>
+    <script>
+        checkPageAccess('pasien');
+
+        // Form submissions
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('✅ Data pribadi berhasil diperbarui!');
+        });
+
+        document.getElementById('emergencyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('✅ Kontak darurat berhasil diperbarui!');
+        });
+
+        document.getElementById('healthForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('✅ Riwayat kesehatan berhasil diperbarui!');
+        });
+
+        document.getElementById('securityForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('✅ Password berhasil diubah! Silakan login kembali.');
+        });
+    </script>
+</body>
+</html>

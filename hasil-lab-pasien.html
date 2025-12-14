@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Laboratorium - Portal Pasien</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+
+        .sidebar-patient {
+            width: 280px;
+            background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%);
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            padding: 20px;
+            color: white;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        
+        .sidebar-patient .logo {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-patient .logo i {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #00d4ff;
+        }
+        
+        .sidebar-patient .logo h2 {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .patient-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .patient-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .patient-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .patient-menu a:hover {
+            background: rgba(255,255,255,0.1);
+            padding-left: 20px;
+        }
+        
+        .patient-menu a.active {
+            background: rgba(0,212,255,0.2);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .patient-menu a i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .topbar-patient {
+            position: fixed;
+            top: 0;
+            left: 280px;
+            right: 0;
+            height: 70px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 99;
+        }
+
+        .topbar-title h1 {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .notification-icon {
+            position: relative;
+            font-size: 1.3em;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e74c3c;
+            color: white;
+            font-size: 0.6em;
+            padding: 2px 5px;
+            border-radius: 10px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-info .name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .user-info .role {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .main-content-patient {
+            margin-left: 280px;
+            margin-top: 70px;
+            padding: 30px 40px;
+            min-height: calc(100vh - 70px);
+        }
+
+        .page-header {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .page-header h2 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .page-header p {
+            color: #666;
+        }
+
+        .lab-results {
+            display: grid;
+            gap: 20px;
+        }
+
+        .lab-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        .lab-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .lab-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .lab-info h3 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .lab-date {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .status-ready {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-processing {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .lab-details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .lab-details h4 {
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .result-table th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .result-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .result-table tr:hover {
+            background: #f5f7fa;
+        }
+
+        .result-normal {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .result-abnormal {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .lab-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar-patient">
+        <div class="logo">
+            <i class="fas fa-hospital"></i>
+            <h2>RS JAYA SEHAT</h2>
+        </div>
+        
+        <ul class="patient-menu">
+            <li><a href="portal-pasien.html"><i class="fas fa-home"></i> Beranda</a></li>
+            <li><a href="riwayat-kunjungan-pasien.html"><i class="fas fa-history"></i> Riwayat Kunjungan</a></li>
+            <li><a href="janji-temu-pasien.html"><i class="fas fa-calendar-check"></i> Janji Temu</a></li>
+            <li><a href="hasil-lab-pasien.html" class="active"><i class="fas fa-flask"></i> Hasil Laboratorium</a></li>
+            <li><a href="resep-obat-pasien.html"><i class="fas fa-pills"></i> Resep & Obat</a></li>
+            <li><a href="pembayaran-pasien.html"><i class="fas fa-credit-card"></i> Pembayaran</a></li>
+            <li><a href="profil-pasien.html"><i class="fas fa-cog"></i> Pengaturan Profil</a></li>
+            <li><a href="index.html"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
+        </ul>
+    </aside>
+
+    <div class="topbar-patient">
+        <div class="topbar-title">
+            <h1>Hasil Laboratorium</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="notification-icon">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="user-profile">
+                <div class="user-avatar">P</div>
+                <div class="user-info">
+                    <div class="name">Pasien</div>
+                    <div class="role">Pasien</div>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </div>
+
+    <main class="main-content-patient">
+        <div class="page-header">
+            <h2><i class="fas fa-flask"></i> Hasil Pemeriksaan Laboratorium</h2>
+            <p>Akses dan download hasil laboratorium Anda</p>
+        </div>
+
+        <div class="lab-results">
+            <div class="lab-card">
+                <div class="lab-header">
+                    <div class="lab-info">
+                        <h3>Pemeriksaan Darah Lengkap</h3>
+                        <div class="lab-date">
+                            <i class="fas fa-calendar"></i> 2 November 2025
+                        </div>
+                    </div>
+                    <span class="status-badge status-ready">Hasil Tersedia</span>
+                </div>
+
+                <div class="lab-details">
+                    <h4><i class="fas fa-vial"></i> Hasil Pemeriksaan</h4>
+                    <table class="result-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Hasil</th>
+                                <th>Nilai Normal</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Hemoglobin (Hb)</td>
+                                <td>14.5 g/dL</td>
+                                <td>12-16 g/dL</td>
+                                <td class="result-normal">● Normal</td>
+                            </tr>
+                            <tr>
+                                <td>Leukosit</td>
+                                <td>8,200 /µL</td>
+                                <td>4,000-11,000 /µL</td>
+                                <td class="result-normal">● Normal</td>
+                            </tr>
+                            <tr>
+                                <td>Trombosit</td>
+                                <td>245,000 /µL</td>
+                                <td>150,000-400,000 /µL</td>
+                                <td class="result-normal">● Normal</td>
+                            </tr>
+                            <tr>
+                                <td>Eritrosit</td>
+                                <td>4.8 juta/µL</td>
+                                <td>4.5-5.5 juta/µL</td>
+                                <td class="result-normal">● Normal</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="lab-actions">
+                    <button class="btn btn-primary"><i class="fas fa-download"></i> Download PDF</button>
+                    <button class="btn btn-secondary"><i class="fas fa-print"></i> Cetak</button>
+                </div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-header">
+                    <div class="lab-info">
+                        <h3>Gula Darah & Profil Lipid</h3>
+                        <div class="lab-date">
+                            <i class="fas fa-calendar"></i> 2 November 2025
+                        </div>
+                    </div>
+                    <span class="status-badge status-ready">Hasil Tersedia</span>
+                </div>
+
+                <div class="lab-details">
+                    <h4><i class="fas fa-heartbeat"></i> Hasil Pemeriksaan</h4>
+                    <table class="result-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Hasil</th>
+                                <th>Nilai Normal</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Gula Darah Puasa</td>
+                                <td>105 mg/dL</td>
+                                <td>70-100 mg/dL</td>
+                                <td class="result-abnormal">▲ Tinggi</td>
+                            </tr>
+                            <tr>
+                                <td>Kolesterol Total</td>
+                                <td>185 mg/dL</td>
+                                <td>&lt;200 mg/dL</td>
+                                <td class="result-normal">● Normal</td>
+                            </tr>
+                            <tr>
+                                <td>HDL Kolesterol</td>
+                                <td>55 mg/dL</td>
+                                <td>&gt;40 mg/dL</td>
+                                <td class="result-normal">● Normal</td>
+                            </tr>
+                            <tr>
+                                <td>LDL Kolesterol</td>
+                                <td>110 mg/dL</td>
+                                <td>&lt;130 mg/dL</td>
+                                <td class="result-normal">● Normal</td>
+                            </tr>
+                            <tr>
+                                <td>Trigliserida</td>
+                                <td>145 mg/dL</td>
+                                <td>&lt;150 mg/dL</td>
+                                <td class="result-normal">● Normal</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="lab-actions">
+                    <button class="btn btn-primary"><i class="fas fa-download"></i> Download PDF</button>
+                    <button class="btn btn-secondary"><i class="fas fa-print"></i> Cetak</button>
+                </div>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-header">
+                    <div class="lab-info">
+                        <h3>Fungsi Ginjal</h3>
+                        <div class="lab-date">
+                            <i class="fas fa-calendar"></i> 15 Oktober 2025
+                        </div>
+                    </div>
+                    <span class="status-badge status-ready">Hasil Tersedia</span>
+                </div>
+
+                <div class="lab-details">
+                    <h4><i class="fas fa-notes-medical"></i> Hasil Pemeriksaan</h4>
+                    <table class="result-table">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Hasil</th>
+                                <th>Nilai Normal</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Ureum</td>
+                                <td>28 mg/dL</td>
+                                <td>10-50 mg/dL</td>
+                                <td class="result-normal">● Normal</td>
+                            </tr>
+                            <tr>
+                                <td>Kreatinin</td>
+                                <td>0.9 mg/dL</td>
+                                <td>0.6-1.2 mg/dL</td>
+                                <td class="result-normal">● Normal</td>
+                            </tr>
+                            <tr>
+                                <td>Asam Urat</td>
+                                <td>5.2 mg/dL</td>
+                                <td>3.5-7.0 mg/dL</td>
+                                <td class="result-normal">● Normal</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="lab-actions">
+                    <button class="btn btn-primary"><i class="fas fa-download"></i> Download PDF</button>
+                    <button class="btn btn-secondary"><i class="fas fa-print"></i> Cetak</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/role-manager.js"></script>
+    <script>
+        checkPageAccess('pasien');
+    </script>
+</body>
+</html>

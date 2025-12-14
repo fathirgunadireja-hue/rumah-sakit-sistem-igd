@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identitas Pasien Tidak Dikenal - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .warning-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .info-box {
+            background: #d1ecf1;
+            border: 2px solid #0c5460;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            color: #0c5460;
+        }
+        .physical-desc {
+            background: #f0f7ff;
+            border-left: 4px solid #0066cc;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .physical-desc textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1rem;
+            background: #fafbfc;
+            transition: all 0.3s ease;
+            color: #333;
+            margin-top: 8px;
+            resize: vertical;
+            min-height: 100px;
+            line-height: 1.5;
+        }
+
+        .physical-desc textarea::placeholder {
+            color: #999;
+        }
+
+        .physical-desc textarea:hover {
+            border-color: #d0d0d0;
+            background: #f5f7fa;
+        }
+
+        .physical-desc textarea:focus {
+            outline: none;
+            border-color: #0066cc;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.08);
+        }
+        .photo-section {
+            background: #f8f9fa;
+            border: 2px dashed #0066cc;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .photo-placeholder {
+            width: 200px;
+            height: 200px;
+            background: #e8e8e8;
+            border: 2px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            border-radius: 8px;
+            font-size: 3em;
+            color: #999;
+        }
+        .detail-item {
+            background: white;
+            border-left: 3px solid #00ccff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+        .detail-item label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+            color: #333;
+        }
+
+        .detail-item input,
+        .detail-item select,
+        .detail-item textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1rem;
+            background: #fafbfc;
+            transition: all 0.3s ease;
+            color: #333;
+            margin-top: 8px;
+        }
+
+        .detail-item input::placeholder,
+        .detail-item textarea::placeholder {
+            color: #999;
+        }
+
+        .detail-item input:hover,
+        .detail-item select:hover,
+        .detail-item textarea:hover {
+            border-color: #d0d0d0;
+            background: #f5f7fa;
+        }
+
+        .detail-item input:focus,
+        .detail-item select:focus,
+        .detail-item textarea:focus {
+            outline: none;
+            border-color: #0066cc;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.08);
+        }
+
+        .detail-item textarea {
+            resize: vertical;
+            min-height: 100px;
+            line-height: 1.5;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .status-unknown {
+            background: #ff7043;
+            color: white;
+        }
+        .status-identified {
+            background: #00cc44;
+            color: white;
+        }
+        .timeline-item {
+            background: #f8f9fa;
+            border-left: 4px solid #0066cc;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .timeline-title {
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Header -->
+            <div class="page-header">
+                <div>
+                    <h1><i class="fas fa-user-secret"></i> Identitas Pasien Tidak Dikenal</h1>
+                    <p>Formulir pendaftaran untuk pasien yang tidak dapat diidentifikasi</p>
+                </div>
+            </div>
+
+            <!-- Unknown Patient Form -->
+            <form class="patient-form" onsubmit="handleIdentitasUnknown(event)" novalidate>
+                
+                <!-- Registration Information -->
+                <div class="form-section">
+                    <h3><i class="fas fa-file-alt"></i> Informasi Pendaftaran</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-rm-unknown">No RM (Auto-Generate) <span class="required">*</span></label>
+                            <input type="text" id="no-rm-unknown" placeholder="RM-AUTO-000" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal-masuk-unknown">Tanggal & Jam Masuk <span class="required">*</span></label>
+                            <input type="datetime-local" id="tanggal-masuk-unknown" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="status-identitas">Status Identitas <span class="required">*</span></label>
+                            <select id="status-identitas" onchange="updateStatusIdentitas()" required>
+                                <option value="tidak-dikenal">Tidak Dikenal</option>
+                                <option value="partial-dikenal">Sebagian Teridentifikasi</option>
+                                <option value="hilang-ingatan">Amnesia/Lupa Identitas</option>
+                            </select>
+                            <span class="status-badge status-unknown" id="badge-status">Tidak Dikenal</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="pelapor">Nama Pelapor/Penemunya <span class="required">*</span></label>
+                            <input type="text" id="pelapor" placeholder="Siapa yang membawa pasien" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location Found Information -->
+                <div class="form-section">
+                    <h3><i class="fas fa-map-location-dot"></i> Informasi Penemuan</h3>
+                    <div class="timeline-item">
+                        <div class="timeline-title"><i class="fas fa-calendar-alt"></i> Waktu Penemuan</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tanggal-temuan">Tanggal Ditemukan <span class="required">*</span></label>
+                                <input type="date" id="tanggal-temuan" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="jam-temuan">Jam Ditemukan <span class="required">*</span></label>
+                                <input type="time" id="jam-temuan" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-item">
+                        <label for="lokasi-temuan">Lokasi Penemuan <span class="required">*</span></label>
+                        <input type="text" id="lokasi-temuan" placeholder="Alamat, jalan, tempat umum, dll" required>
+                    </div>
+
+                    <div class="detail-item">
+                        <label for="kondisi-temuan">Kondisi Saat Ditemukan <span class="required">*</span></label>
+                        <textarea id="kondisi-temuan" placeholder="Kondisi fisik, kesadaran, cedera, pakaian, dll saat ditemukan" required></textarea>
+                    </div>
+
+                    <div class="detail-item">
+                        <label for="cara-temuan">Cara/Cara Ditemukan <span class="required">*</span></label>
+                        <select id="cara-temuan" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="polisi">Dibawa oleh Polisi</option>
+                            <option value="ambulans">Ditangani Ambulans</option>
+                            <option value="masyarakat">Dibawa Masyarakat Umum</option>
+                            <option value="security">Dibawa Security/Keamanan</option>
+                            <option value="kecelakaan">Korban Kecelakaan Lalu Lintas</option>
+                            <option value="bencana">Korban Bencana</option>
+                            <option value="lainnya">Cara Lain</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Physical Description -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user"></i> Deskripsi Fisik Pasien</h3>
+                    <div class="info-box">
+                        <i class="fas fa-info-circle"></i> Catatan detail tentang ciri-ciri fisik untuk identifikasi
+                    </div>
+
+                    <div class="photo-section">
+                        <div>
+                            <div class="photo-placeholder"><i class="fas fa-camera"></i></div>
+                            <p style="margin-top: 15px; color: #666;">Foto/Dokumentasi Pasien</p>
+                            <input type="file" id="foto-pasien" accept="image/*" style="margin-top: 10px;">
+                        </div>
+                    </div>
+
+                    <div class="physical-desc">
+                        <div style="margin-bottom: 15px;">
+                            <label style="font-weight: bold; display: block; margin-bottom: 10px;">Estimasi Data Demografis</label>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="estimasi-umur">Estimasi Umur <span class="required">*</span></label>
+                                    <input type="text" id="estimasi-umur" placeholder="Contoh: 30-40 tahun" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="estimasi-gender">Estimasi Jenis Kelamin <span class="required">*</span></label>
+                                    <select id="estimasi-gender" required>
+                                        <option value="">-- Pilih --</option>
+                                        <option value="laki-laki">Laki-laki</option>
+                                        <option value="perempuan">Perempuan</option>
+                                        <option value="belum-pasti">Belum Pasti</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 15px;">
+                            <label style="font-weight: bold; display: block; margin-bottom: 10px;">Ciri-Ciri Tubuh</label>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="tinggi-badan">Estimasi Tinggi Badan (cm)</label>
+                                    <input type="number" id="tinggi-badan" placeholder="160-170">
+                                </div>
+                                <div class="form-group">
+                                    <label for="berat-badan">Estimasi Berat Badan (kg)</label>
+                                    <input type="number" id="berat-badan" placeholder="65">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 15px;">
+                            <label style="font-weight: bold; display: block; margin-bottom: 10px;">Ciri Wajah & Rambut</label>
+                            <textarea id="ciri-wajah" placeholder="Warna kulit, tipe rambut, warna rambut, wajah bulat/lonjong, hidung, telinga, dll" required></textarea>
+                        </div>
+
+                        <div style="margin-bottom: 15px;">
+                            <label style="font-weight: bold; display: block; margin-bottom: 10px;">Ciri Khusus (Tanda Lahir, Tato, Bekas Luka, dll)</label>
+                            <textarea id="ciri-khusus" placeholder="Ciri pengenalan lain yang membedakan (tato, bekas luka, tanda lahir, cacat, dll)"></textarea>
+                        </div>
+
+                        <div style="margin-bottom: 15px;">
+                            <label style="font-weight: bold; display: block; margin-bottom: 10px;">Pakaian/Aksesoris Saat Ditemukan</label>
+                            <textarea id="pakaian" placeholder="Deskripsi lengkap pakaian, sepatu, tas, perhiasan, jam tangan, dll" required></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Identifying Items -->
+                <div class="form-section">
+                    <h3><i class="fas fa-key"></i> Barang-Barang Identitas yang Dibawa</h3>
+                    
+                    <div class="detail-item">
+                        <label for="barang-identitas">Barang/Dokumen yang Dapat Membantu Identifikasi <span class="required">*</span></label>
+                        <textarea id="barang-identitas" placeholder="Kartu identitas, pas foto, surat, ponsel, dompet, atau barang lain" required></textarea>
+                    </div>
+
+                    <div class="detail-item">
+                        <label for="penyimpanan-barang">Penyimpanan Barang Berharga <span class="required">*</span></label>
+                        <textarea id="penyimpanan-barang" placeholder="Dimana barang-barang tersimpan, siapa yang mengurus, nomor inventaris" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Medical Information -->
+                <div class="form-section">
+                    <h3><i class="fas fa-stethoscope"></i> Informasi Medis</h3>
+                    
+                    <div class="detail-item">
+                        <label for="kondisi-kesehatan">Kondisi Kesehatan Saat Masuk <span class="required">*</span></label>
+                        <textarea id="kondisi-kesehatan" placeholder="Luka, penyakit, alergi, kondisi akut yang terlihat, dll" required></textarea>
+                    </div>
+
+                    <div class="detail-item">
+                        <label for="bahasa-pasien">Bahasa yang Digunakan Pasien <span class="required">*</span></label>
+                        <input type="text" id="bahasa-pasien" placeholder="Indonesia, Inggris, Daerah, dll" required>
+                    </div>
+
+                    <div class="detail-item">
+                        <label for="informasi-tambahan">Informasi Tambahan Penting</label>
+                        <textarea id="informasi-tambahan" placeholder="Informasi lain yang dapat membantu identifikasi"></textarea>
+                    </div>
+                </div>
+
+                <!-- Missing Person Report -->
+                <div class="form-section">
+                    <h3><i class="fas fa-search"></i> Laporan Orang Hilang</h3>
+                    
+                    <div class="detail-item">
+                        <label for="laporan-polisi">Nomor Laporan Polisi (jika ada)</label>
+                        <input type="text" id="laporan-polisi" placeholder="No LP/Kasus Polisi">
+                    </div>
+
+                    <div class="detail-item">
+                        <label for="nomor-polda">Nomor POLDA/Polres</label>
+                        <input type="text" id="nomor-polda" placeholder="Lokasi kepolisian yang melaporkan">
+                    </div>
+
+                    <div class="detail-item">
+                        <label for="kontak-polisi">Nomor Kontak Polisi</label>
+                        <input type="tel" id="kontak-polisi" placeholder="Nomor untuk follow-up">
+                    </div>
+                </div>
+
+                <!-- Status Update -->
+                <div class="form-section">
+                    <h3><i class="fas fa-sync-alt"></i> Pembaruan Status Identifikasi</h3>
+                    
+                    <div class="detail-item">
+                        <label for="teridentifikasi">Pasien Sudah Teridentifikasi? <span class="required">*</span></label>
+                        <select id="teridentifikasi" onchange="updateIdentifikasiStatus()" required>
+                            <option value="belum">Belum Teridentifikasi</option>
+                            <option value="sudah">Sudah Teridentifikasi</option>
+                        </select>
+                    </div>
+
+                    <div id="data-identifikasi" style="display: none;">
+                        <div class="detail-item">
+                            <label for="nama-teridentifikasi">Nama Sebenarnya yang Ditemukan</label>
+                            <input type="text" id="nama-teridentifikasi" placeholder="Nama lengkap pasien">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tgl-identifikasi">Tanggal Teridentifikasi</label>
+                                <input type="date" id="tgl-identifikasi">
+                            </div>
+                            <div class="form-group">
+                                <label for="cara-identifikasi">Cara Identifikasi</label>
+                                <input type="text" id="cara-identifikasi" placeholder="Pengenalan keluarga, DNA, dokumen, dll">
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <label for="kontak-keluarga-ditemukan">Kontak Keluarga/Kenal</label>
+                            <input type="tel" id="kontak-keluarga-ditemukan" placeholder="Nomor yang bisa dihubungi">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Provider Information -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user-md"></i> Data Petugas Pendaftar</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nama-petugas-unknown">Nama Petugas <span class="required">*</span></label>
+                            <input type="text" id="nama-petugas-unknown" placeholder="Nama petugas pendaftar" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nip-petugas-unknown">NIP Petugas <span class="required">*</span></label>
+                            <input type="text" id="nip-petugas-unknown" placeholder="NIP" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tanggal-pendaftaran-unknown">Tanggal Pendaftaran <span class="required">*</span></label>
+                        <input type="date" id="tanggal-pendaftaran-unknown" required>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" onclick="window.print()" class="btn btn-secondary">
+                        <i class="fas fa-print"></i> Cetak
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Data Pasien Tidak Dikenal
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/role-manager.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-generate RM
+            const timestamp = Date.now().toString().slice(-6);
+            document.getElementById('no-rm-unknown').value = `RM-UNK-${timestamp}`;
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggal-masuk-unknown').value = today;
+            document.getElementById('tanggal-temuan').value = today;
+            document.getElementById('tanggal-pendaftaran-unknown').value = today;
+            
+            roleManager.requireLogin(['perawat', 'dokter', 'pmik', 'admin']);
+            roleManager.updateNavbarProfile();
+        });
+
+        function updateStatusIdentitas() {
+            const status = document.getElementById('status-identitas').value;
+            const badge = document.getElementById('badge-status');
+            
+            const statusMap = {
+                'tidak-dikenal': { text: 'Tidak Dikenal', class: 'status-unknown' },
+                'partial-dikenal': { text: 'Sebagian Teridentifikasi', class: 'status-warning' },
+                'hilang-ingatan': { text: 'Amnesia', class: 'status-warning' }
+            };
+            
+            if (statusMap[status]) {
+                badge.textContent = statusMap[status].text;
+                badge.className = 'status-badge ' + statusMap[status].class;
+            }
+        }
+
+        function updateIdentifikasiStatus() {
+            const teridentifikasi = document.getElementById('teridentifikasi').value;
+            const dataSection = document.getElementById('data-identifikasi');
+            dataSection.style.display = teridentifikasi === 'sudah' ? 'block' : 'none';
+        }
+
+        function handleIdentitasUnknown(event) {
+            event.preventDefault();
+
+            const requiredFields = [
+                'tanggal-masuk-unknown',
+                'status-identitas',
+                'pelapor',
+                'tanggal-temuan',
+                'jam-temuan',
+                'lokasi-temuan',
+                'kondisi-temuan',
+                'cara-temuan',
+                'estimasi-umur',
+                'estimasi-gender',
+                'ciri-wajah',
+                'pakaian',
+                'barang-identitas',
+                'penyimpanan-barang',
+                'kondisi-kesehatan',
+                'bahasa-pasien',
+                'teridentifikasi',
+                'nama-petugas-unknown',
+                'nip-petugas-unknown',
+                'tanggal-pendaftaran-unknown'
+            ];
+
+            for (let field of requiredFields) {
+                const element = document.getElementById(field);
+                if (!element.value.trim()) {
+                    alert(`⚠️ Kolom "${element.previousElementSibling?.textContent || field}" harus diisi!`);
+                    return;
+                }
+            }
+
+            const data = {
+                noRM: document.getElementById('no-rm-unknown').value,
+                tglMasuk: document.getElementById('tanggal-masuk-unknown').value,
+                status: document.getElementById('status-identitas').value,
+                lokasi: document.getElementById('lokasi-temuan').value
+            };
+
+            console.log('Data Pasien Tidak Dikenal:', data);
+            alert(`✅ Data pasien tidak dikenal berhasil disimpan!\n\nNo RM: ${data.noRM}\nStatus: ${data.status}`);
+            resetForm();
+        }
+    </script>
+</body>
+</html>

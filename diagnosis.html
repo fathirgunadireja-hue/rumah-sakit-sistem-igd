@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnosis - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .diagnosis-box {
+            background: #f0f7ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .diagnosis-title {
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 12px;
+            font-size: 1.05em;
+        }
+        .icd-input-group {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .icd-input-group input {
+            flex: 1;
+        }
+        .icd-input-group button {
+            padding: 10px 15px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .icd-input-group button:hover {
+            background: #0052a3;
+        }
+        .diagnosis-list {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .diagnosis-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            margin: 8px 0;
+            border-left: 4px solid #0066cc;
+        }
+        .diagnosis-item.primary {
+            border-left-color: #ff4444;
+            background: #fff5f5;
+        }
+        .diagnosis-item.working {
+            border-left-color: #ffcc00;
+            background: #fffbf0;
+        }
+        .diagnosis-item.differential {
+            border-left-color: #00ccff;
+            background: #f0fbff;
+        }
+        .diagnosis-code {
+            font-family: monospace;
+            background: white;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+            color: #0066cc;
+        }
+        .diagnosis-remove {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        .diagnosis-remove:hover {
+            background: #dd3333;
+        }
+        .taxonomy-info {
+            background: #fff9e6;
+            border-left: 4px solid #ffcc00;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+        @media (max-width: 768px) {
+            .icd-input-group {
+                flex-direction: column;
+            }
+            .diagnosis-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        .role-indicator {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .role-indicator.pmik {
+            background: #cfe2ff;
+            color: #084298;
+        }
+        .role-indicator.perawat {
+            background: #d1e7dd;
+            color: #0a3622;
+        }
+        .role-indicator.dokter {
+            background: #f8d7da;
+            color: #842029;
+        }
+        .form-section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .medication-list {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard-admin.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="identitas-pasien.html" class="nav-item">
+                    <i class="fas fa-id-card"></i>
+                    <span>Identifikasi Pasien</span>
+                </a>
+                <a href="daftar-kunjungan.html" class="nav-item">
+                    <i class="fas fa-list"></i>
+                    <span>Daftar Kunjungan</span>
+                </a>
+                <a href="general-consent.html" class="nav-item">
+                    <i class="fas fa-file-contract"></i>
+                    <span>General Consent</span>
+                </a>
+                <a href="triase-igd.html" class="nav-item">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>Triase IGD</span>
+                </a>
+                <a href="assessment-igd.html" class="nav-item">
+                    <i class="fas fa-stethoscope"></i>
+                    <span>Assessment IGD</span>
+                </a>
+                <a href="pemeriksaan-fisik-1.html" class="nav-item">
+                    <i class="fas fa-procedures"></i>
+                    <span>Pemeriksaan Fisik</span>
+                </a>
+                <a href="laboratorium-1.html" class="nav-item">
+                    <i class="fas fa-flask"></i>
+                    <span>Laboratorium</span>
+                </a>
+                <a href="diagnosis.html" class="nav-item active">
+                    <i class="fas fa-file-medical"></i>
+                    <span>Diagnosis</span>
+                </a>
+                <a href="farmasi.html" class="nav-item">
+                    <i class="fas fa-prescription-bottle"></i>
+                    <span>Farmasi</span>
+                </a>
+                <a href="keuangan.html" class="nav-item">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Keuangan</span>
+                </a>
+                <a href="setting.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Pengaturan</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="form-header">
+                <h1><i class="fas fa-file-medical"></i> Diagnosis & Coding</h1>
+                <p>Input diagnosis dengan kode ICD-10 untuk pasien</p>
+            </div>
+
+            <!-- Diagnosis Form -->
+            <form class="patient-form" onsubmit="handleDiagnosis(event)" novalidate>
+                
+                <!-- Data Pasien Section -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-user-circle"></i> Data Pasien</h3>
+                    <span class="role-indicator pmik">PMIK</span>
+                </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-rm-diagnosis">No RM <span class="required">*</span></label>
+                            <input type="text" id="no-rm-diagnosis" placeholder="RM-2024-001" value="RM-2024-001" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama-pasien-diagnosis">Nama Pasien <span class="required">*</span></label>
+                            <input type="text" id="nama-pasien-diagnosis" placeholder="Nama lengkap pasien" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tanggal-diagnosis">Tanggal Diagnosis <span class="required">*</span></label>
+                            <input type="date" id="tanggal-diagnosis" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dokter-diagnosis">Dokter Pemeriksa <span class="required">*</span></label>
+                            <input type="text" id="dokter-diagnosis" placeholder="Nama dokter" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Anamnesis Section -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-stethoscope"></i> Anamnesis (Riwayat Penyakit)</h3>
+                    <span class="role-indicator dokter">Dokter</span>
+                </div>
+                    <div class="form-group">
+                        <label for="anamnesis">Anamnesis <span class="required">*</span></label>
+                        <textarea id="anamnesis" placeholder="Riwayat penyakit, keluhan utama pasien, durasi gejala, pengobatan yang pernah diberikan, alergi, riwayat kesehatan terdahulu, dll" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Primary Diagnosis / Diagnosis Utama -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-exclamation-circle"></i> Diagnosis Utama (Primary Diagnosis)</h3>
+                    <span class="role-indicator dokter">Dokter</span>
+                </div>
+                    
+                    <div class="diagnosis-box">
+                        <div class="diagnosis-title">Diagnosis Masuk/Awal</div>
+                        <div class="form-group">
+                            <label for="diagnosis-masuk">Diagnosis Awal Masuk Rumah Sakit <span class="required">*</span></label>
+                            <textarea id="diagnosis-masuk" placeholder="Diagnosis pada saat pasien masuk" required></textarea>
+                        </div>
+                        <div class="taxonomy-info">
+                            <strong>💡 Tips:</strong> Tuliskan diagnosis utama yang paling menonjol atau yang menjadi alasan pasien datang
+                        </div>
+                    </div>
+
+                    <div class="diagnosis-box">
+                        <div class="diagnosis-title">Diagnosis Akhir/Keluar</div>
+                        <div class="form-group">
+                            <label for="diagnosis-keluar">Diagnosis Saat Pasien Keluar <span class="required">*</span></label>
+                            <textarea id="diagnosis-keluar" placeholder="Diagnosis akhir setelah pemeriksaan lengkap" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="icd-primary">Kode ICD-10 Diagnosis Utama <span class="required">*</span></label>
+                            <input type="text" id="icd-primary" placeholder="Contoh: J18.9 (Pneumonia)" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="icd-severity">Tingkat Keparahan <span class="required">*</span></label>
+                            <select id="icd-severity" required>
+                                <option value="">-- Pilih --</option>
+                                <option value="ringan">Ringan</option>
+                                <option value="sedang">Sedang</option>
+                                <option value="berat">Berat</option>
+                                <option value="kritis">Kritis</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="primary-diagnosis-list" class="diagnosis-list">
+                        <div style="font-weight: bold; color: #0066cc; margin-bottom: 10px;">
+                            <i class="fas fa-list"></i> Daftar Diagnosis Utama
+                        </div>
+                        <div id="primary-list-items">
+                            <div style="color: #999; padding: 10px;">Belum ada diagnosis yang ditambahkan</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Working Diagnosis / Diagnosis Kerja -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-tasks"></i> Diagnosis Kerja (Working Diagnosis)</h3>
+                    <span class="role-indicator dokter">Dokter</span>
+                </div>
+                    
+                    <div class="diagnosis-box">
+                        <div class="diagnosis-title">Diagnosis Kerja Saat Ini</div>
+                        <div class="form-group">
+                            <label for="diagnosis-kerja">Diagnosis Kerja (Diagnosis yang paling mungkin berdasarkan temuan saat ini)</label>
+                            <textarea id="diagnosis-kerja" placeholder="Diagnosis yang sedang dipertimbangkan/dikerjakan"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="icd-kerja">Kode ICD-10 Diagnosis Kerja</label>
+                            <input type="text" id="icd-kerja" placeholder="Contoh: A09 (Diare)">
+                        </div>
+                        <div class="form-group">
+                            <label for="likelihood-kerja">Kemungkinan</label>
+                            <select id="likelihood-kerja">
+                                <option value="100">Pasti (100%)</option>
+                                <option value="75">Sangat Mungkin (75%)</option>
+                                <option value="50">Mungkin (50%)</option>
+                                <option value="25">Kurang Mungkin (25%)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="working-diagnosis-list" class="diagnosis-list">
+                        <div style="font-weight: bold; color: #ffcc00; margin-bottom: 10px;">
+                            <i class="fas fa-list"></i> Daftar Diagnosis Kerja
+                        </div>
+                        <div id="working-list-items">
+                            <div style="color: #999; padding: 10px;">Belum ada diagnosis yang ditambahkan</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Differential Diagnosis / Diagnosis Banding -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-code-branch"></i> Diagnosis Banding (Differential Diagnosis)</h3>
+                    <span class="role-indicator dokter">Dokter</span>
+                </div>
+                    
+                    <div class="diagnosis-box">
+                        <div class="diagnosis-title">Daftar Kemungkinan Diagnosis Lain</div>
+                        <div class="icd-input-group">
+                            <input type="text" id="icd-differential" placeholder="Contoh: J06.9 (Infeksi Saluran Pernapasan Atas)">
+                            <button type="button" onclick="addDifferentialDiagnosis()">
+                                <i class="fas fa-plus"></i> Tambah
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="differential-diagnosis-list" class="diagnosis-list">
+                        <div style="font-weight: bold; color: #00ccff; margin-bottom: 10px;">
+                            <i class="fas fa-list"></i> Daftar Diagnosis Banding
+                        </div>
+                        <div id="differential-list-items">
+                            <div style="color: #999; padding: 10px;">Belum ada diagnosis banding yang ditambahkan</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comorbidity & Complications -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-link"></i> Diagnosis Penyerta & Komplikasi</h3>
+                    <span class="role-indicator dokter">Dokter</span>
+                </div>
+                    
+                    <div class="form-group">
+                        <label for="komorbiditas">Komorbiditas (Penyakit Penyerta) <span class="required">*</span></label>
+                        <textarea id="komorbiditas" placeholder="Penyakit yang sudah diderita sebelumnya (contoh: Hipertensi, Diabetes)" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="komplikasi">Komplikasi Selama Perawatan</label>
+                        <textarea id="komplikasi" placeholder="Komplikasi yang terjadi selama pasien dirawat"></textarea>
+                    </div>
+                </div>
+
+                <!-- Clinical Explanation -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-comment-medical"></i> Penjelasan Klinis</h3>
+                    <span class="role-indicator dokter">Dokter</span>
+                </div>
+                    
+                    <div class="form-group">
+                        <label for="alasan-diagnosis">Alasan/Justifikasi Diagnosis <span class="required">*</span></label>
+                        <textarea id="alasan-diagnosis" placeholder="Penjelasan singkat mengapa diagnosis tersebut ditegakkan (berdasarkan anamnesis, pemeriksaan, hasil lab/imaging)" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="temuan-utama">Temuan Klinis Utama <span class="required">*</span></label>
+                        <textarea id="temuan-utama" placeholder="Temuan penting dari pemeriksaan fisik dan penunjang" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Prognosis -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-chart-line"></i> Prognosis</h3>
+                    <span class="role-indicator dokter">Dokter</span>
+                </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="prognosis-ad-vitam">Prognosis Ad Vitam <span class="required">*</span></label>
+                            <select id="prognosis-ad-vitam" required>
+                                <option value="">-- Pilih --</option>
+                                <option value="bonam">Bonam (Baik)</option>
+                                <option value="dubia">Dubia (Diragukan)</option>
+                                <option value="dubia-ad-malum">Dubia ad Malum</option>
+                                <option value="malum">Malum (Buruk)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="prognosis-ad-sanationem">Prognosis Ad Sanationem <span class="required">*</span></label>
+                            <select id="prognosis-ad-sanationem" required>
+                                <option value="">-- Pilih --</option>
+                                <option value="bonam">Bonam (Baik)</option>
+                                <option value="dubia">Dubia (Diragukan)</option>
+                                <option value="malum">Malum (Buruk)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prognosis-functional">Prognosis Fungsional <span class="required">*</span></label>
+                        <select id="prognosis-functional" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="penuh">Pemulihan Penuh</option>
+                            <option value="sebagian">Pemulihan Sebagian</option>
+                            <option value="residual">Dengan Cacat Residual</option>
+                            <option value="minimal">Minimal/Tidak Bertambah</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Medications/Treatment Section -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-pills"></i> Obat Diberikan (Medications)</h3>
+                    <span class="role-indicator dokter">Dokter</span>
+                </div>
+                    
+                    <div class="form-group">
+                        <label>Daftar Obat yang Diberikan <span class="required">*</span></label>
+                        <div class="medication-input-group">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 10px; margin-bottom: 10px;">
+                                <input type="text" id="medication-name" placeholder="Nama Obat" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                <input type="text" id="medication-dose" placeholder="Dosis" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                <select id="medication-route" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                    <option value="">-- Rute --</option>
+                                    <option value="oral">Oral (Per mulut)</option>
+                                    <option value="iv">IV (Intravena)</option>
+                                    <option value="im">IM (Intramuskular)</option>
+                                    <option value="sc">SC (Subkutan)</option>
+                                    <option value="topical">Topical (Luar)</option>
+                                    <option value="rectal">Rectal (Anus)</option>
+                                    <option value="inhalasi">Inhalasi</option>
+                                </select>
+                                <input type="text" id="medication-frequency" placeholder="Frekuensi (3x sehari)" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                <button type="button" onclick="addMedication()" style="padding: 8px 15px; background: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                    <i class="fas fa-plus"></i> Tambah
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="medication-list" class="medication-list">
+                        <div style="font-weight: bold; color: #0066cc; margin-bottom: 10px;">
+                            <i class="fas fa-list"></i> Daftar Obat
+                        </div>
+                        <div id="medication-list-items">
+                            <div style="color: #999; padding: 10px;">Belum ada obat yang ditambahkan</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="catatan-obat">Catatan Pengobatan</label>
+                        <textarea id="catatan-obat" placeholder="Catatan tambahan mengenai pengobatan (alergi obat, kontraindikasi, dll)"></textarea>
+                    </div>
+                </div>
+
+                <!-- Validation Section -->
+                <div class="form-section">
+                <div class="form-section-header">
+                    <h3><i class="fas fa-check-circle"></i> Validasi & Authentikasi Dokter</h3>
+                    <span class="role-indicator dokter">Dokter</span>
+                </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nip-dokter-diag">NIP Dokter <span class="required">*</span></label>
+                            <input type="text" id="nip-dokter-diag" placeholder="NIP" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="username-dokter">Username Dokter <span class="required">*</span></label>
+                            <input type="text" id="username-dokter" placeholder="Username untuk login" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="password-dokter">Password <span class="required">*</span></label>
+                            <input type="password" id="password-dokter" placeholder="Password untuk validasi" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal-validasi-diag">Tanggal Validasi <span class="required">*</span></label>
+                            <input type="date" id="tanggal-validasi-diag" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="catatan-validasi">Catatan Validasi</label>
+                        <textarea id="catatan-validasi" placeholder="Catatan tambahan dokter mengenai diagnosis dan tindakan"></textarea>
+                    </div>
+
+                    <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; margin: 15px 0; border-radius: 4px;">
+                        <strong><i class="fas fa-info-circle"></i> Catatan:</strong> 
+                        <p style="margin: 5px 0; font-size: 0.95em;">Informasi login dokter diperlukan untuk validasi dan akuntabilitas. Pastikan username dan password sesuai dengan kredensial yang terdaftar di sistem.</p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="goBack()">
+                        <i class="fas fa-times"></i> Batal
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='farmasi.html'">
+                        <i class="fas fa-arrow-right"></i> Lanjut ke Farmasi
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Diagnosis
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggal-diagnosis').value = today;
+            document.getElementById('tanggal-validasi-diag').value = today;
+        });
+
+        function addDifferentialDiagnosis() {
+            const icd = document.getElementById('icd-differential').value;
+            if (!icd) {
+                alert('Masukkan kode ICD-10 terlebih dahulu');
+                return;
+            }
+
+            const listItems = document.getElementById('differential-list-items');
+            if (listItems.querySelector('div[style*="color: #999"]')) {
+                listItems.innerHTML = '';
+            }
+
+            const item = document.createElement('div');
+            item.className = 'diagnosis-item differential';
+            item.innerHTML = `
+                <div><span class="diagnosis-code">${icd}</span></div>
+                <button type="button" class="diagnosis-remove" onclick="this.parentElement.remove()">
+                    <i class="fas fa-trash"></i> Hapus
+                </button>
+            `;
+            listItems.appendChild(item);
+            document.getElementById('icd-differential').value = '';
+        }
+
+        function addMedication() {
+            const name = document.getElementById('medication-name').value;
+            const dose = document.getElementById('medication-dose').value;
+            const route = document.getElementById('medication-route').value;
+            const frequency = document.getElementById('medication-frequency').value;
+
+            if (!name || !dose || !route || !frequency) {
+                alert('Lengkapi semua field obat terlebih dahulu');
+                return;
+            }
+
+            const listItems = document.getElementById('medication-list-items');
+            if (listItems.querySelector('div[style*="color: #999"]')) {
+                listItems.innerHTML = '';
+            }
+
+            const item = document.createElement('div');
+            item.className = 'diagnosis-item medication';
+            item.innerHTML = `
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 10px; align-items: center; padding: 10px;">
+                    <div><strong>${name}</strong></div>
+                    <div>${dose}</div>
+                    <div>${route}</div>
+                    <div>${frequency}</div>
+                    <button type="button" class="diagnosis-remove" onclick="this.parentElement.parentElement.remove()" style="padding: 5px 10px; background: #ff4444; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                        <i class="fas fa-trash"></i> Hapus
+                    </button>
+                </div>
+            `;
+            listItems.appendChild(item);
+            
+            // Clear input fields
+            document.getElementById('medication-name').value = '';
+            document.getElementById('medication-dose').value = '';
+            document.getElementById('medication-route').value = '';
+            document.getElementById('medication-frequency').value = '';
+        }
+
+        function handleDiagnosis(event) {
+            event.preventDefault();
+
+            const diagnosisMasuk = document.getElementById('diagnosis-masuk').value;
+            const diagnosisKeluar = document.getElementById('diagnosis-keluar').value;
+            const icdPrimary = document.getElementById('icd-primary').value;
+            const temuan = document.getElementById('temuan-utama').value;
+            const alasan = document.getElementById('alasan-diagnosis').value;
+
+            if (!diagnosisMasuk) {
+                alert('⚠️ Masukkan diagnosis masuk terlebih dahulu!');
+                return;
+            }
+
+            if (!diagnosisKeluar) {
+                alert('⚠️ Masukkan diagnosis keluar terlebih dahulu!');
+                return;
+            }
+
+            if (!icdPrimary) {
+                alert('⚠️ Masukkan kode ICD-10 diagnosis utama!');
+                return;
+            }
+
+            const data = {
+                noRm: document.getElementById('no-rm-diagnosis').value,
+                namaPasien: document.getElementById('nama-pasien-diagnosis').value,
+                diagnosisMasuk: diagnosisMasuk,
+                diagnosisKeluar: diagnosisKeluar,
+                icdPrimary: icdPrimary,
+                severity: document.getElementById('icd-severity').value,
+                prognosis: document.getElementById('prognosis-ad-vitam').value
+            };
+
+            console.log('Data Diagnosis:', data);
+            alert(`✅ Diagnosis berhasil disimpan!\n\nNo RM: ${data.noRm}\nDiagnosis Utama: ${icdPrimary}\nPrognosis: ${data.prognosis}`);
+            resetForm();
+        }
+    </script>
+    <script src="js/role-manager.js"></script>
+    <script>
+        // Check if user is logged in with appropriate role
+        document.addEventListener('DOMContentLoaded', function() {
+            roleManager.requireLogin(['dokter', 'pmik', 'admin']);
+            roleManager.updateNavbarProfile();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identifikasi Pasien - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Page Header -->
+            <div class="form-header">
+                <h2><i class="fas fa-id-card"></i> Formulir Identifikasi Pasien</h2>
+                <p>Isilah data diri pasien dengan lengkap dan akurat</p>
+            </div>
+
+            <form id="identitas-pasien-form" onsubmit="handleIdentitasPasien(event)" class="medical-form" novalidate>
+                <!-- Data Pribadi Section -->
+                <div class="form-section">
+                    <h3>
+                        <i class="fas fa-user-circle"></i> Data Pribadi
+                    </h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nik">
+                                <span class="required">*</span> NIK (Nomor Induk Kependudukan)
+                            </label>
+                            <input type="text" id="nik" name="nik" placeholder="16 digit NIK" maxlength="16" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="no-rm">
+                                <span class="required">*</span> No RM (Nomor Rekam Medis)
+                            </label>
+                            <input type="text" id="no-rm" name="no-rm" placeholder="Auto generated" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nama-pasien">
+                                <span class="required">*</span> Nama Lengkap
+                            </label>
+                            <input type="text" id="nama-pasien" name="nama-pasien" placeholder="Masukkan nama lengkap" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tempat-lahir">
+                                <span class="required">*</span> Tempat Lahir
+                            </label>
+                            <input type="text" id="tempat-lahir" name="tempat-lahir" placeholder="Kota/Kabupaten" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal-lahir">
+                                <span class="required">*</span> Tanggal Lahir
+                            </label>
+                            <input type="date" id="tanggal-lahir" name="tanggal-lahir" required onchange="hitungUsia()">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="usia">
+                                <span class="required">*</span> Usia
+                            </label>
+                            <input type="number" id="usia" name="usia" placeholder="Tahun" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="jenis-kelamin">
+                                <span class="required">*</span> Jenis Kelamin
+                            </label>
+                            <select id="jenis-kelamin" name="jenis-kelamin" required>
+                                <option value="">Pilih Jenis Kelamin</option>
+                                <option value="laki-laki">Laki-laki</option>
+                                <option value="perempuan">Perempuan</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="status-perkawinan">
+                                <span class="required">*</span> Status Perkawinan
+                            </label>
+                            <select id="status-perkawinan" name="status-perkawinan" required>
+                                <option value="">Pilih Status</option>
+                                <option value="belum-menikah">Belum Menikah</option>
+                                <option value="menikah">Menikah</option>
+                                <option value="janda">Janda</option>
+                                <option value="duda">Duda</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="agama">
+                                <span class="required">*</span> Agama
+                            </label>
+                            <select id="agama" name="agama" required>
+                                <option value="">Pilih Agama</option>
+                                <option value="islam">Islam</option>
+                                <option value="kristen">Kristen</option>
+                                <option value="katolik">Katolik</option>
+                                <option value="hindu">Hindu</option>
+                                <option value="buddha">Buddha</option>
+                                <option value="konghucu">Konghucu</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alamat Section -->
+                <div class="form-section">
+                    <h3>
+                        <i class="fas fa-map-marker-alt"></i> Alamat
+                    </h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="alamat">
+                                <span class="required">*</span> Alamat Lengkap
+                            </label>
+                            <textarea id="alamat" name="alamat" rows="3" placeholder="Jl. ..., No. ..., RT ..., RW ..." required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="desa">
+                                <span class="required">*</span> Desa/Kelurahan
+                            </label>
+                            <input type="text" id="desa" name="desa" placeholder="Desa/Kelurahan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="kecamatan">
+                                <span class="required">*</span> Kecamatan
+                            </label>
+                            <input type="text" id="kecamatan" name="kecamatan" placeholder="Kecamatan" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="kabupaten">
+                                <span class="required">*</span> Kabupaten/Kota
+                            </label>
+                            <input type="text" id="kabupaten" name="kabupaten" placeholder="Kabupaten/Kota" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="provinsi">
+                                <span class="required">*</span> Provinsi
+                            </label>
+                            <input type="text" id="provinsi" name="provinsi" placeholder="Provinsi" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="kode-pos">
+                                <span class="required">*</span> Kode Pos
+                            </label>
+                            <input type="text" id="kode-pos" name="kode-pos" placeholder="Kode Pos" maxlength="5" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informasi Tambahan Section -->
+                <div class="form-section">
+                    <h3>
+                        <i class="fas fa-briefcase"></i> Informasi Tambahan
+                    </h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="pendidikan">
+                                <span class="required">*</span> Pendidikan
+                            </label>
+                            <select id="pendidikan" name="pendidikan" required>
+                                <option value="">Pilih Pendidikan</option>
+                                <option value="tidak-sekolah">Tidak Sekolah</option>
+                                <option value="sd">SD</option>
+                                <option value="smp">SMP</option>
+                                <option value="sma">SMA</option>
+                                <option value="d3">D3</option>
+                                <option value="s1">S1</option>
+                                <option value="s2">S2</option>
+                                <option value="s3">S3</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="pekerjaan">
+                                <span class="required">*</span> Pekerjaan
+                            </label>
+                            <select id="pekerjaan" name="pekerjaan" required>
+                                <option value="">Pilih Pekerjaan</option>
+                                <option value="tidak-bekerja">Tidak Bekerja</option>
+                                <option value="petani">Petani</option>
+                                <option value="nelayan">Nelayan</option>
+                                <option value="pns">PNS</option>
+                                <option value="swasta">Swasta</option>
+                                <option value="pedagang">Pedagang</option>
+                                <option value="pensiunan">Pensiunan</option>
+                                <option value="pelajar">Pelajar</option>
+                                <option value="mahasiswa">Mahasiswa</option>
+                                <option value="lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kontak Section -->
+                <div class="form-section">
+                    <h3>
+                        <i class="fas fa-phone"></i> Kontak
+                    </h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nomor-telepon">
+                                <span class="required">*</span> Nomor Telepon
+                            </label>
+                            <input type="tel" id="nomor-telepon" name="nomor-telepon" placeholder="Nomor telepon aktif" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email (Opsional)</label>
+                            <input type="email" id="email" name="email" placeholder="Email pasien">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="goBack()">
+                        <i class="fas fa-arrow-left"></i> Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Data Pasien
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/role-manager.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        // Cek akses halaman - hanya untuk role pasien
+        checkPageAccess('pasien');
+    </script>
+</body>
+</html>

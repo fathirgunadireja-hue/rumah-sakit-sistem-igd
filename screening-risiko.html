@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screening & Kajian Risiko - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .screening-box {
+            background: #f0f7ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .screening-title {
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .screening-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px;
+            margin: 10px 0;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+        .screening-item input[type="radio"],
+        .screening-item input[type="checkbox"] {
+            margin-right: 12px;
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .screening-item label {
+            cursor: pointer;
+            flex: 1;
+            margin: 0;
+        }
+        .score-result {
+            background: #fff9e6;
+            border-left: 4px solid #ffcc00;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            display: none;
+        }
+        .score-result.show {
+            display: block;
+        }
+        .score-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+        .score-rendah {
+            background: #d4edda;
+            color: #155724;
+        }
+        .score-sedang {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .score-tinggi {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .screening-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 15px 0;
+        }
+        @media (max-width: 768px) {
+            .screening-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <div class="page-header">
+                <div>
+                    <h1><i class="fas fa-shield-alt"></i> Screening & Kajian Risiko</h1>
+                    <p>Penilaian berbagai risiko kesehatan pasien selama perawatan</p>
+                </div>
+            </div>
+
+            <!-- Screening Form -->
+            <form class="patient-form" onsubmit="handleScreeningRisiko(event)" novalidate>
+                
+                <!-- Data Pasien Section -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user-circle"></i> Data Pasien</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-rm-screening">No RM <span class="required">*</span></label>
+                            <input type="text" id="no-rm-screening" placeholder="RM-2024-001" value="RM-2024-001" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama-pasien-screening">Nama Pasien <span class="required">*</span></label>
+                            <input type="text" id="nama-pasien-screening" placeholder="Nama lengkap pasien" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tanggal-screening">Tanggal Screening <span class="required">*</span></label>
+                            <input type="date" id="tanggal-screening" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="petugas-screening">Petugas Screening <span class="required">*</span></label>
+                            <input type="text" id="petugas-screening" placeholder="Nama petugas" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fever/Infection Risk Screening -->
+                <div class="form-section">
+                    <h3><i class="fas fa-thermometer-half"></i> Screening Demam & Risiko Infeksi</h3>
+                    
+                    <div class="screening-box">
+                        <div class="screening-title">
+                            <i class="fas fa-virus"></i> Gejala Demam dalam 3 Hari Terakhir
+                        </div>
+                        <div class="screening-item">
+                            <input type="radio" id="demam-tidak" name="riwayat-demam" value="tidak" checked>
+                            <label for="demam-tidak">Tidak ada demam</label>
+                        </div>
+                        <div class="screening-item">
+                            <input type="radio" id="demam-ya" name="riwayat-demam" value="ya">
+                            <label for="demam-ya">Ada demam ≥ 3 hari</label>
+                        </div>
+                        <div class="screening-item">
+                            <input type="checkbox" id="demam-tiba" name="demam-extra">
+                            <label for="demam-tiba">Demam tiba-tiba (onset < 24 jam)</label>
+                        </div>
+                        <div class="screening-item">
+                            <input type="checkbox" id="demam-tinggi" name="demam-extra">
+                            <label for="demam-tinggi">Demam tinggi (≥ 39°C)</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gejala-infeksi">Gejala Infeksi Lainnya (nyeri tenggorokan, batuk, diare)</label>
+                        <select id="gejala-infeksi">
+                            <option value="tidak">Tidak ada</option>
+                            <option value="ringan">Ringan</option>
+                            <option value="sedang">Sedang</option>
+                            <option value="berat">Berat</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Epidemic/Travel Risk -->
+                <div class="form-section">
+                    <h3><i class="fas fa-globe"></i> Riwayat Perjalanan & Area Endemis</h3>
+                    
+                    <div class="screening-box">
+                        <div class="screening-title">
+                            <i class="fas fa-map-location-dot"></i> Riwayat Perjalanan 2 Minggu Terakhir
+                        </div>
+                        <div class="screening-item">
+                            <input type="radio" id="travel-tidak" name="riwayat-perjalanan" value="tidak" checked>
+                            <label for="travel-tidak">Tidak ada perjalanan</label>
+                        </div>
+                        <div class="screening-item">
+                            <input type="radio" id="travel-lokal" name="riwayat-perjalanan" value="lokal">
+                            <label for="travel-lokal">Perjalanan lokal (dalam kota/provinsi)</label>
+                        </div>
+                        <div class="screening-item">
+                            <input type="radio" id="travel-nasional" name="riwayat-perjalanan" value="nasional">
+                            <label for="travel-nasional">Perjalanan nasional (antar provinsi)</label>
+                        </div>
+                        <div class="screening-item">
+                            <input type="radio" id="travel-internasional" name="riwayat-perjalanan" value="internasional">
+                            <label for="travel-internasional">Perjalanan internasional</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="area-endemis">Daerah Asal/Kontak Pasien Berasal dari Area Endemis</label>
+                        <select id="area-endemis">
+                            <option value="">-- Pilih --</option>
+                            <option value="tidak">Tidak dari area endemis</option>
+                            <option value="malaria">Area Endemis Malaria</option>
+                            <option value="dbd">Area Endemis DBD/Dengue</option>
+                            <option value="tbc">Area Endemis TB</option>
+                            <option value="cholera">Area Endemis Kolera</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                    </div>
+
+                    <div class="screening-item">
+                        <input type="checkbox" id="kontak-penyakit" name="kontak">
+                        <label for="kontak-penyakit">Kontak dengan pasien penyakit menular dalam 2 minggu</label>
+                    </div>
+                </div>
+
+                <!-- Medication/Allergy Risk -->
+                <div class="form-section">
+                    <h3><i class="fas fa-prescription-bottle"></i> Riwayat Obat & Alergi</h3>
+                    
+                    <div class="screening-box">
+                        <div class="screening-title">
+                            <i class="fas fa-capsules"></i> Obat-obatan Penting yang Digunakan
+                        </div>
+                        <div class="screening-item">
+                            <input type="checkbox" id="obat-antikoagulan" name="obat">
+                            <label for="obat-antikoagulan">Antikoagulan (Warfarin, Dabigatran, Apixaban)</label>
+                        </div>
+                        <div class="screening-item">
+                            <input type="checkbox" id="obat-kortikosteroid" name="obat">
+                            <label for="obat-kortikosteroid">Kortikosteroid sistemik</label>
+                        </div>
+                        <div class="screening-item">
+                            <input type="checkbox" id="obat-imunosupresan" name="obat">
+                            <label for="obat-imunosupresan">Imunosupresant</label>
+                        </div>
+                        <div class="screening-item">
+                            <input type="checkbox" id="obat-antidiabetes" name="obat">
+                            <label for="obat-antidiabetes">Obat Antidiabetes (Insulin/Oral)</label>
+                        </div>
+                        <div class="screening-item">
+                            <input type="checkbox" id="obat-antikonvulsi" name="obat">
+                            <label for="obat-antikonvulsi">Antikonvulsi</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="alergi-obat">Alergi Obat <span class="required">*</span></label>
+                        <textarea id="alergi-obat" placeholder="Daftar obat yang alergi dan reaksinya (contoh: Amoxicillin - ruam, Penisilin - anafilaksis)" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="alergi-makanan">Alergi Makanan</label>
+                        <input type="text" id="alergi-makanan" placeholder="Contoh: Telur, Seafood, Kacang">
+                    </div>
+                </div>
+
+                <!-- Nutritional & Mobility Risk -->
+                <div class="form-section">
+                    <h3><i class="fas fa-utensils"></i> Risiko Nutrisi & Mobilitas</h3>
+                    
+                    <div class="screening-grid">
+                        <div class="screening-box">
+                            <div class="screening-title">
+                                <i class="fas fa-nutrition"></i> Status Nutrisi
+                            </div>
+                            <div class="screening-item">
+                                <input type="radio" id="nutrisi-baik" name="status-nutrisi" value="baik" checked>
+                                <label for="nutrisi-baik">Baik</label>
+                            </div>
+                            <div class="screening-item">
+                                <input type="radio" id="nutrisi-kurang" name="status-nutrisi" value="kurang">
+                                <label for="nutrisi-kurang">Kurang</label>
+                            </div>
+                            <div class="screening-item">
+                                <input type="radio" id="nutrisi-buruk" name="status-nutrisi" value="buruk">
+                                <label for="nutrisi-buruk">Buruk/Malnutrisi</label>
+                            </div>
+                        </div>
+
+                        <div class="screening-box">
+                            <div class="screening-title">
+                                <i class="fas fa-person-walking"></i> Status Mobilitas
+                            </div>
+                            <div class="screening-item">
+                                <input type="radio" id="mobilitas-mandiri" name="status-mobilitas" value="mandiri" checked>
+                                <label for="mobilitas-mandiri">Mandiri (Bisa berjalan normal)</label>
+                            </div>
+                            <div class="screening-item">
+                                <input type="radio" id="mobilitas-bantuan" name="status-mobilitas" value="bantuan">
+                                <label for="mobilitas-bantuan">Dengan bantuan (Walking aid/orang lain)</label>
+                            </div>
+                            <div class="screening-item">
+                                <input type="radio" id="mobilitas-terbatas" name="status-mobilitas" value="terbatas">
+                                <label for="mobilitas-terbatas">Sangat terbatas (Tirah baring)</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Special Screening -->
+                <div class="form-section">
+                    <h3><i class="fas fa-heart-pulse"></i> Screening Khusus</h3>
+                    
+                    <div class="screening-box">
+                        <div class="screening-title">
+                            <i class="fas fa-pregnant"></i> Khusus Pasien Perempuan Usia Reproduksi
+                        </div>
+                        <div class="screening-item">
+                            <input type="checkbox" id="hamil-kemungkinan" name="obstetric">
+                            <label for="hamil-kemungkinan">Ada kemungkinan hamil</label>
+                        </div>
+                        <div class="screening-item">
+                            <input type="checkbox" id="hamil-pasti" name="obstetric">
+                            <label for="hamil-pasti">Sudah terbukti hamil</label>
+                        </div>
+                        <div class="screening-item">
+                            <input type="checkbox" id="menyusui" name="obstetric">
+                            <label for="menyusui">Sedang menyusui</label>
+                        </div>
+                    </div>
+
+                    <div class="screening-box">
+                        <div class="screening-title">
+                            <i class="fas fa-users"></i> Riwayat Sosial & Psikologis
+                        </div>
+                        <div class="screening-item">
+                            <input type="checkbox" id="hidup-sendiri" name="sosial">
+                            <label for="hidup-sendiri">Hidup sendiri (tidak ada pendamping)</label>
+                        </div>
+                        <div class="screening-item">
+                            <input type="checkbox" id="depresi-cemas" name="sosial">
+                            <label for="depresi-cemas">Riwayat depresi/kecemasan</label>
+                        </div>
+                        <div class="screening-item">
+                            <input type="checkbox" id="substance-abuse" name="sosial">
+                            <label for="substance-abuse">Riwayat penggunaan NAPZA</label>
+                        </div>
+                        <div class="screening-item">
+                            <input type="checkbox" id="kekerasan-domestic" name="sosial">
+                            <label for="kekerasan-domestic">Kemungkinan kekerasan dalam rumah tangga</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary & Recommendation -->
+                <div class="form-section">
+                    <h3><i class="fas fa-flag"></i> Ringkasan Risiko & Rekomendasi</h3>
+                    
+                    <div class="form-group">
+                        <label for="ringkasan-risiko">Ringkasan Risiko Utama <span class="required">*</span></label>
+                        <textarea id="ringkasan-risiko" placeholder="Ringkasan risiko utama yang diidentifikasi dari screening" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rekomendasi-tindakan">Rekomendasi Tindakan <span class="required">*</span></label>
+                        <textarea id="rekomendasi-tindakan" placeholder="Rekomendasi tindakan preventif/penanganan risiko" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" onclick="window.location.href='farmasi.html'" class="btn btn-secondary">
+                        <i class="fas fa-arrow-right"></i> Lanjut ke Farmasi
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Screening Risiko
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/role-manager.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggal-screening').value = today;
+            
+            roleManager.requireLogin(['perawat', 'dokter', 'pmik', 'admin']);
+            roleManager.updateNavbarProfile();
+        });
+
+        function handleScreeningRisiko(event) {
+            event.preventDefault();
+
+            const alergiObat = document.getElementById('alergi-obat').value;
+            const ringkasanRisiko = document.getElementById('ringkasan-risiko').value;
+            const rekomendasi = document.getElementById('rekomendasi-tindakan').value;
+
+            if (!alergiObat) {
+                alert('⚠️ Masukkan informasi alergi obat!');
+                return;
+            }
+
+            if (!ringkasanRisiko) {
+                alert('⚠️ Tuliskan ringkasan risiko utama!');
+                return;
+            }
+
+            if (!rekomendasi) {
+                alert('⚠️ Tuliskan rekomendasi tindakan!');
+                return;
+            }
+
+            const data = {
+                noRm: document.getElementById('no-rm-screening').value,
+                namaPasien: document.getElementById('nama-pasien-screening').value,
+                tanggal: document.getElementById('tanggal-screening').value,
+                alergiObat: alergiObat,
+                ringkasanRisiko: ringkasanRisiko,
+                rekomendasi: rekomendasi
+            };
+
+            console.log('Data Screening Risiko:', data);
+            alert(`✅ Screening Risiko berhasil disimpan!\n\nNo RM: ${data.noRm}\nNama: ${data.namaPasien}\nRisiko: Telah diidentifikasi`);
+            resetForm();
+        }
+    </script>
+</body>
+</html>

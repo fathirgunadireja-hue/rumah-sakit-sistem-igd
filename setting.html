@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan - RUMAH SAKIT JAYA SEHAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .settings-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .settings-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .settings-item {
+            padding: 1.2rem;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .settings-item:hover {
+            background: #f5f5f5;
+            border-color: #0066cc;
+            box-shadow: 0 2px 8px rgba(0, 102, 204, 0.1);
+        }
+        
+        .settings-item.active {
+            background: #e6f0ff;
+            border-color: #0066cc;
+            box-shadow: 0 2px 8px rgba(0, 102, 204, 0.2);
+        }
+        
+        .settings-item-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+        }
+        
+        .settings-item-icon {
+            width: 50px;
+            height: 50px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #0066cc;
+        }
+        
+        .settings-item.active .settings-item-icon {
+            background: #0066cc;
+            color: white;
+        }
+        
+        .settings-item-text h3 {
+            margin: 0 0 0.3rem 0;
+            color: #333;
+            font-size: 1rem;
+        }
+        
+        .settings-item-text p {
+            margin: 0;
+            color: #999;
+            font-size: 0.85rem;
+        }
+        
+        .settings-item-arrow {
+            font-size: 1.2rem;
+            color: #ccc;
+            transition: all 0.3s ease;
+        }
+        
+        .settings-item:hover .settings-item-arrow {
+            color: #0066cc;
+            transform: translateX(5px);
+        }
+        
+        .settings-content {
+            display: none;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .settings-content.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .settings-content h2 {
+            margin-top: 0;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .settings-content h2 i {
+            color: #0066cc;
+        }
+        
+        .setting-group {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .setting-group:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .setting-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .setting-group input,
+        .setting-group select,
+        .setting-group textarea {
+            width: 100%;
+            max-width: 500px;
+            padding: 0.7rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+        
+        .setting-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .setting-group small {
+            display: block;
+            color: #999;
+            margin-top: 0.3rem;
+            font-size: 0.85rem;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: #0066cc;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #0052a3;
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .btn-danger {
+            background: #ff4444;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #cc0000;
+        }
+        
+        .admin-list {
+            background: #f9f9f9;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .admin-item {
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-item:last-child {
+            border-bottom: none;
+        }
+        
+        .admin-info {
+            flex: 1;
+        }
+        
+        .admin-name {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 0.2rem;
+        }
+        
+        .admin-email {
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .admin-actions button {
+            padding: 0.5rem 0.8rem;
+            font-size: 0.85rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-edit {
+            background: #0066cc;
+            color: white;
+        }
+        
+        .admin-edit:hover {
+            background: #0052a3;
+        }
+        
+        .admin-delete {
+            background: #f0f0f0;
+            color: #ff4444;
+        }
+        
+        .admin-delete:hover {
+            background: #e0e0e0;
+        }
+        
+        .language-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+        
+        .language-option {
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .language-option:hover {
+            border-color: #0066cc;
+            background: #f5f5f5;
+        }
+        
+        .language-option.selected {
+            border-color: #0066cc;
+            background: #e6f0ff;
+        }
+        
+        .language-option-flag {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .language-option-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #0066cc;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard-admin.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="identitas-pasien.html" class="nav-item">
+                    <i class="fas fa-id-card"></i>
+                    <span>Identifikasi Pasien</span>
+                </a>
+                <a href="daftar-kunjungan.html" class="nav-item">
+                    <i class="fas fa-list"></i>
+                    <span>Daftar Kunjungan</span>
+                </a>
+                <a href="general-consent.html" class="nav-item">
+                    <i class="fas fa-file-contract"></i>
+                    <span>General Consent</span>
+                </a>
+                <a href="triase-igd.html" class="nav-item">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>Triase IGD</span>
+                </a>
+                <a href="assessment-igd.html" class="nav-item">
+                    <i class="fas fa-stethoscope"></i>
+                    <span>Assessment IGD</span>
+                </a>
+                <a href="pemeriksaan-fisik-1.html" class="nav-item">
+                    <i class="fas fa-procedures"></i>
+                    <span>Pemeriksaan Fisik</span>
+                </a>
+                <a href="laboratorium-1.html" class="nav-item">
+                    <i class="fas fa-flask"></i>
+                    <span>Laboratorium</span>
+                </a>
+                <a href="diagnosis.html" class="nav-item">
+                    <i class="fas fa-file-medical"></i>
+                    <span>Diagnosis</span>
+                </a>
+                <a href="farmasi.html" class="nav-item">
+                    <i class="fas fa-prescription-bottle"></i>
+                    <span>Farmasi</span>
+                </a>
+                <a href="keuangan.html" class="nav-item">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Keuangan</span>
+                </a>
+                <a href="setting.html" class="nav-item active">
+                    <i class="fas fa-cog"></i>
+                    <span>Pengaturan</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="form-header">
+                <h1><i class="fas fa-cog"></i> Pengaturan Aplikasi</h1>
+                <p>Konfigurasi aplikasi dan pengaturan akun pengguna administrator</p>
+            </div>
+
+            <div class="settings-container">
+                <!-- Settings Menu -->
+                <div class="settings-menu">
+                    <!-- Admin Management -->
+                    <div class="settings-item active" onclick="showSetting('admin')">
+                        <div class="settings-item-left">
+                            <div class="settings-item-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="settings-item-text">
+                                <h3>Manajemen Admin</h3>
+                                <p>Kelola akun administrator lainnya</p>
+                            </div>
+                        </div>
+                        <div class="settings-item-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- Account Settings -->
+                    <div class="settings-item" onclick="showSetting('akun')">
+                        <div class="settings-item-left">
+                            <div class="settings-item-icon">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="settings-item-text">
+                                <h3>Pengaturan Akun</h3>
+                                <p>Ubah profil dan password akun Anda</p>
+                            </div>
+                        </div>
+                        <div class="settings-item-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- Privacy Settings -->
+                    <div class="settings-item" onclick="showSetting('privasi')">
+                        <div class="settings-item-left">
+                            <div class="settings-item-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="settings-item-text">
+                                <h3>Privasi</h3>
+                                <p>Kelola pengaturan privasi dan keamanan data</p>
+                            </div>
+                        </div>
+                        <div class="settings-item-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- Notification Settings -->
+                    <div class="settings-item" onclick="showSetting('notifikasi')">
+                        <div class="settings-item-left">
+                            <div class="settings-item-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div class="settings-item-text">
+                                <h3>Notifikasi</h3>
+                                <p>Atur preferensi pemberitahuan sistem</p>
+                            </div>
+                        </div>
+                        <div class="settings-item-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- Language Settings -->
+                    <div class="settings-item" onclick="showSetting('bahasa')">
+                        <div class="settings-item-left">
+                            <div class="settings-item-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div class="settings-item-text">
+                                <h3>Bahasa Aplikasi</h3>
+                                <p>Pilih bahasa tampilan aplikasi</p>
+                            </div>
+                        </div>
+                        <div class="settings-item-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- Help -->
+                    <div class="settings-item" onclick="showSetting('bantuan')">
+                        <div class="settings-item-left">
+                            <div class="settings-item-icon">
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            <div class="settings-item-text">
+                                <h3>Bantuan</h3>
+                                <p>Panduan penggunaan dan FAQ</p>
+                            </div>
+                        </div>
+                        <div class="settings-item-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- Logout -->
+                    <div class="settings-item" onclick="logout()" style="border-color: #ffcccc; background: #fff5f5;">
+                        <div class="settings-item-left">
+                            <div class="settings-item-icon" style="background: #ffe0e0; color: #ff4444;">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </div>
+                            <div class="settings-item-text">
+                                <h3 style="color: #ff4444;">Keluar Sistem</h3>
+                                <p>Logout dari akun administrator</p>
+                            </div>
+                        </div>
+                        <div class="settings-item-arrow" style="color: #ff4444;">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Content Area -->
+                <!-- Admin Management Content -->
+                <div id="admin-content" class="settings-content active">
+                    <h2><i class="fas fa-users"></i> Manajemen Admin</h2>
+                    <div class="admin-list">
+                        <div class="admin-item">
+                            <div class="admin-info">
+                                <div class="admin-name">Budi Santoso</div>
+                                <div class="admin-email">budi@rsjayasehat.com</div>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="admin-edit" onclick="editAdmin('budi')">Edit</button>
+                                <button class="admin-delete" onclick="deleteAdmin('budi')">Hapus</button>
+                            </div>
+                        </div>
+                        <div class="admin-item">
+                            <div class="admin-info">
+                                <div class="admin-name">Siti Nurhaliza</div>
+                                <div class="admin-email">siti@rsjayasehat.com</div>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="admin-edit" onclick="editAdmin('siti')">Edit</button>
+                                <button class="admin-delete" onclick="deleteAdmin('siti')">Hapus</button>
+                            </div>
+                        </div>
+                        <div class="admin-item">
+                            <div class="admin-info">
+                                <div class="admin-name">Ahmad Wijaya</div>
+                                <div class="admin-email">ahmad@rsjayasehat.com</div>
+                            </div>
+                            <div class="admin-actions">
+                                <button class="admin-edit" onclick="editAdmin('ahmad')">Edit</button>
+                                <button class="admin-delete" onclick="deleteAdmin('ahmad')">Hapus</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="addAdmin()">
+                            <i class="fas fa-plus"></i> Tambah Admin Baru
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Account Settings Content -->
+                <div id="akun-content" class="settings-content">
+                    <h2><i class="fas fa-user-circle"></i> Pengaturan Akun</h2>
+                    <div class="setting-group">
+                        <label for="nama-lengkap">Nama Lengkap</label>
+                        <input type="text" id="nama-lengkap" value="Admin Sistem" placeholder="Nama lengkap Anda">
+                    </div>
+                    <div class="setting-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" value="admin@rsjayasehat.com" placeholder="Email Anda">
+                        <small>Email digunakan untuk login dan notifikasi penting</small>
+                    </div>
+                    <div class="setting-group">
+                        <label for="no-telepon">Nomor Telepon</label>
+                        <input type="tel" id="no-telepon" value="+62 812-3456-7890" placeholder="Nomor telepon">
+                    </div>
+                    <div class="setting-group">
+                        <label for="password-lama">Password Saat Ini</label>
+                        <input type="password" id="password-lama" placeholder="Masukkan password saat ini">
+                    </div>
+                    <div class="setting-group">
+                        <label for="password-baru">Password Baru</label>
+                        <input type="password" id="password-baru" placeholder="Masukkan password baru">
+                        <small>Password minimal 8 karakter dengan kombinasi huruf, angka, dan simbol</small>
+                    </div>
+                    <div class="setting-group">
+                        <label for="konfirmasi-password">Konfirmasi Password Baru</label>
+                        <input type="password" id="konfirmasi-password" placeholder="Konfirmasi password baru">
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="simpanAkun()">
+                            <i class="fas fa-save"></i> Simpan Perubahan
+                        </button>
+                        <button class="btn btn-secondary" onclick="resetFormAkun()">
+                            <i class="fas fa-undo"></i> Batal
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Privacy Settings Content -->
+                <div id="privasi-content" class="settings-content">
+                    <h2><i class="fas fa-lock"></i> Privasi & Keamanan</h2>
+                    <div class="setting-group">
+                        <label>Autentikasi Dua Faktor (2FA)</label>
+                        <div style="margin-top: 0.5rem;">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="two-factor">
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span style="margin-left: 1rem; color: #666;">Aktifkan autentikasi dua faktor untuk keamanan lebih</span>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <label>Pengingat Perubahan Password</label>
+                        <select id="password-reminder">
+                            <option value="30">Setiap 30 hari</option>
+                            <option value="60">Setiap 60 hari</option>
+                            <option value="90">Setiap 90 hari</option>
+                            <option value="tidak">Jangan ingatkan</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label>Sesi Aktif</label>
+                        <div style="background: #f9f9f9; padding: 1rem; border-radius: 4px;">
+                            <div style="padding: 0.8rem; background: white; border-radius: 4px; margin-bottom: 0.5rem;">
+                                <div style="font-weight: 500;">Chrome pada Windows</div>
+                                <div style="color: #999; font-size: 0.9rem;">IP: 192.168.1.100 | Login: 2 jam yang lalu</div>
+                                <button class="btn btn-secondary" style="margin-top: 0.5rem; font-size: 0.85rem; padding: 0.4rem 0.8rem;">
+                                    <i class="fas fa-times"></i> Logout
+                                </button>
+                            </div>
+                            <div style="padding: 0.8rem; background: white; border-radius: 4px;">
+                                <div style="font-weight: 500;">Firefox pada macOS</div>
+                                <div style="color: #999; font-size: 0.9rem;">IP: 192.168.1.101 | Login: 1 hari yang lalu</div>
+                                <button class="btn btn-secondary" style="margin-top: 0.5rem; font-size: 0.85rem; padding: 0.4rem 0.8rem;">
+                                    <i class="fas fa-times"></i> Logout
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="simpanPrivasi()">
+                            <i class="fas fa-save"></i> Simpan Perubahan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notification Settings Content -->
+                <div id="notifikasi-content" class="settings-content">
+                    <h2><i class="fas fa-bell"></i> Pengaturan Notifikasi</h2>
+                    <div class="setting-group">
+                        <label>Notifikasi Email Penting</label>
+                        <div style="margin-top: 0.5rem;">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="email-penting" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span style="margin-left: 1rem; color: #666;">Terima notifikasi email untuk aktivitas penting</span>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <label>Notifikasi Sistem</label>
+                        <div style="margin-top: 0.5rem;">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="notifikasi-sistem" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span style="margin-left: 1rem; color: #666;">Tampilkan notifikasi pop-up di aplikasi</span>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <label>Notifikasi Pasien Baru</label>
+                        <div style="margin-top: 0.5rem;">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="notifikasi-pasien-baru" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span style="margin-left: 1rem; color: #666;">Notifikasi ketika pasien baru terdaftar</span>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <label>Notifikasi Hasil Laboratorium</label>
+                        <div style="margin-top: 0.5rem;">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="notifikasi-lab" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span style="margin-left: 1rem; color: #666;">Notifikasi ketika hasil laboratorium selesai</span>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <label>Notifikasi Pembayaran</label>
+                        <div style="margin-top: 0.5rem;">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="notifikasi-pembayaran" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span style="margin-left: 1rem; color: #666;">Notifikasi untuk transaksi pembayaran</span>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="simpanNotifikasi()">
+                            <i class="fas fa-save"></i> Simpan Perubahan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Language Settings Content -->
+                <div id="bahasa-content" class="settings-content">
+                    <h2><i class="fas fa-globe"></i> Bahasa Aplikasi</h2>
+                    <div class="language-options">
+                        <div class="language-option selected" onclick="selectLanguage(this, 'id')">
+                            <div class="language-option-flag">🇮🇩</div>
+                            <div class="language-option-name">Bahasa Indonesia</div>
+                        </div>
+                        <div class="language-option" onclick="selectLanguage(this, 'en')">
+                            <div class="language-option-flag">🇺🇸</div>
+                            <div class="language-option-name">English</div>
+                        </div>
+                    </div>
+                    <div class="button-group" style="margin-top: 2rem;">
+                        <button class="btn btn-primary" onclick="simpanBahasa()">
+                            <i class="fas fa-save"></i> Simpan Bahasa
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Help Content -->
+                <div id="bantuan-content" class="settings-content">
+                    <h2><i class="fas fa-question-circle"></i> Bantuan & Panduan</h2>
+                    <div class="setting-group">
+                        <h3 style="color: #0066cc;">Pertanyaan yang Sering Diajukan (FAQ)</h3>
+                    </div>
+                    <div class="setting-group">
+                        <h4>Bagaimana cara menambahkan pasien baru?</h4>
+                        <p>Klik menu "Identifikasi Pasien" di sidebar, kemudian isi form pendaftaran dengan data pasien yang lengkap dan akurat.</p>
+                    </div>
+                    <div class="setting-group">
+                        <h4>Bagaimana cara mengubah password?</h4>
+                        <p>Buka menu "Pengaturan Akun", kemudian masukkan password lama Anda dan password baru dua kali untuk konfirmasi.</p>
+                    </div>
+                    <div class="setting-group">
+                        <h4>Bagaimana cara membuat laporan keuangan?</h4>
+                        <p>Akses menu "Keuangan", pilih rentang tanggal yang diinginkan, kemudian klik "Buat Laporan".</p>
+                    </div>
+                    <div class="setting-group">
+                        <h4>Apa itu Assessment IGD?</h4>
+                        <p>Assessment IGD adalah penilaian awal kondisi pasien yang masuk ke Instalasi Gawat Darurat dengan menggunakan pain scale dan penilaian risiko.</p>
+                    </div>
+                    <div class="setting-group">
+                        <h4>Bagaimana cara backup data?</h4>
+                        <p>Hubungi administrator sistem untuk melakukan backup data. Backup dilakukan secara otomatis setiap hari pada jam 00:00 WIB.</p>
+                    </div>
+                    <div class="setting-group">
+                        <h3 style="color: #0066cc; margin-top: 2rem;">Hubungi Kami</h3>
+                        <p>
+                            <strong>Email Support:</strong> support@rsjayasehat.com<br>
+                            <strong>Telepon:</strong> +62-21-1234-5678<br>
+                            <strong>Jam Layanan:</strong> Senin-Jumat, 08:00-17:00 WIB
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        function showSetting(setting) {
+            // Hide all content
+            document.querySelectorAll('.settings-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Remove active from all items
+            document.querySelectorAll('.settings-item').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Show selected content
+            const contentId = setting + '-content';
+            const content = document.getElementById(contentId);
+            if (content) {
+                content.classList.add('active');
+            }
+            
+            // Mark item as active
+            event.currentTarget.classList.add('active');
+        }
+
+        function addAdmin() {
+            alert('Dialog untuk menambah admin baru akan ditampilkan');
+        }
+
+        function editAdmin(name) {
+            alert('Edit admin: ' + name);
+        }
+
+        function deleteAdmin(name) {
+            if (confirm('Apakah Anda yakin ingin menghapus admin ' + name + '?')) {
+                alert('Admin ' + name + ' berhasil dihapus');
+            }
+        }
+
+        function simpanAkun() {
+            alert('✅ Perubahan akun berhasil disimpan!');
+        }
+
+        function resetFormAkun() {
+            document.getElementById('nama-lengkap').value = 'Admin Sistem';
+            document.getElementById('email').value = 'admin@rsjayasehat.com';
+            document.getElementById('no-telepon').value = '+62 812-3456-7890';
+            document.getElementById('password-lama').value = '';
+            document.getElementById('password-baru').value = '';
+            document.getElementById('konfirmasi-password').value = '';
+        }
+
+        function simpanPrivasi() {
+            alert('✅ Pengaturan privasi berhasil disimpan!');
+        }
+
+        function simpanNotifikasi() {
+            alert('✅ Pengaturan notifikasi berhasil disimpan!');
+        }
+
+        function simpanBahasa() {
+            alert('✅ Bahasa aplikasi berhasil diubah!');
+        }
+
+        function selectLanguage(element, lang) {
+            document.querySelectorAll('.language-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        // Set initial datetime for any date fields
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Setting page loaded');
+            roleManager.requireLogin(['pasien', 'perawat', 'dokter', 'pmik', 'farmasi', 'keuangan', 'admin']);
+            roleManager.updateNavbarProfile();
+        });
+    </script>
+    <script src="js/role-manager.js"></script>
+</body>
+</html>
