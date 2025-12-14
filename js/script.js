@@ -240,7 +240,7 @@ function logout() {
     if (typeof roleManager !== 'undefined') {
         roleManager.clearRole();
     }
-    window.location.href = 'http://127.0.0.1:8000/admin.html';
+    window.location.href = 'http://127.0.0.1:8000/index.html';
 }
 
 // ============================================
