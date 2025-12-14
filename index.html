@@ -20,7 +20,19 @@
                 <li><a href="#services" class="nav-link">Layanan</a></li>
                 <li><a href="#departments" class="nav-link">Poliklinik</a></li>
                 <li><a href="#contact" class="nav-link">Kontak</a></li>
-                <li><a href="login-pasien.html" class="btn btn-primary" style="padding: 10px 24px; border-radius: 6px; margin-left: 15px;">Login Pasien</a></li>
+                <li class="dropdown-login">
+                    <button class="btn btn-primary dropdown-toggle" onclick="toggleLoginDropdown()" style="padding: 10px 24px; border-radius: 6px; margin-left: 15px;">
+                        Login <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu" id="loginDropdown">
+                        <a href="login-pasien.html" class="dropdown-item">
+                            <i class="fas fa-user"></i> Login Pasien
+                        </a>
+                        <a href="http://127.0.0.1:8000/admin.html" class="dropdown-item">
+                            <i class="fas fa-user-shield"></i> Login Admin
+                        </a>
+                    </div>
+                </li>
             </ul>
             <div class="hamburger">
                 <span></span>
@@ -544,5 +556,112 @@
     </div>
 
     <script src="js/script.js"></script>
+    <style>
+        /* Dropdown Login Styles */
+        .dropdown-login {
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .dropdown-toggle i {
+            font-size: 0.85em;
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-toggle.active i {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 120%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: linear-gradient(135deg, #0066cc 0%, #0099ff 100%);
+            color: white;
+        }
+
+        .dropdown-item i {
+            font-size: 1.1em;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Close dropdown when clicking outside */
+        @media (max-width: 768px) {
+            .dropdown-menu {
+                right: auto;
+                left: 0;
+            }
+        }
+    </style>
+    <script>
+        // Toggle dropdown login
+        function toggleLoginDropdown() {
+            const dropdown = document.getElementById('loginDropdown');
+            const toggle = document.querySelector('.dropdown-toggle');
+            dropdown.classList.toggle('show');
+            toggle.classList.toggle('active');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.querySelector('.dropdown-login');
+            if (dropdown && !dropdown.contains(event.target)) {
+                document.getElementById('loginDropdown').classList.remove('show');
+                document.querySelector('.dropdown-toggle').classList.remove('active');
+            }
+        });
+
+        // Prevent dropdown from closing when clicking inside
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownMenu = document.getElementById('loginDropdown');
+            if (dropdownMenu) {
+                dropdownMenu.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+        });
+    </script>
 </body>
 </html>
