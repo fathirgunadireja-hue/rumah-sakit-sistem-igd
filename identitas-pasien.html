@@ -44,7 +44,7 @@
                             <label for="no-rm">
                                 <span class="required">*</span> No RM (Nomor Rekam Medis)
                             </label>
-                            <input type="text" id="no-rm" name="no-rm" placeholder="Auto generated" readonly>
+                            <input type="text" id="no-rm" name="no-rm" placeholder="Masukkan No RM secara manual" required>
                         </div>
                     </div>
 
@@ -216,6 +216,128 @@
                                 <option value="mahasiswa">Mahasiswa</option>
                                 <option value="lainnya">Lainnya</option>
                             </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Identitas Penanggung Jawab -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user-shield"></i> Identitas Penanggung Jawab</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nama-pj"><span class="required">*</span> Nama Penanggung Jawab</label>
+                            <input type="text" id="nama-pj" name="nama-pj" placeholder="Nama penanggung jawab" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="hubungan-pj"><span class="required">*</span> Hubungan dengan Pasien</label>
+                            <select id="hubungan-pj" name="hubungan-pj" required>
+                                <option value="">Pilih Hubungan</option>
+                                <option value="suami">Suami</option>
+                                <option value="istri">Istri</option>
+                                <option value="ayah">Ayah</option>
+                                <option value="ibu">Ibu</option>
+                                <option value="anak">Anak</option>
+                                <option value="kakak">Kakak</option>
+                                <option value="adik">Adik</option>
+                                <option value="wali">Wali</option>
+                                <option value="lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nik-pj">NIK Penanggung Jawab</label>
+                            <input type="text" id="nik-pj" name="nik-pj" placeholder="16 digit NIK" maxlength="16">
+                        </div>
+                        <div class="form-group">
+                            <label for="pekerjaan-pj">Pekerjaan</label>
+                            <input type="text" id="pekerjaan-pj" name="pekerjaan-pj" placeholder="Pekerjaan">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="alamat-pj"><span class="required">*</span> Alamat Penanggung Jawab</label>
+                            <textarea id="alamat-pj" name="alamat-pj" rows="2" placeholder="Alamat lengkap" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="telepon-pj"><span class="required">*</span> Nomor Telepon Penanggung Jawab</label>
+                            <input type="tel" id="telepon-pj" name="telepon-pj" placeholder="Nomor aktif" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email-pj">Email (Opsional)</label>
+                            <input type="email" id="email-pj" name="email-pj" placeholder="email@example.com">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pendaftaran Pasien -->
+                <div class="form-section">
+                    <h3><i class="fas fa-clipboard-check"></i> Pendaftaran Pasien</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-registrasi"><span class="required">*</span> No Registrasi</label>
+                            <input type="text" id="no-registrasi" name="no-registrasi" placeholder="Masukkan No Registrasi secara manual" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal-registrasi"><span class="required">*</span> Tanggal Registrasi</label>
+                            <input type="date" id="tanggal-registrasi" name="tanggal-registrasi" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="jam-registrasi"><span class="required">*</span> Jam Registrasi</label>
+                            <input type="time" id="jam-registrasi" name="jam-registrasi" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cara-pembayaran"><span class="required">*</span> Cara Pembayaran</label>
+                            <select id="cara-pembayaran" name="cara-pembayaran" required>
+                                <option value="">Pilih Cara Pembayaran</option>
+                                <option value="jkn">JKN / BPJS</option>
+                                <option value="asuransi">Asuransi Swasta</option>
+                                <option value="pribadi">Pribadi / Tunai</option>
+                                <option value="kredit">Kartu Kredit</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dpjp"><span class="required">*</span> DPJP (Dokter Penanggung Jawab)</label>
+                            <select id="dpjp" name="dpjp" required>
+                                <option value="">Pilih Dokter</option>
+                                <option value="dr-ahmad">Dr. Ahmad Sutrisno (Kardiologi)</option>
+                                <option value="dr-siti">Dr. Siti Nurhaliza (Pediatri)</option>
+                                <option value="dr-budi">Dr. Budi Santoso (Neurologi)</option>
+                                <option value="dr-dewi">Dr. Dewi Lestari (Obstetri)</option>
+                                <option value="dr-rifa">Dr. Rifa'i Rahman (Ortopedi)</option>
+                                <option value="dr-indah">Dr. Indah Kusuma (Paru)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="jenis-kunjungan"><span class="required">*</span> Jenis Kunjungan</label>
+                            <select id="jenis-kunjungan" name="jenis-kunjungan" required>
+                                <option value="">Pilih</option>
+                                <option value="rawat-jalan">Rawat Jalan</option>
+                                <option value="rawat-inap">Rawat Inap</option>
+                                <option value="igd">IGD (Gawat Darurat)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="no-antrian">No Antrian</label>
+                            <input type="text" id="no-antrian" name="no-antrian" placeholder="Auto generated" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="catatan">Catatan Khusus</label>
+                            <textarea id="catatan" name="catatan" rows="2" placeholder="Alergi, kondisi khusus, dsb."></textarea>
                         </div>
                     </div>
                 </div>

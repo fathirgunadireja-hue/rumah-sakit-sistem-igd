@@ -6,10 +6,37 @@
     <title>Daftar Kunjungan Pasien - RUMAH SAKIT JAYA SEHAT</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Inline UI fixes to ensure immediate effect */
+        .tabs-nav { display:flex; gap:10px; margin: 10px 0 18px; flex-wrap: wrap; }
+        .tab-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:8px; border:1px solid #e0e0e0; background:#fff; color:#1f2a44; cursor:pointer; box-shadow:0 1px 2px rgba(0,0,0,0.04); }
+        .tab-btn:hover { background:#f7faff; }
+        .tab-btn.active { background: #0066cc; color:#fff; border-color:#0066cc; }
+        .tab-content { display:none; }
+        .tab-content.active { display:block; }
+
+        .section-header { display:flex; align-items:center; justify-content:space-between; margin: 8px 0; }
+        .section-header h2 { display:inline-flex; align-items:center; gap:10px; font-size:1.25rem; color:#1f2a44; }
+        .section-actions { display:flex; gap:10px; }
+
+        .filter-section { margin: 12px 0 18px; }
+        .filter-input { width:100%; max-width:420px; padding:10px 12px; border:1px solid #e0e0e0; border-radius:8px; outline:none; }
+        .filter-input:focus { border-color:#0066cc; box-shadow:0 0 0 3px rgba(0,102,204,0.15); }
+
+        .admin-content { overflow-x:hidden; }
+        .table-responsive { background:#fff; border-radius:12px; box-shadow: 0 4px 14px rgba(31,42,68,0.08); overflow-x:auto; -webkit-overflow-scrolling:touch; }
+        .data-table { width:100%; border-collapse:collapse; min-width:1200px; }
+        .data-table thead th { position:sticky; top:0; z-index:1; background:#f8fafc; }
+        .data-table th, .data-table td { white-space:nowrap; padding:12px; border-bottom:1px solid #eef2f7; }
+        .data-table tbody tr:hover { background:#f9fbff; }
+
+        .btn-action { border:none; border-radius:8px; padding:8px; cursor:pointer; margin-right:6px; }
+        .btn-view { background:#e0f2fe; color:#0369a1; }
+        .btn-edit { background:#f3e8ff; color:#6b21a8; }
+        .btn-delete { background:#fee2e2; color:#b91c1c; }
+    </style>
 </head>
 <body>
-    
-
     <div class="admin-container">
         <!-- Sidebar -->
         <aside class="admin-sidebar">
@@ -41,24 +68,32 @@
                     <i class="fas fa-stethoscope"></i>
                     <span>Assessment IGD</span>
                 </a>
-                <a href="pemeriksaan-fisik-1.html" class="nav-item">
-                    <i class="fas fa-procedures"></i>
+                <a href="diagnosis.html" class="nav-item">
+                    <i class="fas fa-diagnosis"></i>
+                    <span>Diagnosis & Consent</span>
+                </a>
+                <a href="pemeriksaan-fisik.html" class="nav-item">
+                    <i class="fas fa-user-check"></i>
                     <span>Pemeriksaan Fisik</span>
                 </a>
-                <a href="laboratorium-1.html" class="nav-item">
+                <a href="laboratorium.html" class="nav-item">
                     <i class="fas fa-flask"></i>
                     <span>Laboratorium</span>
                 </a>
-                <a href="diagnosis.html" class="nav-item">
-                    <i class="fas fa-file-medical"></i>
-                    <span>Diagnosis</span>
+                <a href="radiologi.html" class="nav-item">
+                    <i class="fas fa-x-ray"></i>
+                    <span>Radiologi</span>
+                </a>
+                <a href="terapi.html" class="nav-item">
+                    <i class="fas fa-capsules"></i>
+                    <span>Terapi</span>
                 </a>
                 <a href="farmasi.html" class="nav-item">
                     <i class="fas fa-prescription-bottle"></i>
                     <span>Farmasi</span>
                 </a>
                 <a href="keuangan.html" class="nav-item">
-                    <i class="fas fa-credit-card"></i>
+                    <i class="fas fa-money-bill"></i>
                     <span>Keuangan</span>
                 </a>
                 <a href="setting.html" class="nav-item">
@@ -69,228 +104,607 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="admin-main">
-            <div class="dashboard-header">
-                <h1>Daftar Kunjungan Pasien</h1>
-                <p>Kelola dan pantau kunjungan pasien ke rumah sakit</p>
-            </div>
-
-            <!-- Filter Section -->
-            <div class="filter-section">
-                <div class="filter-card">
-                    <div class="filter-row">
-                        <div class="filter-group">
-                            <label for="filter-tanggal">Tanggal Registrasi</label>
-                            <input type="date" id="filter-tanggal">
-                        </div>
-                        <div class="filter-group">
-                            <label for="filter-no-rm">No RM</label>
-                            <input type="text" id="filter-no-rm" placeholder="Cari No RM...">
-                        </div>
-                        <div class="filter-group">
-                            <label for="filter-nama">Nama Pasien</label>
-                            <input type="text" id="filter-nama" placeholder="Cari nama...">
-                        </div>
-                        <div class="filter-group">
-                            <label for="filter-kecamatan">Kecamatan</label>
-                            <select id="filter-kecamatan">
-                                <option value="">Semua Kecamatan</option>
-                                <option value="pusat">Pusat</option>
-                                <option value="timur">Timur</option>
-                                <option value="barat">Barat</option>
-                                <option value="utara">Utara</option>
-                                <option value="selatan">Selatan</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="filter-actions">
-                        <button class="btn btn-primary" onclick="applyFilter()">
-                            <i class="fas fa-search"></i> Cari
-                        </button>
-                        <button class="btn btn-secondary" onclick="resetFilter()">
-                            <i class="fas fa-redo"></i> Reset
-                        </button>
-                    </div>
+        <main class="admin-content">
+            <!-- Header -->
+            <header class="admin-header">
+                <div class="header-title">
+                    <h1>Daftar Kunjungan Pasien</h1>
                 </div>
-            </div>
+                
+            </header>
 
-            <!-- Table Section -->
-            <div class="table-section">
-                <div class="table-actions">
-                    <h3>Data Kunjungan</h3>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary btn-sm" onclick="exportData()">
-                            <i class="fas fa-download"></i> Export
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="printData()">
-                            <i class="fas fa-print"></i> Cetak
-                        </button>
-                    </div>
+            <!-- Content -->
+            <div class="admin-main">
+                <!-- Tabs Navigation -->
+                <div class="tabs-nav">
+                    <button class="tab-btn active" onclick="switchTab('identitas', this)">
+                        <i class="fas fa-user"></i> Identitas Pasien
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('pendaftaran', this)">
+                        <i class="fas fa-clipboard"></i> Penanggung & Pendaftaran
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('unknown', this)">
+                        <i class="fas fa-question-circle"></i> Pasien Tidak Dikenal
+                    </button>
                 </div>
 
-                <div class="table-responsive">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>No Antrian</th>
-                                <th>No Registrasi</th>
-                                <th>Nama Pasien</th>
-                                <th>No RM</th>
-                                <th>Kecamatan</th>
-                                <th>Tanggal Daftar</th>
-                                <th>Jam Masuk</th>
-                                <th>Status</th>
-                                <th>Assessment</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>001</td>
-                                <td>REG-2024-001</td>
-                                <td>Ahmad Wijaya</td>
-                                <td>RM-2024-001</td>
-                                <td>Pusat</td>
-                                <td>27/10/2025</td>
-                                <td>08:15</td>
-                                <td><span class="badge badge-success">Selesai</span></td>
-                                <td><i class="fas fa-check-circle" style="color: #00cc44;"></i></td>
-                                <td>
-                                    <button class="btn-action btn-view" onclick="viewDetail(1)" title="Lihat Detail">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn-action btn-edit" onclick="editKunjungan(1)" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn-action btn-delete" onclick="deleteKunjungan(1)" title="Hapus">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>002</td>
-                                <td>REG-2024-002</td>
-                                <td>Siti Nurhayati</td>
-                                <td>RM-2024-002</td>
-                                <td>Timur</td>
-                                <td>27/10/2025</td>
-                                <td>08:45</td>
-                                <td><span class="badge badge-warning">Proses</span></td>
-                                <td></td>
-                                <td>
-                                    <button class="btn-action btn-view" onclick="viewDetail(2)" title="Lihat Detail">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn-action btn-edit" onclick="editKunjungan(2)" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn-action btn-delete" onclick="deleteKunjungan(2)" title="Hapus">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>003</td>
-                                <td>REG-2024-003</td>
-                                <td>Budi Santoso</td>
-                                <td>RM-2024-003</td>
-                                <td>Barat</td>
-                                <td>27/10/2025</td>
-                                <td>09:30</td>
-                                <td><span class="badge badge-warning">Menunggu</span></td>
-                                <td></td>
-                                <td>
-                                    <button class="btn-action btn-view" onclick="viewDetail(3)" title="Lihat Detail">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn-action btn-edit" onclick="editKunjungan(3)" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn-action btn-delete" onclick="deleteKunjungan(3)" title="Hapus">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>004</td>
-                                <td>REG-2024-004</td>
-                                <td>Rini Wijaya</td>
-                                <td>RM-2024-004</td>
-                                <td>Utara</td>
-                                <td>27/10/2025</td>
-                                <td>10:00</td>
-                                <td><span class="badge badge-success">Selesai</span></td>
-                                <td><i class="fas fa-check-circle" style="color: #00cc44;"></i></td>
-                                <td>
-                                    <button class="btn-action btn-view" onclick="viewDetail(4)" title="Lihat Detail">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn-action btn-edit" onclick="editKunjungan(4)" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn-action btn-delete" onclick="deleteKunjungan(4)" title="Hapus">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>005</td>
-                                <td>REG-2024-005</td>
-                                <td>Dewi Lestari</td>
-                                <td>RM-2024-005</td>
-                                <td>Selatan</td>
-                                <td>27/10/2025</td>
-                                <td>10:15</td>
-                                <td><span class="badge badge-danger">Batal</span></td>
-                                <td></td>
-                                <td>
-                                    <button class="btn-action btn-view" onclick="viewDetail(5)" title="Lihat Detail">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn-action btn-edit" onclick="editKunjungan(5)" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn-action btn-delete" onclick="deleteKunjungan(5)" title="Hapus">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- Tab 1: Identitas Pasien -->
+                <div id="identitas-tab" class="tab-content active" aria-labelledby="tab-identitas">
+                    <div class="section-header">
+                        <h2>
+                            <i class="fas fa-users"></i> Data Identitas Pasien
+                        </h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" onclick="exportData('identitas')">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                            <button class="btn btn-secondary" onclick="printData('identitas')">
+                                <i class="fas fa-print"></i> Cetak
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <input type="text" class="filter-input" placeholder="Cari berdasarkan nama atau NIK..." onkeyup="filterTable('identitas', this.value)">
+                    </div>
+
+                    <div class="table-responsive table-section" role="region" aria-label="Tabel Identitas Pasien">
+                        <table class="data-table" aria-describedby="identitas-desc">
+                            <thead>
+                                <tr>
+                                    <th>No RM</th>
+                                    <th>NIK</th>
+                                    <th>Nama</th>
+                                    <th>JK</th>
+                                    <th>Tgl Lahir</th>
+                                    <th>Umur</th>
+                                    <th>Status</th>
+                                    <th>Agama</th>
+                                    <th>Pendidikan</th>
+                                    <th>Pekerjaan</th>
+                                    <th>Alamat & Kecamatan</th>
+                                    <th>Telepon</th>
+                                    <th>Email</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>RM-2024-001</td>
+                                    <td>3201012801950001</td>
+                                    <td>Ahmad Fauzi</td>
+                                    <td>L</td>
+                                    <td>28/01/1995</td>
+                                    <td>30</td>
+                                    <td>Menikah</td>
+                                    <td>Islam</td>
+                                    <td>S1</td>
+                                    <td>Karyawan Swasta</td>
+                                    <td>Jl. Sudirman No. 45, Menteng</td>
+                                    <td>08123456789</td>
+                                    <td>ahmad.fauzi@example.com</td>
+                                    <td>
+                                        <button class="btn-action btn-view" onclick="viewDetail('identitas', 1)" title="Lihat Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-action btn-edit" onclick="editData('identitas', 1)" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-action btn-delete" onclick="deleteData('identitas', 1)" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>RM-2024-002</td>
+                                    <td>3175024512900002</td>
+                                    <td>Siti Aisyah</td>
+                                    <td>P</td>
+                                    <td>05/12/1990</td>
+                                    <td>34</td>
+                                    <td>Menikah</td>
+                                    <td>Islam</td>
+                                    <td>S2</td>
+                                    <td>Dosen</td>
+                                    <td>Jl. Gatot Subroto No. 88, Tebet</td>
+                                    <td>08234567890</td>
+                                    <td>siti.aisyah@example.com</td>
+                                    <td>
+                                        <button class="btn-action btn-view" onclick="viewDetail('identitas', 2)" title="Lihat Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-action btn-edit" onclick="editData('identitas', 2)" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-action btn-delete" onclick="deleteData('identitas', 2)" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>RM-2024-003</td>
+                                    <td>3201011506880003</td>
+                                    <td>Budi Santoso</td>
+                                    <td>L</td>
+                                    <td>15/06/1988</td>
+                                    <td>37</td>
+                                    <td>Menikah</td>
+                                    <td>Kristen</td>
+                                    <td>SMA</td>
+                                    <td>Wiraswasta</td>
+                                    <td>Jl. Thamrin No. 12, Kebayoran Baru</td>
+                                    <td>08345678901</td>
+                                    <td>budi.s@example.com</td>
+                                    <td>
+                                        <button class="btn-action btn-view" onclick="viewDetail('identitas', 3)" title="Lihat Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-action btn-edit" onclick="editData('identitas', 3)" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-action btn-delete" onclick="deleteData('identitas', 3)" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>RM-2024-004</td>
+                                    <td>3175032003920004</td>
+                                    <td>Dewi Lestari</td>
+                                    <td>P</td>
+                                    <td>20/03/1992</td>
+                                    <td>33</td>
+                                    <td>Menikah</td>
+                                    <td>Islam</td>
+                                    <td>S1</td>
+                                    <td>Apoteker</td>
+                                    <td>Jl. Rasuna Said No. 77, Cikini</td>
+                                    <td>08456789012</td>
+                                    <td>dewi.lestari@example.com</td>
+                                    <td>
+                                        <button class="btn-action btn-view" onclick="viewDetail('identitas', 4)" title="Lihat Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-action btn-edit" onclick="editData('identitas', 4)" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-action btn-delete" onclick="deleteData('identitas', 4)" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>RM-2024-005</td>
+                                    <td>3201011108850005</td>
+                                    <td>Rizki Ramadhan</td>
+                                    <td>L</td>
+                                    <td>11/08/1985</td>
+                                    <td>40</td>
+                                    <td>Belum Menikah</td>
+                                    <td>Islam</td>
+                                    <td>SMA</td>
+                                    <td>Teknisi</td>
+                                    <td>Jl. Kuningan No. 99, Tanah Abang</td>
+                                    <td>08567890123</td>
+                                    <td>rizki.r@example.com</td>
+                                    <td>
+                                        <button class="btn-action btn-view" onclick="viewDetail('identitas', 5)" title="Lihat Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-action btn-edit" onclick="editData('identitas', 5)" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-action btn-delete" onclick="deleteData('identitas', 5)" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <!-- Pagination -->
-                <div class="pagination">
-                    <button class="page-btn" onclick="previousPage()">&laquo; Sebelumnya</button>
-                    <span class="page-info">Halaman <span id="current-page">1</span> dari <span id="total-page">5</span></span>
-                    <button class="page-btn" onclick="nextPage()">Berikutnya &raquo;</button>
+                <!-- Tab 2: Penanggung & Pendaftaran -->
+                <div id="pendaftaran-tab" class="tab-content" aria-labelledby="tab-pendaftaran">
+                    <div class="section-header">
+                        <h2>
+                            <i class="fas fa-clipboard-list"></i> Data Penanggung Jawab & Pendaftaran
+                        </h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" onclick="exportData('pendaftaran')">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                            <button class="btn btn-secondary" onclick="printData('pendaftaran')">
+                                <i class="fas fa-print"></i> Cetak
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <input type="text" class="filter-input" placeholder="Cari berdasarkan nama atau No Registrasi..." onkeyup="filterTable('pendaftaran', this.value)">
+                    </div>
+
+                    <div class="table-responsive table-section" role="region" aria-label="Tabel Penanggung & Pendaftaran">
+                        <table class="data-table" aria-describedby="pendaftaran-desc">
+                            <thead>
+                                <tr>
+                                    <th>No Registrasi</th>
+                                    <th>Tgl</th>
+                                    <th>Jam</th>
+                                    <th>No RM</th>
+                                    <th>Nama Pasien</th>
+                                    <th>Nama PJ</th>
+                                    <th>Hubungan</th>
+                                    <th>NIK PJ</th>
+                                    <th>Telepon PJ</th>
+                                    <th>Cara Bayar</th>
+                                    <th>DPJP</th>
+                                    <th>Jenis Kunjungan</th>
+                                    <th>No Antrian</th>
+                                    <th>Catatan</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>REG-2024-001</td>
+                                    <td>10/01/2024</td>
+                                    <td>08:15</td>
+                                    <td>RM-2024-001</td>
+                                    <td>Ahmad Fauzi</td>
+                                    <td>Andi Wijaya</td>
+                                    <td>Suami</td>
+                                    <td>3201012801951111</td>
+                                    <td>081200111222</td>
+                                    <td><span class="badge badge-success">BPJS</span></td>
+                                    <td>Dr. Sri Wahyuni, Sp.PD</td>
+                                    <td>Rawat Jalan</td>
+                                    <td>001</td>
+                                    <td>Kontrol rutin hipertensi</td>
+                                    <td>
+                                        <button class="btn-action btn-view" onclick="viewDetail('pendaftaran', 1)" title="Lihat Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-action btn-edit" onclick="editData('pendaftaran', 1)" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-action btn-delete" onclick="deleteData('pendaftaran', 1)" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>REG-2024-002</td>
+                                    <td>11/01/2024</td>
+                                    <td>09:30</td>
+                                    <td>RM-2024-002</td>
+                                    <td>Siti Aisyah</td>
+                                    <td>Siti Aminah</td>
+                                    <td>Ibu</td>
+                                    <td>3175024512902222</td>
+                                    <td>081211334455</td>
+                                    <td><span class="badge badge-primary">Asuransi</span></td>
+                                    <td>Dr. Budi Hartono, Sp.OG</td>
+                                    <td>Rawat Jalan</td>
+                                    <td>015</td>
+                                    <td>Keluhan trimester awal</td>
+                                    <td>
+                                        <button class="btn-action btn-view" onclick="viewDetail('pendaftaran', 2)" title="Lihat Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-action btn-edit" onclick="editData('pendaftaran', 2)" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-action btn-delete" onclick="deleteData('pendaftaran', 2)" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>REG-2024-003</td>
+                                    <td>12/01/2024</td>
+                                    <td>10:45</td>
+                                    <td>RM-2024-003</td>
+                                    <td>Budi Santoso</td>
+                                    <td>Joko Susilo</td>
+                                    <td>Saudara</td>
+                                    <td>3201011506883333</td>
+                                    <td>081322445566</td>
+                                    <td><span class="badge badge-info">Pribadi</span></td>
+                                    <td>Dr. Ratna Dewi, Sp.THT</td>
+                                    <td>Rawat Jalan</td>
+                                    <td>022</td>
+                                    <td>Keluhan pendengaran menurun</td>
+                                    <td>
+                                        <button class="btn-action btn-view" onclick="viewDetail('pendaftaran', 3)" title="Lihat Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-action btn-edit" onclick="editData('pendaftaran', 3)" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-action btn-delete" onclick="deleteData('pendaftaran', 3)" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>REG-2024-004</td>
+                                    <td>13/01/2024</td>
+                                    <td>14:00</td>
+                                    <td>RM-2024-004</td>
+                                    <td>Dewi Lestari</td>
+                                    <td>Lisa Marlina</td>
+                                    <td>Adik</td>
+                                    <td>3175032003924444</td>
+                                    <td>081377889900</td>
+                                    <td><span class="badge badge-warning">Karyawan</span></td>
+                                    <td>Dr. Andi Prasetyo, Sp.JP</td>
+                                    <td>Rawat Jalan</td>
+                                    <td>030</td>
+                                    <td>Keluhan nyeri dada</td>
+                                    <td>
+                                        <button class="btn-action btn-view" onclick="viewDetail('pendaftaran', 4)" title="Lihat Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-action btn-edit" onclick="editData('pendaftaran', 4)" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-action btn-delete" onclick="deleteData('pendaftaran', 4)" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>REG-2024-005</td>
+                                    <td>14/01/2024</td>
+                                    <td>15:30</td>
+                                    <td>RM-2024-005</td>
+                                    <td>Rizki Ramadhan</td>
+                                    <td>Rudi Hartono</td>
+                                    <td>Kakak</td>
+                                    <td>3201011108855555</td>
+                                    <td>081355667788</td>
+                                    <td><span class="badge badge-success">BPJS</span></td>
+                                    <td>Dr. Putri Ayu, Sp.KK</td>
+                                    <td>Rawat Jalan</td>
+                                    <td>035</td>
+                                    <td>Ruam kulit kronis</td>
+                                    <td>
+                                        <button class="btn-action btn-view" onclick="viewDetail('pendaftaran', 5)" title="Lihat Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-action btn-edit" onclick="editData('pendaftaran', 5)" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-action btn-delete" onclick="deleteData('pendaftaran', 5)" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Pasien Tidak Dikenal -->
+                <div id="unknown-tab" class="tab-content" aria-labelledby="tab-unknown">
+                    <div class="section-header">
+                        <h2>
+                            <i class="fas fa-question-circle"></i> Data Pasien Tidak Dikenal
+                        </h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" onclick="exportData('unknown')">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                            <button class="btn btn-secondary" onclick="printData('unknown')">
+                                <i class="fas fa-print"></i> Cetak
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <input type="text" class="filter-input" placeholder="Cari berdasarkan alias atau kondisi..." onkeyup="filterTable('unknown', this.value)">
+                    </div>
+
+                    <div class="table-responsive table-section" role="region" aria-label="Tabel Pasien Tidak Dikenal">
+                        <table class="data-table" aria-describedby="unknown-desc">
+                            <thead>
+                                <tr>
+                                    <th>No RM Sementara</th>
+                                    <th>Alias/Kode</th>
+                                    <th>Perkiraan Usia</th>
+                                    <th>JK</th>
+                                    <th>Tgl Masuk</th>
+                                    <th>Lokasi Ditemukan</th>
+                                    <th>Ciri Fisik</th>
+                                    <th>Kondisi Klinis</th>
+                                    <th>Status Identifikasi</th>
+                                    <th>Kontak Penemu</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>RMU-001</td>
+                                    <td>Mr. X</td>
+                                    <td>35</td>
+                                    <td>L</td>
+                                    <td>10/01/2024</td>
+                                    <td>Jl. Merdeka</td>
+                                    <td>Parut di pipi kiri</td>
+                                    <td>Tidak sadar, GCS 8</td>
+                                    <td><span class="badge badge-warning">Dalam Penyelidikan</span></td>
+                                    <td>081234000111</td>
+                                    <td>
+                                        <button class="btn-action btn-view" onclick="viewDetail('unknown', 1)" title="Lihat Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-action btn-edit" onclick="editData('unknown', 1)" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-action btn-delete" onclick="deleteData('unknown', 1)" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>RMU-002</td>
+                                    <td>Ms. Y</td>
+                                    <td>28</td>
+                                    <td>P</td>
+                                    <td>11/01/2024</td>
+                                    <td>Terminal Bus</td>
+                                    <td>Tato bunga di pergelangan</td>
+                                    <td>Luka ringan, sadar penuh</td>
+                                    <td><span class="badge badge-warning">Dalam Penyelidikan</span></td>
+                                    <td>081255667799</td>
+                                    <td>
+                                        <button class="btn-action btn-view" onclick="viewDetail('unknown', 2)" title="Lihat Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-action btn-edit" onclick="editData('unknown', 2)" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-action btn-delete" onclick="deleteData('unknown', 2)" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>RMU-003</td>
+                                    <td>Mr. Z</td>
+                                    <td>42</td>
+                                    <td>L</td>
+                                    <td>12/01/2024</td>
+                                    <td>Stasiun Kereta</td>
+                                    <td>Luka di tangan kanan</td>
+                                    <td>Disorientasi, GCS 13</td>
+                                    <td><span class="badge badge-warning">Dalam Penyelidikan</span></td>
+                                    <td>081277889900</td>
+                                    <td>
+                                        <button class="btn-action btn-view" onclick="viewDetail('unknown', 3)" title="Lihat Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-action btn-edit" onclick="editData('unknown', 3)" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-action btn-delete" onclick="deleteData('unknown', 3)" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>RMU-004</td>
+                                    <td>Mr. A</td>
+                                    <td>30</td>
+                                    <td>L</td>
+                                    <td>13/01/2024</td>
+                                    <td>Pasar Tradisional</td>
+                                    <td>Bekas luka bakar lengan</td>
+                                    <td>Demam, nadi cepat</td>
+                                    <td><span class="badge badge-warning">Dalam Penyelidikan</span></td>
+                                    <td>081233344455</td>
+                                    <td>
+                                        <button class="btn-action btn-view" onclick="viewDetail('unknown', 4)" title="Lihat Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-action btn-edit" onclick="editData('unknown', 4)" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-action btn-delete" onclick="deleteData('unknown', 4)" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>RMU-005</td>
+                                    <td>Ms. B</td>
+                                    <td>55</td>
+                                    <td>P</td>
+                                    <td>14/01/2024</td>
+                                    <td>Jembatan Penyeberangan</td>
+                                    <td>Rambut beruban pendek</td>
+                                    <td>Hipertensi, sadar penuh</td>
+                                    <td><span class="badge badge-warning">Dalam Penyelidikan</span></td>
+                                    <td>081288899900</td>
+                                    <td>
+                                        <button class="btn-action btn-view" onclick="viewDetail('unknown', 5)" title="Lihat Detail">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn-action btn-edit" onclick="editData('unknown', 5)" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn-action btn-delete" onclick="deleteData('unknown', 5)" title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Detail Modal -->
-    <div id="modal-overlay" class="modal-overlay" onclick="closeDetailModal()"></div>
-    <div id="detail-modal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeDetailModal()">&times;</span>
-            <h2>Detail Kunjungan Pasien</h2>
-            <div id="modal-body" class="modal-body">
-                <!-- Content will be inserted here -->
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeDetailModal()">Tutup</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="js/role-manager.js"></script>
     <script src="js/script.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            roleManager.requireLogin(['perawat', 'dokter', 'pmik', 'farmasi', 'keuangan', 'admin']);
-            roleManager.updateNavbarProfile();
-        });
+        function switchTab(tabName, element) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+
+            // Add active class to clicked button
+            element.classList.add('active');
+        }
+
+        function filterTable(type, searchValue) {
+            const table = document.querySelector(`#${type}-tab .data-table tbody`);
+            const rows = table.querySelectorAll('tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchValue.toLowerCase())) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function viewDetail(type, id) {
+            alert(`Lihat detail ${type} ID: ${id}`);
+        }
+
+        function editData(type, id) {
+            alert(`Edit data ${type} ID: ${id}`);
+        }
+
+        function deleteData(type, id) {
+            if (confirm(`Apakah Anda yakin ingin menghapus data ini?`)) {
+                alert(`Data ${type} ID: ${id} berhasil dihapus`);
+            }
+        }
+
+        function exportData(type) {
+            alert(`Export data ${type}`);
+        }
+
+        function printData(type) {
+            alert(`Print data ${type}`);
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.admin-sidebar');
+            sidebar.classList.toggle('active');
+        }
     </script>
 </body>
 </html>

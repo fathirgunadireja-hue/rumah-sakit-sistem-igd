@@ -576,8 +576,7 @@ function buildUnifiedInternalShell() {
         const groups = [
             {
                 title: 'Registrasi', icon: 'fas fa-clipboard-list', open: true, links: [
-                    { href: 'identitas-pasien.html', label: 'Identitas Pasien', icon: 'fas fa-id-card' },
-                    { href: 'penanggung-pendaftaran.html', label: 'Penanggung & Pendaftaran', icon: 'fas fa-users' },
+                    { href: 'identitas-pasien.html', label: 'Identifikasi Pasien', icon: 'fas fa-id-card' },
                     { href: 'identitas-unknown.html', label: 'Pasien Tidak Dikenal', icon: 'fas fa-user-secret' },
                     // { href: 'identitas-bayi.html', label: 'Identitas Bayi', icon: 'fas fa-baby' }, // Hidden - feature in development
                     { href: 'daftar-kunjungan.html', label: 'Daftar Kunjungan', icon: 'fas fa-list' }
@@ -603,8 +602,7 @@ function buildUnifiedInternalShell() {
                 title: 'Penunjang', icon: 'fas fa-vial', links: [
                     { href: 'pemeriksaan-penunjang.html', label: 'Pemeriksaan Penunjang', icon: 'fas fa-vials' },
                     { href: 'radiologi.html', label: 'Radiologi', icon: 'fas fa-x-ray' },
-                    { href: 'laboratorium-1.html', label: 'Laboratorium 1', icon: 'fas fa-flask' },
-                    { href: 'laboratorium-2.html', label: 'Laboratorium 2', icon: 'fas fa-flask' },
+                    { href: 'laboratorium.html', label: 'Laboratorium', icon: 'fas fa-flask' },
                     { href: 'hasil-laboratorium.html', label: 'Hasil Laboratorium', icon: 'fas fa-microscope' },
                     { href: 'terapi.html', label: 'Terapi', icon: 'fas fa-pills' }
                 ]

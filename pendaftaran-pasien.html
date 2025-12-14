@@ -255,6 +255,7 @@
                                 id="tanggal-lahir" 
                                 name="tanggal-lahir"
                                 required
+                                onchange="hitungUsiaPendaftaran()"
                             >
                         </div>
                     </div>
@@ -269,6 +270,16 @@
                                 <option value="laki-laki">Laki-laki</option>
                                 <option value="perempuan">Perempuan</option>
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="usia">Usia</label>
+                            <input 
+                                type="number" 
+                                id="usia" 
+                                name="usia" 
+                                placeholder="Tahun"
+                                readonly
+                            >
                         </div>
                         <div class="form-group">
                             <label for="no-telepon">
@@ -371,6 +382,21 @@
     <script src="js/role-manager.js"></script>
     <script src="js/script.js"></script>
     <script>
+        function hitungUsiaPendaftaran() {
+            const tgl = document.getElementById('tanggal-lahir').value;
+            const usiaField = document.getElementById('usia');
+            if (!tgl) { usiaField.value = ''; return; }
+            const dob = new Date(tgl);
+            const today = new Date();
+            if (dob > today) { usiaField.value = ''; return; }
+            let usia = today.getFullYear() - dob.getFullYear();
+            const m = today.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+                usia--;
+            }
+            usiaField.value = Math.max(usia, 0);
+        }
+
         function togglePassword(fieldId) {
             const field = document.getElementById(fieldId);
             const icon = field.nextElementSibling.querySelector('i');
@@ -403,6 +429,9 @@
                 return false;
             }
 
+            // Sinkronisasi usia sebelum simpan
+            hitungUsiaPendaftaran();
+
             // Generate No RM
             const noRM = 'RM-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 99999) + 1).padStart(5, '0');
             
@@ -414,6 +443,7 @@
                 tempatLahir: document.getElementById('tempat-lahir').value,
                 tanggalLahir: document.getElementById('tanggal-lahir').value,
                 jenisKelamin: document.getElementById('jenis-kelamin').value,
+                usia: document.getElementById('usia').value,
                 noTelepon: document.getElementById('no-telepon').value,
                 email: document.getElementById('email').value,
                 alamat: document.getElementById('alamat').value,

@@ -48,16 +48,18 @@
         }
 
         .section-header {
-            background: linear-gradient(135deg, #0066cc 0%, #00a8ff 100%);
-            color: white;
+            background: #f2f7ff;
+            color: #0b3d6b;
             padding: 15px;
             border-radius: 6px;
             margin-bottom: 20px;
+            border: 1px solid #d6e4ff;
         }
 
         .section-header h3 {
             margin: 0;
-            font-size: 1.2em;
+            font-size: 1.15em;
+            font-weight: 600;
         }
 
         .specimen-box {
@@ -139,14 +141,8 @@
 
             <form id="lab-form" onsubmit="handleLaboratorium(event)" class="patient-form" novalidate>
                 
-                <!-- Tab Navigation -->
-                <div class="tabs-container">
-                    <button type="button" class="tab-button active" data-tab="data-permintaan">Data Permintaan</button>
-                    <button type="button" class="tab-button" data-tab="spesimen">Data Spesimen</button>
-                </div>
-
-                <!-- Tab 1: Data Permintaan -->
-                <div id="tab-data-permintaan" class="tab-content active">
+                <!-- Bagian: Data Permintaan -->
+                <div class="form-section">
                 <!-- Data Pasien -->
                 <div class="form-section">
                     <h3>
@@ -188,7 +184,7 @@
                     </div>
                 </div>
 
-                <!-- Waktu Permintaan -->
+                <!-- Bagian: Waktu Permintaan -->
                 <div class="form-section">
                     <h3>
                         <i class="fas fa-clock"></i> Waktu Permintaan
@@ -224,8 +220,8 @@
                     </div>
                 </div>
 
-                <!-- Tab 2: Data Spesimen -->
-                <div id="tab-spesimen" class="tab-content">
+                <!-- Bagian: Data Spesimen -->
+                <div class="form-section">
                     <div class="section-header">
                         <h3><i class="fas fa-vial"></i> Informasi Spesimen</h3>
                     </div>
@@ -246,7 +242,7 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="no-permintaan">No Permintaan Lab <span class="required">*</span></label>
-                                <input type="text" id="no-permintaan" placeholder="Auto-generate" value="LAB-2024-001" readonly>
+                                <input type="text" id="no-permintaan" placeholder="Masukkan nomor permintaan lab" required>
                             </div>
                             <div class="form-group">
                                 <label for="tanggal-pengambilan">Tanggal & Waktu Pengambilan <span class="required">*</span></label>
@@ -485,33 +481,8 @@
                             <input type="datetime-local" id="tanggal-terima-lab" required>
                         </div>
                     </div>
-                </div>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-row full">
-                        <div class="form-group">
-                            <label for="indikasi-klinis">
-                                <span class="required">*</span> Indikasi Klinis / Diagnosis
-                            </label>
-                            <textarea id="indikasi-klinis" name="indikasi-klinis" rows="3" placeholder="Alasan pemeriksaan laboratorium" required></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="tab-navigation">
-                    <button type="button" class="nav-button prev" onclick="previousLabTab()" disabled id="prev-lab-btn">
-                        <i class="fas fa-chevron-left"></i> Sebelumnya
-                    </button>
-                    <button type="button" class="nav-button next" onclick="nextLabTab()" id="next-lab-btn">
-                        Berikutnya <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-
-                <!-- Submit Button (Hidden, shown on last tab) -->
-                <div style="margin-top: 20px;" id="submit-lab-section" style="display: none;">
+                <!-- Submit -->
+                <div style="margin-top: 20px;">
                     <div class="form-actions">
                         <button type="button" class="btn btn-secondary" onclick="goBack()">
                             <i class="fas fa-times"></i> Batal
@@ -521,156 +492,12 @@
                         </button>
                     </div>
                 </div>
-                </div>
             </form>
         </main>
     </div>
 
     <script>
-        // Data for pemeriksaan based on kategori
-        const pemeriksaanData = {
-            'hematologi': [
-                'Hemoglobin',
-                'Hematokrit',
-                'Eritrosit (RBC)',
-                'Leukosit (WBC)',
-                'Trombosit',
-                'Tes Darah Lengkap (CBC)',
-                'Diferensial Leukosit',
-                'Masa Perdarahan',
-                'Masa Pembekuan'
-            ],
-            'kimia-klinis': [
-                'Glukosa Darah',
-                'Urea',
-                'Kreatinin',
-                'Asam Urat',
-                'Kolesterol Total',
-                'Trigliserida',
-                'HDL dan LDL',
-                'Protein Total',
-                'Albumin',
-                'Globulin'
-            ],
-            'mikrobiologi': [
-                'Kultur Urin',
-                'Kultur Darah',
-                'Kultur Sputum',
-                'Kultur Tinja',
-                'Gram Stain',
-                'Tes Kepekaan Antibiotik'
-            ],
-            'imunologi': [
-                'HBsAg (Hepatitis B)',
-                'Anti HCV (Hepatitis C)',
-                'HIV',
-                'Sifilis (RPR/VDRL)',
-                'Tes Kehamilan (HCG)',
-                'Tes Alergi'
-            ],
-            'urinalisis': [
-                'Tes Urin Lengkap',
-                'Protein Urin',
-                'Glukosa Urin',
-                'Benda Keton',
-                'Sel Darah Putih Urin',
-                'Sel Darah Merah Urin'
-            ],
-            'paket': [
-                'Paket Medical Check-up Lengkap',
-                'Paket Pre Operasi',
-                'Paket Ibu Hamil',
-                'Paket Kesehatan Karyawan'
-            ]
-        };
-
-        function updatePemeriksaan() {
-            const kategori = document.getElementById('kategori-pemeriksaan').value;
-            const container = document.getElementById('jenis-pemeriksaan-container');
-            const selectJenis = document.getElementById('jenis-pemeriksaan');
-
-            if (kategori) {
-                selectJenis.innerHTML = '<option value="">-- Pilih Jenis --</option>';
-                pemeriksaanData[kategori].forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item.toLowerCase().replace(' ', '-');
-                    option.textContent = item;
-                    selectJenis.appendChild(option);
-                });
-                container.style.display = 'block';
-            } else {
-                container.style.display = 'none';
-            }
-        }
-
-        // Tab Navigation
-        function nextLabTab() {
-            const form = document.getElementById('lab-form');
-            if (!form.checkValidity()) {
-                alert('Silakan isi semua field yang diperlukan');
-                return;
-            }
-
-            const tabs = document.querySelectorAll('.tab-content');
-            const activeTab = document.querySelector('.tab-content.active');
-            const nextTab = activeTab.nextElementSibling;
-
-            if (nextTab && nextTab.classList.contains('tab-content')) {
-                activeTab.classList.remove('active');
-                nextTab.classList.add('active');
-
-                // Update button states
-                updateTabButtons();
-                window.scrollTo(0, 0);
-            }
-        }
-
-        function previousLabTab() {
-            const activeTab = document.querySelector('.tab-content.active');
-            const prevTab = activeTab.previousElementSibling;
-
-            if (prevTab && prevTab.classList.contains('tab-content')) {
-                activeTab.classList.remove('active');
-                prevTab.classList.add('active');
-
-                // Update button states
-                updateTabButtons();
-                window.scrollTo(0, 0);
-            }
-        }
-
-        function updateTabButtons() {
-            const tabs = document.querySelectorAll('.tab-content');
-            const activeTab = document.querySelector('.tab-content.active');
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const tabIndex = Array.from(tabs).indexOf(activeTab);
-
-            // Update tab button states
-            tabButtons.forEach((btn, index) => {
-                btn.classList.toggle('active', index === tabIndex);
-            });
-
-            // Update navigation button states
-            document.getElementById('prev-lab-btn').disabled = tabIndex === 0;
-            document.getElementById('next-lab-btn').style.display = tabIndex === tabs.length - 1 ? 'none' : 'block';
-            
-            // Show submit button on last tab
-            const submitSection = document.getElementById('submit-lab-section');
-            if (tabIndex === tabs.length - 1) {
-                submitSection.style.display = 'block';
-            } else {
-                submitSection.style.display = 'none';
-            }
-        }
-
-        // Switch tab when clicking tab button
-        function switchTab(tabId) {
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            updateTabButtons();
-            window.scrollTo(0, 0);
-        }
+        // No tab navigation; form flows linearly
 
         // Update specimen info visibility based on specimen type
         function updateSpecimenInfo() {
@@ -702,12 +529,12 @@
             // Collect data from all tabs
             const data = {
                 // Tab 1: Data Permintaan
-                noRm: document.getElementById('no-rm').value,
-                namaPasien: document.getElementById('nama-pasien').value,
-                umur: document.getElementById('umur').value,
-                jenisKelamin: document.getElementById('jenis-kelamin').value,
-                noTelepon: document.getElementById('no-telepon').value,
+                noRm: document.getElementById('no-rm-lab').value,
+                namaPasien: document.getElementById('nama-pasien-lab').value,
+                umur: document.getElementById('umur-lab').value,
+                jenisKelamin: document.getElementById('jenis-kelamin-lab').value,
                 tanggalPermintaan: document.getElementById('tanggal-permintaan').value,
+                jamPermintaan: document.getElementById('jam-permintaan').value,
                 statusPuasa: document.getElementById('status-puasa').value,
                 
                 // Tab 2: Data Spesimen
@@ -728,10 +555,10 @@
             // window.location.href = 'dashboard-pasien.html';
         }
 
-        // Initialize tab buttons on page load
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            updateTabButtons();
-        }
+            // Nothing to init for linear flow
+        });
     </script>
     <script src="js/role-manager.js"></script>
     <script src="js/script.js"></script>
