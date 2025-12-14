@@ -579,7 +579,7 @@ function buildUnifiedInternalShell() {
                     { href: 'identitas-pasien.html', label: 'Identitas Pasien', icon: 'fas fa-id-card' },
                     { href: 'penanggung-pendaftaran.html', label: 'Penanggung & Pendaftaran', icon: 'fas fa-users' },
                     { href: 'identitas-unknown.html', label: 'Pasien Tidak Dikenal', icon: 'fas fa-user-secret' },
-                    { href: 'identitas-bayi.html', label: 'Identitas Bayi', icon: 'fas fa-baby' },
+                    // { href: 'identitas-bayi.html', label: 'Identitas Bayi', icon: 'fas fa-baby' }, // Hidden - feature in development
                     { href: 'daftar-kunjungan.html', label: 'Daftar Kunjungan', icon: 'fas fa-list' }
                 ]
             },
@@ -587,8 +587,7 @@ function buildUnifiedInternalShell() {
                 title: 'IGD & Klinik', icon: 'fas fa-heartbeat', links: [
                     { href: 'triase-igd.html', label: 'Triase IGD', icon: 'fas fa-ambulance' },
                     { href: 'assessment-igd.html', label: 'Assessment IGD', icon: 'fas fa-stethoscope' },
-                    { href: 'pemeriksaan-fisik-1.html', label: 'Pemeriksaan Fisik 1', icon: 'fas fa-procedures' },
-                    { href: 'pemeriksaan-fisik-2.html', label: 'Pemeriksaan Fisik 2', icon: 'fas fa-procedures' },
+                    { href: 'pemeriksaan-fisik.html', label: 'Pemeriksaan Fisik', icon: 'fas fa-procedures' },
                     { href: 'screening-risiko.html', label: 'Screening Risiko', icon: 'fas fa-shield-alt' },
                     { href: 'psikologis-pemulangan.html', label: 'Psikologis & Pemulangan', icon: 'fas fa-brain' }
                 ]
@@ -596,7 +595,6 @@ function buildUnifiedInternalShell() {
             {
                 title: 'Diagnosis & Consent', icon: 'fas fa-file-medical', links: [
                     { href: 'diagnosis.html', label: 'Diagnosis', icon: 'fas fa-notes-medical' },
-                    { href: 'terapi.html', label: 'Terapi', icon: 'fas fa-pills' },
                     { href: 'informed-consent.html', label: 'Informed Consent', icon: 'fas fa-file-signature' },
                     { href: 'general-consent.html', label: 'General Consent', icon: 'fas fa-file-contract' }
                 ]
@@ -607,14 +605,15 @@ function buildUnifiedInternalShell() {
                     { href: 'radiologi.html', label: 'Radiologi', icon: 'fas fa-x-ray' },
                     { href: 'laboratorium-1.html', label: 'Laboratorium 1', icon: 'fas fa-flask' },
                     { href: 'laboratorium-2.html', label: 'Laboratorium 2', icon: 'fas fa-flask' },
-                    { href: 'hasil-laboratorium.html', label: 'Hasil Laboratorium', icon: 'fas fa-microscope' }
+                    { href: 'hasil-laboratorium.html', label: 'Hasil Laboratorium', icon: 'fas fa-microscope' },
+                    { href: 'terapi.html', label: 'Terapi', icon: 'fas fa-pills' }
                 ]
             }
         ];
 
         const standaloneLinks = [
-            { href: 'farmasi.html', label: 'Farmasi', icon: 'fas fa-prescription-bottle' },
-            { href: 'keuangan.html', label: 'Keuangan', icon: 'fas fa-credit-card' },
+            // { href: 'farmasi.html', label: 'Farmasi', icon: 'fas fa-prescription-bottle' }, // Hidden - feature in development
+            // { href: 'keuangan.html', label: 'Keuangan', icon: 'fas fa-credit-card' }, // Hidden - feature in development
             { href: 'setting.html', label: 'Pengaturan', icon: 'fas fa-cog' }
         ];
 

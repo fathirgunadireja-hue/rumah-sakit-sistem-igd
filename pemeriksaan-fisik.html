@@ -7,40 +7,59 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
-        .body-diagram {
-            background: #f8f9fa;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 15px 0;
-            text-align: center;
-        }
-        .body-diagram-svg {
-            max-width: 200px;
-            margin: 0 auto 15px;
-            background: white;
-            padding: 10px;
-            border-radius: 6px;
-        }
-        .body-parts-list {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .body-part {
+        .tabs-container {
             display: flex;
-            align-items: center;
-            padding: 10px;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
         }
-        .body-part input[type="checkbox"] {
-            margin-right: 10px;
-            width: 18px;
-            height: 18px;
+
+        .tab-button {
+            padding: 12px 20px;
+            border: 2px solid transparent;
+            background: #f5f5f5;
+            color: #666;
+            cursor: pointer;
+            border-radius: 6px 6px 0 0;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 14px;
         }
+
+        .tab-button:hover {
+            background: #e8f0ff;
+            color: #0066cc;
+        }
+
+        .tab-button.active {
+            background: #0066cc;
+            color: white;
+            border-bottom: 3px solid #0066cc;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #0066cc 0%, #00a8ff 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .section-header h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+
         .exam-field {
             background: #f8f9fa;
             padding: 15px;
@@ -48,11 +67,13 @@
             margin: 10px 0;
             border-left: 3px solid #0066cc;
         }
+
         .exam-field h4 {
             margin-top: 0;
             color: #0066cc;
             font-size: 1.05em;
         }
+
         .finding-option {
             display: flex;
             align-items: flex-start;
@@ -62,6 +83,7 @@
             border: 1px solid #e0e0e0;
             border-radius: 4px;
         }
+
         .finding-option input[type="checkbox"],
         .finding-option input[type="radio"] {
             margin-right: 10px;
@@ -70,29 +92,143 @@
             height: 18px;
             cursor: pointer;
         }
+
         .finding-option label {
             cursor: pointer;
             flex: 1;
             margin: 0;
         }
+
         .normal-abnormal-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
             margin: 15px 0;
         }
+
         .side-by-side {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
+
+        .side-label {
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 15px;
+            color: #333;
+            background: linear-gradient(135deg, #fafbfc 0%, #ffffff 100%);
+            resize: vertical;
+            min-height: 120px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0066cc;
+            background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.15);
+        }
+
+        .form-group textarea::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        .tab-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 10px;
+        }
+
+        .nav-button {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button.prev {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .nav-button.prev:hover {
+            background: #e8e8e8;
+        }
+
+        .nav-button.next {
+            background: #0066cc;
+            color: white;
+        }
+
+        .nav-button.next:hover {
+            background: #0052a3;
+        }
+
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group select,
+        .desc-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            background: linear-gradient(135deg, #fafbfc 0%, #ffffff 100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="number"]:focus,
+        .form-group select:focus,
+        .desc-input:focus {
+            outline: none;
+            border-color: #0066cc;
+            background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.15);
+        }
+
+        .desc-input::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        .desc-wrapper {
+            margin-top: 12px;
+        }
+
         @media (max-width: 768px) {
-            .body-parts-list {
-                grid-template-columns: 1fr;
+            .tabs-container {
+                flex-direction: column;
             }
-            .normal-abnormal-group {
-                grid-template-columns: 1fr;
+
+            .tab-button {
+                width: 100%;
             }
+
+            .normal-abnormal-group,
             .side-by-side {
                 grid-template-columns: 1fr;
             }
@@ -100,9 +236,6 @@
     </style>
 </head>
 <body>
-    <!-- Top Navigation -->
-    
-
     <div class="admin-container">
         <!-- Sidebar -->
         <aside class="admin-sidebar">
@@ -110,54 +243,6 @@
                 <h2><i class="fas fa-hospital"></i> RS JAYA SEHAT</h2>
             </div>
             <nav class="sidebar-nav">
-                <a href="dashboard-admin.html" class="nav-item">
-                    <i class="fas fa-home"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="identitas-pasien.html" class="nav-item">
-                    <i class="fas fa-id-card"></i>
-                    <span>Identifikasi Pasien</span>
-                </a>
-                <a href="daftar-kunjungan.html" class="nav-item">
-                    <i class="fas fa-list"></i>
-                    <span>Daftar Kunjungan</span>
-                </a>
-                <a href="general-consent.html" class="nav-item">
-                    <i class="fas fa-file-contract"></i>
-                    <span>General Consent</span>
-                </a>
-                <a href="triase-igd.html" class="nav-item">
-                    <i class="fas fa-heartbeat"></i>
-                    <span>Triase IGD</span>
-                </a>
-                <a href="assessment-igd.html" class="nav-item">
-                    <i class="fas fa-stethoscope"></i>
-                    <span>Assessment IGD</span>
-                </a>
-                <a href="pemeriksaan-fisik-1.html" class="nav-item active">
-                    <i class="fas fa-procedures"></i>
-                    <span>Pemeriksaan Fisik</span>
-                </a>
-                <a href="laboratorium-1.html" class="nav-item">
-                    <i class="fas fa-flask"></i>
-                    <span>Laboratorium</span>
-                </a>
-                <a href="diagnosis.html" class="nav-item">
-                    <i class="fas fa-file-medical"></i>
-                    <span>Diagnosis</span>
-                </a>
-                <a href="farmasi.html" class="nav-item">
-                    <i class="fas fa-prescription-bottle"></i>
-                    <span>Farmasi</span>
-                </a>
-                <a href="keuangan.html" class="nav-item">
-                    <i class="fas fa-credit-card"></i>
-                    <span>Keuangan</span>
-                </a>
-                <a href="setting.html" class="nav-item">
-                    <i class="fas fa-cog"></i>
-                    <span>Pengaturan</span>
-                </a>
             </nav>
         </aside>
 
@@ -168,10 +253,10 @@
                 <p>Pemeriksaan fisik sistematis dari kepala hingga ekstremitas bawah</p>
             </div>
 
-            <!-- Physical Examination Form -->
+            <!-- Physical Examination Form with Tabs -->
             <form class="patient-form" onsubmit="handlePemeriksaanFisik(event)" novalidate>
                 
-                <!-- Data Pasien Section -->
+                <!-- Data Pasien Section (Always Visible) -->
                 <div class="form-section">
                     <h3><i class="fas fa-user-circle"></i> Data Pasien</h3>
                     <div class="form-row">
@@ -196,9 +281,23 @@
                     </div>
                 </div>
 
-                <!-- General Appearance / Penampilan Umum -->
-                <div class="form-section">
-                    <h3><i class="fas fa-eye"></i> Penampilan Umum & Status Gizi</h3>
+                <!-- Tab Navigation -->
+                <div class="tabs-container">
+                    <button type="button" class="tab-button active" data-tab="umum">Keadaan Umum</button>
+                    <button type="button" class="tab-button" data-tab="kepala">Kepala</button>
+                    <button type="button" class="tab-button" data-tab="mulut">Mulut & Tenggorokan</button>
+                    <button type="button" class="tab-button" data-tab="leher">Leher</button>
+                    <button type="button" class="tab-button" data-tab="dada">Dada & Paru</button>
+                    <button type="button" class="tab-button" data-tab="jantung">Jantung</button>
+                    <button type="button" class="tab-button" data-tab="abdomen">Abdomen</button>
+                    <button type="button" class="tab-button" data-tab="ekstremitas">Ekstremitas</button>
+                </div>
+
+                <!-- Tab 1: Keadaan Umum -->
+                <div id="tab-umum" class="tab-content active">
+                    <div class="section-header">
+                        <h3><i class="fas fa-eye"></i> Penampilan Umum & Status Gizi</h3>
+                    </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="keadaan-umum">Keadaan Umum <span class="required">*</span></label>
@@ -223,9 +322,11 @@
                     </div>
                 </div>
 
-                <!-- Head Examination / Pemeriksaan Kepala -->
-                <div class="form-section">
-                    <h3><i class="fas fa-head-side-virus"></i> Pemeriksaan Kepala</h3>
+                <!-- Tab 2: Kepala -->
+                <div id="tab-kepala" class="tab-content">
+                    <div class="section-header">
+                        <h3><i class="fas fa-head-side-virus"></i> Pemeriksaan Kepala</h3>
+                    </div>
                     
                     <div class="exam-field">
                         <h4><i class="fas fa-circle"></i> Kulit Kepala & Rambut</h4>
@@ -265,8 +366,8 @@
                                     <input type="radio" id="mata-kiri-abnormal" name="mata-kiri" value="abnormal">
                                     <label for="mata-kiri-abnormal">Abnormal</label>
                                 </div>
-                                <div style="margin-top: 8px;">
-                                    <input type="text" id="mata-kiri-desc" placeholder="Deskripsi temuan" style="width: 100%;">
+                                <div class="desc-wrapper">
+                                    <input type="text" id="mata-kiri-desc" placeholder="Deskripsi temuan" class="desc-input">
                                 </div>
                             </div>
                             <div>
@@ -279,8 +380,8 @@
                                     <input type="radio" id="mata-kanan-abnormal" name="mata-kanan" value="abnormal">
                                     <label for="mata-kanan-abnormal">Abnormal</label>
                                 </div>
-                                <div style="margin-top: 8px;">
-                                    <input type="text" id="mata-kanan-desc" placeholder="Deskripsi temuan" style="width: 100%;">
+                                <div class="desc-wrapper">
+                                    <input type="text" id="mata-kanan-desc" placeholder="Deskripsi temuan" class="desc-input">
                                 </div>
                             </div>
                         </div>
@@ -314,8 +415,8 @@
                                     <input type="radio" id="telinga-kiri-abnormal" name="telinga-kiri" value="abnormal">
                                     <label for="telinga-kiri-abnormal">Abnormal</label>
                                 </div>
-                                <div style="margin-top: 8px;">
-                                    <input type="text" id="telinga-kiri-desc" placeholder="Deskripsi" style="width: 100%;">
+                                <div class="desc-wrapper">
+                                    <input type="text" id="telinga-kiri-desc" placeholder="Deskripsi" class="desc-input">
                                 </div>
                             </div>
                             <div>
@@ -328,8 +429,8 @@
                                     <input type="radio" id="telinga-kanan-abnormal" name="telinga-kanan" value="abnormal">
                                     <label for="telinga-kanan-abnormal">Abnormal</label>
                                 </div>
-                                <div style="margin-top: 8px;">
-                                    <input type="text" id="telinga-kanan-desc" placeholder="Deskripsi" style="width: 100%;">
+                                <div class="desc-wrapper">
+                                    <input type="text" id="telinga-kanan-desc" placeholder="Deskripsi" class="desc-input">
                                 </div>
                             </div>
                         </div>
@@ -378,9 +479,11 @@
                     </div>
                 </div>
 
-                <!-- Mouth & Throat / Pemeriksaan Mulut & Tenggorokan -->
-                <div class="form-section">
-                    <h3><i class="fas fa-mouth"></i> Pemeriksaan Mulut & Tenggorokan</h3>
+                <!-- Tab 3: Mulut & Tenggorokan -->
+                <div id="tab-mulut" class="tab-content">
+                    <div class="section-header">
+                        <h3><i class="fas fa-mouth"></i> Pemeriksaan Mulut & Tenggorokan</h3>
+                    </div>
                     
                     <div class="exam-field">
                         <h4><i class="fas fa-tooth"></i> Gigi & Gusi</h4>
@@ -462,22 +565,11 @@
                     </div>
                 </div>
 
-                <!-- Action Buttons -->
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" onclick="goBack()">
-                        <i class="fas fa-times"></i> Batal
-                    </button>
-                    <button type="button" class="btn btn-secondary" onclick="window.location.href='laboratorium-1.html'">
-                        <i class="fas fa-arrow-right"></i> Lanjut ke Laboratorium
-                    </button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Simpan Pemeriksaan Fisik
-                    </button>
-                </div>
-
-                <!-- Neck Examination / Pemeriksaan Leher -->
-                <div class="form-section">
-                    <h3><i class="fas fa-water"></i> Pemeriksaan Leher</h3>
+                <!-- Tab 4: Leher -->
+                <div id="tab-leher" class="tab-content">
+                    <div class="section-header">
+                        <h3><i class="fas fa-water"></i> Pemeriksaan Leher</h3>
+                    </div>
                     <div class="exam-field">
                         <h4>Leher & Kelenjar</h4>
                         <div class="finding-option">
@@ -507,9 +599,11 @@
                     </div>
                 </div>
 
-                <!-- Chest Examination / Pemeriksaan Dada -->
-                <div class="form-section">
-                    <h3><i class="fas fa-lungs"></i> Pemeriksaan Dada & Paru</h3>
+                <!-- Tab 5: Dada & Paru -->
+                <div id="tab-dada" class="tab-content">
+                    <div class="section-header">
+                        <h3><i class="fas fa-lungs"></i> Pemeriksaan Dada & Paru</h3>
+                    </div>
                     
                     <div class="exam-field">
                         <h4>Inspeksi & Palpasi</h4>
@@ -588,9 +682,11 @@
                     </div>
                 </div>
 
-                <!-- Heart Examination / Pemeriksaan Jantung -->
-                <div class="form-section">
-                    <h3><i class="fas fa-heart"></i> Pemeriksaan Jantung</h3>
+                <!-- Tab 6: Jantung -->
+                <div id="tab-jantung" class="tab-content">
+                    <div class="section-header">
+                        <h3><i class="fas fa-heart"></i> Pemeriksaan Jantung</h3>
+                    </div>
                     
                     <div class="exam-field">
                         <h4>Denyut Nadi & Tekanan Darah</h4>
@@ -638,9 +734,11 @@
                     </div>
                 </div>
 
-                <!-- Abdomen Examination / Pemeriksaan Abdomen -->
-                <div class="form-section">
-                    <h3><i class="fas fa-stomach"></i> Pemeriksaan Abdomen</h3>
+                <!-- Tab 7: Abdomen -->
+                <div id="tab-abdomen" class="tab-content">
+                    <div class="section-header">
+                        <h3><i class="fas fa-stomach"></i> Pemeriksaan Abdomen</h3>
+                    </div>
                     
                     <div class="exam-field">
                         <h4>Inspeksi & Palpasi</h4>
@@ -692,9 +790,11 @@
                     </div>
                 </div>
 
-                <!-- Extremities Examination / Pemeriksaan Ekstremitas -->
-                <div class="form-section">
-                    <h3><i class="fas fa-running"></i> Pemeriksaan Ekstremitas & Sendi</h3>
+                <!-- Tab 8: Ekstremitas -->
+                <div id="tab-ekstremitas" class="tab-content">
+                    <div class="section-header">
+                        <h3><i class="fas fa-running"></i> Pemeriksaan Ekstremitas & Sendi</h3>
+                    </div>
                     
                     <div class="exam-field">
                         <h4>Tangan (Kiri & Kanan)</h4>
@@ -770,20 +870,106 @@
                     </div>
                 </div>
 
-                <!-- Action Buttons -->
-                <div class="form-actions">
+                <!-- Tab Navigation Buttons -->
+                <div class="tab-navigation">
+                    <button type="button" class="nav-button prev" onclick="previousTab()" disabled id="prev-btn">
+                        <i class="fas fa-chevron-left"></i> Sebelumnya
+                    </button>
+                    <button type="button" class="nav-button next" onclick="nextTab()" id="next-btn">
+                        Berikutnya <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- Submit Button (Hidden, shown on last tab) -->
+                <div style="margin-top: 20px;" id="submit-section" style="display: none;">
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="goBack()">
+                            <i class="fas fa-times"></i> Batal
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='laboratorium-1.html'">
+                            <i class="fas fa-arrow-right"></i> Lanjut ke Laboratorium
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Simpan Pemeriksaan Fisik
+                        </button>
+                    </div>
                 </div>
             </form>
         </main>
     </div>
 
     <script src="js/script.js"></script>
+    <script src="js/role-manager.js"></script>
     <script>
+        const tabs = [
+            { id: 'umum', name: 'Keadaan Umum' },
+            { id: 'kepala', name: 'Kepala' },
+            { id: 'mulut', name: 'Mulut & Tenggorokan' },
+            { id: 'leher', name: 'Leher' },
+            { id: 'dada', name: 'Dada & Paru' },
+            { id: 'jantung', name: 'Jantung' },
+            { id: 'abdomen', name: 'Abdomen' },
+            { id: 'ekstremitas', name: 'Ekstremitas' }
+        ];
+
+        let currentTabIndex = 0;
+
+        // Initialize tab buttons
+        document.querySelectorAll('.tab-button').forEach((btn, index) => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                currentTabIndex = index;
+                updateTabs();
+            });
+        });
+
+        function updateTabs() {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show current tab
+            const currentTab = tabs[currentTabIndex];
+            document.getElementById(`tab-${currentTab.id}`).classList.add('active');
+            document.querySelector(`.tab-button[data-tab="${currentTab.id}"]`).classList.add('active');
+
+            // Update navigation buttons
+            document.getElementById('prev-btn').disabled = currentTabIndex === 0;
+            
+            const isLastTab = currentTabIndex === tabs.length - 1;
+            document.getElementById('next-btn').style.display = isLastTab ? 'none' : 'block';
+            document.getElementById('submit-section').style.display = isLastTab ? 'block' : 'none';
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextTab() {
+            if (currentTabIndex < tabs.length - 1) {
+                currentTabIndex++;
+                updateTabs();
+            }
+        }
+
+        function previousTab() {
+            if (currentTabIndex > 0) {
+                currentTabIndex--;
+                updateTabs();
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // Set default datetime to now
             const now = new Date();
             const formattedDate = now.toISOString().slice(0, 16);
             document.getElementById('tanggal-pemeriksaan').value = formattedDate;
+
+            roleManager.requireLogin(['perawat', 'dokter', 'pmik', 'admin']);
+            roleManager.updateNavbarProfile();
         });
 
         function handlePemeriksaanFisik(event) {
@@ -803,10 +989,11 @@
                 kondisiGigi: document.getElementById('kondisi-gigi').value,
                 kondisiTonsil: document.getElementById('kondisi-tonsil').value,
                 catatanMulut: document.getElementById('catatan-mulut-tenggorokan').value,
+                catatanLeher: document.getElementById('catatan-leher').value,
                 bentukDada: document.getElementById('bentuk-dada').value,
+                catatanDada: document.getElementById('catatan-dada').value,
                 denyutNadi: document.getElementById('denyut-nadi').value,
                 iramaNadi: document.getElementById('irama-nadi').value,
-                catatanDada: document.getElementById('catatan-dada').value,
                 catatanJantung: document.getElementById('catatan-jantung').value,
                 catatanAbdomen: document.getElementById('catatan-abdomen').value,
                 catatanEkstremitas: document.getElementById('catatan-ekstremitas').value
@@ -820,13 +1007,6 @@
             // Reset form
             resetForm();
         }
-    </script>
-    <script src="js/role-manager.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            roleManager.requireLogin(['perawat', 'dokter', 'pmik', 'admin']);
-            roleManager.updateNavbarProfile();
-        });
     </script>
 </body>
 </html>
