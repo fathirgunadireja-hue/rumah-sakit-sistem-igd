@@ -259,100 +259,31 @@
                         <label for="kondisi-temuan">Kondisi Saat Ditemukan <span class="required">*</span></label>
                         <textarea id="kondisi-temuan" placeholder="Kondisi fisik, kesadaran, cedera, pakaian, dll saat ditemukan" required></textarea>
                     </div>
-
-                    <div class="detail-item">
-                        <label for="cara-temuan">Cara/Cara Ditemukan <span class="required">*</span></label>
-                        <select id="cara-temuan" required>
-                            <option value="">-- Pilih --</option>
-                            <option value="polisi">Dibawa oleh Polisi</option>
-                            <option value="ambulans">Ditangani Ambulans</option>
-                            <option value="masyarakat">Dibawa Masyarakat Umum</option>
-                            <option value="security">Dibawa Security/Keamanan</option>
-                            <option value="kecelakaan">Korban Kecelakaan Lalu Lintas</option>
-                            <option value="bencana">Korban Bencana</option>
-                            <option value="lainnya">Cara Lain</option>
-                        </select>
-                    </div>
                 </div>
 
                 <!-- Physical Description -->
                 <div class="form-section">
                     <h3><i class="fas fa-user"></i> Deskripsi Fisik Pasien</h3>
-                    <div class="info-box">
-                        <i class="fas fa-info-circle"></i> Catatan detail tentang ciri-ciri fisik untuk identifikasi
-                    </div>
 
-                    <div class="photo-section">
-                        <div>
-                            <div class="photo-placeholder"><i class="fas fa-camera"></i></div>
-                            <p style="margin-top: 15px; color: #666;">Foto/Dokumentasi Pasien</p>
-                            <input type="file" id="foto-pasien" accept="image/*" style="margin-top: 10px;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="estimasi-umur">Estimasi Umur <span class="required">*</span></label>
+                            <input type="text" id="estimasi-umur" placeholder="Contoh: 30-40 tahun" required>
                         </div>
-                    </div>
-
-                    <div class="physical-desc">
-                        <div style="margin-bottom: 15px;">
-                            <label style="font-weight: bold; display: block; margin-bottom: 10px;">Estimasi Data Demografis</label>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="estimasi-umur">Estimasi Umur <span class="required">*</span></label>
-                                    <input type="text" id="estimasi-umur" placeholder="Contoh: 30-40 tahun" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="estimasi-gender">Estimasi Jenis Kelamin <span class="required">*</span></label>
-                                    <select id="estimasi-gender" required>
-                                        <option value="">-- Pilih --</option>
-                                        <option value="laki-laki">Laki-laki</option>
-                                        <option value="perempuan">Perempuan</option>
-                                        <option value="belum-pasti">Belum Pasti</option>
-                                    </select>
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <label for="estimasi-gender">Estimasi Jenis Kelamin <span class="required">*</span></label>
+                            <select id="estimasi-gender" required>
+                                <option value="">-- Pilih --</option>
+                                <option value="laki-laki">Laki-laki</option>
+                                <option value="perempuan">Perempuan</option>
+                                <option value="belum-pasti">Belum Pasti</option>
+                            </select>
                         </div>
-
-                        <div style="margin-bottom: 15px;">
-                            <label style="font-weight: bold; display: block; margin-bottom: 10px;">Ciri-Ciri Tubuh</label>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="tinggi-badan">Estimasi Tinggi Badan (cm)</label>
-                                    <input type="number" id="tinggi-badan" placeholder="160-170">
-                                </div>
-                                <div class="form-group">
-                                    <label for="berat-badan">Estimasi Berat Badan (kg)</label>
-                                    <input type="number" id="berat-badan" placeholder="65">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom: 15px;">
-                            <label style="font-weight: bold; display: block; margin-bottom: 10px;">Ciri Wajah & Rambut</label>
-                            <textarea id="ciri-wajah" placeholder="Warna kulit, tipe rambut, warna rambut, wajah bulat/lonjong, hidung, telinga, dll" required></textarea>
-                        </div>
-
-                        <div style="margin-bottom: 15px;">
-                            <label style="font-weight: bold; display: block; margin-bottom: 10px;">Ciri Khusus (Tanda Lahir, Tato, Bekas Luka, dll)</label>
-                            <textarea id="ciri-khusus" placeholder="Ciri pengenalan lain yang membedakan (tato, bekas luka, tanda lahir, cacat, dll)"></textarea>
-                        </div>
-
-                        <div style="margin-bottom: 15px;">
-                            <label style="font-weight: bold; display: block; margin-bottom: 10px;">Pakaian/Aksesoris Saat Ditemukan</label>
-                            <textarea id="pakaian" placeholder="Deskripsi lengkap pakaian, sepatu, tas, perhiasan, jam tangan, dll" required></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Identifying Items -->
-                <div class="form-section">
-                    <h3><i class="fas fa-key"></i> Barang-Barang Identitas yang Dibawa</h3>
-                    
-                    <div class="detail-item">
-                        <label for="barang-identitas">Barang/Dokumen yang Dapat Membantu Identifikasi <span class="required">*</span></label>
-                        <textarea id="barang-identitas" placeholder="Kartu identitas, pas foto, surat, ponsel, dompet, atau barang lain" required></textarea>
                     </div>
 
                     <div class="detail-item">
-                        <label for="penyimpanan-barang">Penyimpanan Barang Berharga <span class="required">*</span></label>
-                        <textarea id="penyimpanan-barang" placeholder="Dimana barang-barang tersimpan, siapa yang mengurus, nomor inventaris" required></textarea>
+                        <label for="ciri-fisik">Ciri-Ciri Fisik <span class="required">*</span></label>
+                        <textarea id="ciri-fisik" placeholder="Warna kulit, rambut, wajah, tanda khusus (tato, bekas luka, dll)" required></textarea>
                     </div>
                 </div>
 
@@ -362,86 +293,34 @@
                     
                     <div class="detail-item">
                         <label for="kondisi-kesehatan">Kondisi Kesehatan Saat Masuk <span class="required">*</span></label>
-                        <textarea id="kondisi-kesehatan" placeholder="Luka, penyakit, alergi, kondisi akut yang terlihat, dll" required></textarea>
+                        <textarea id="kondisi-kesehatan" placeholder="Luka, penyakit, tingkat kesadaran, dll" required></textarea>
                     </div>
 
                     <div class="detail-item">
-                        <label for="bahasa-pasien">Bahasa yang Digunakan Pasien <span class="required">*</span></label>
-                        <input type="text" id="bahasa-pasien" placeholder="Indonesia, Inggris, Daerah, dll" required>
-                    </div>
-
-                    <div class="detail-item">
-                        <label for="informasi-tambahan">Informasi Tambahan Penting</label>
-                        <textarea id="informasi-tambahan" placeholder="Informasi lain yang dapat membantu identifikasi"></textarea>
-                    </div>
-                </div>
-
-                <!-- Missing Person Report -->
-                <div class="form-section">
-                    <h3><i class="fas fa-search"></i> Laporan Orang Hilang</h3>
-                    
-                    <div class="detail-item">
-                        <label for="laporan-polisi">Nomor Laporan Polisi (jika ada)</label>
-                        <input type="text" id="laporan-polisi" placeholder="No LP/Kasus Polisi">
-                    </div>
-
-                    <div class="detail-item">
-                        <label for="nomor-polda">Nomor POLDA/Polres</label>
-                        <input type="text" id="nomor-polda" placeholder="Lokasi kepolisian yang melaporkan">
-                    </div>
-
-                    <div class="detail-item">
-                        <label for="kontak-polisi">Nomor Kontak Polisi</label>
-                        <input type="tel" id="kontak-polisi" placeholder="Nomor untuk follow-up">
+                        <label for="informasi-tambahan">Informasi Tambahan</label>
+                        <textarea id="informasi-tambahan" placeholder="Barang bawaan, bahasa, atau informasi lain yang membantu identifikasi"></textarea>
                     </div>
                 </div>
 
                 <!-- Status Update -->
                 <div class="form-section">
-                    <h3><i class="fas fa-sync-alt"></i> Pembaruan Status Identifikasi</h3>
+                    <h3><i class="fas fa-sync-alt"></i> Status Identifikasi</h3>
                     
                     <div class="detail-item">
-                        <label for="teridentifikasi">Pasien Sudah Teridentifikasi? <span class="required">*</span></label>
-                        <select id="teridentifikasi" onchange="updateIdentifikasiStatus()" required>
+                        <label for="teridentifikasi">Status Identifikasi <span class="required">*</span></label>
+                        <select id="teridentifikasi" required>
                             <option value="belum">Belum Teridentifikasi</option>
                             <option value="sudah">Sudah Teridentifikasi</option>
                         </select>
-                    </div>
-
-                    <div id="data-identifikasi" style="display: none;">
-                        <div class="detail-item">
-                            <label for="nama-teridentifikasi">Nama Sebenarnya yang Ditemukan</label>
-                            <input type="text" id="nama-teridentifikasi" placeholder="Nama lengkap pasien">
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="tgl-identifikasi">Tanggal Teridentifikasi</label>
-                                <input type="date" id="tgl-identifikasi">
-                            </div>
-                            <div class="form-group">
-                                <label for="cara-identifikasi">Cara Identifikasi</label>
-                                <input type="text" id="cara-identifikasi" placeholder="Pengenalan keluarga, DNA, dokumen, dll">
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <label for="kontak-keluarga-ditemukan">Kontak Keluarga/Kenal</label>
-                            <input type="tel" id="kontak-keluarga-ditemukan" placeholder="Nomor yang bisa dihubungi">
-                        </div>
                     </div>
                 </div>
 
                 <!-- Provider Information -->
                 <div class="form-section">
                     <h3><i class="fas fa-user-md"></i> Data Petugas Pendaftar</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="nama-petugas-unknown">Nama Petugas <span class="required">*</span></label>
-                            <input type="text" id="nama-petugas-unknown" placeholder="Nama petugas pendaftar" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="nip-petugas-unknown">NIP Petugas <span class="required">*</span></label>
-                            <input type="text" id="nip-petugas-unknown" placeholder="NIP" required>
-                        </div>
+                    <div class="form-group">
+                        <label for="nama-petugas-unknown">Nama Petugas <span class="required">*</span></label>
+                        <input type="text" id="nama-petugas-unknown" placeholder="Nama petugas pendaftar" required>
                     </div>
                     <div class="form-group">
                         <label for="tanggal-pendaftaran-unknown">Tanggal Pendaftaran <span class="required">*</span></label>
