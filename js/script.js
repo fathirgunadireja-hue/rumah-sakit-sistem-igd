@@ -720,17 +720,42 @@ function handleRadiologi(event) {
 function handleLaboratorium(event) {
     event.preventDefault();
     
+    // Validasi form
+    const form = document.getElementById('lab-form');
+    if (!form.checkValidity()) {
+        alert('Silakan lengkapi semua field yang diperlukan!');
+        return false;
+    }
+    
+    const id = generateId();
     const formData = {
-        noRm: document.getElementById('no-rm-lab')?.value,
-        tanggal: document.getElementById('tanggal-lab')?.value,
-        jenisLab: document.getElementById('jenis-lab')?.value,
-        indikasi: document.getElementById('indikasi-lab')?.value,
-        urgency: document.getElementById('urgency-lab')?.value,
+        id: id,
+        noRm: document.getElementById('no-rm-lab')?.value || '',
+        namaPasien: document.getElementById('nama-pasien-lab')?.value || '',
+        umur: document.getElementById('umur-lab')?.value || '',
+        jenisKelamin: document.getElementById('jenis-kelamin-lab')?.value || '',
+        tanggalPermintaan: document.getElementById('tanggal-lab')?.value || '',
+        statusPuasa: document.getElementById('urgency-lab')?.value || '',
+        jenisSpesimen: document.getElementById('jenis-lab')?.value || '',
+        indikasi: document.getElementById('indikasi-lab')?.value || '',
+        lokasiPengambilan: document.getElementById('lokasi-pengambilan')?.value || '',
+        jenisTabung: document.getElementById('jenis-tabung')?.value || '',
+        metodeUrin: document.getElementById('metode-urin')?.value || '',
+        karakteristikSputum: document.getElementById('karakteristik-sputum')?.value || '',
+        konsistensiPeces: document.getElementById('konsistensi-feces')?.value || '',
+        jenisCairan: document.getElementById('jenis-cairan')?.value || '',
+        ukuranJaringan: document.getElementById('ukuran-jaringan')?.value || '',
+        catatanTambahan: document.getElementById('catatan-lab')?.value || '',
+        timestamp: new Date().toLocaleString('id-ID'),
         status: 'Pending'
     };
     
-    const result = StorageManager.add(StorageManager.KEYS.LABORATORIUM, formData);
-    alert(`✅ Permintaan Laboratorium berhasil disimpan!`);
+    StorageManager.add('laboratoriumList', formData);
+    alert('✅ Permintaan Laboratorium berhasil disimpan!');
+    
+    form.reset();
+    // Sembunyikan detail spesimen setelah submit
+    document.querySelectorAll('[id$="-details"]').forEach(el => el.style.display = 'none');
 }
 
 // ============================================

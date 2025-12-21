@@ -7,61 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
-        .tabs-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 10px;
-        }
-
-        .tab-button {
-            padding: 12px 20px;
-            border: 2px solid transparent;
-            background: #f5f5f5;
-            color: #666;
-            cursor: pointer;
-            border-radius: 6px 6px 0 0;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            font-size: 14px;
-        }
-
-        .tab-button:hover {
-            background: #e8f0ff;
-            color: #0066cc;
-        }
-
-        .tab-button.active {
-            background: #0066cc;
-            color: white;
-            border-bottom: 3px solid #0066cc;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .section-header {
-            background: #f2f7ff;
-            color: #0b3d6b;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            border: 1px solid #d6e4ff;
-        }
-
-        .section-header h3 {
-            margin: 0;
-            font-size: 1.15em;
-            font-weight: 600;
-        }
-
         .specimen-box {
             background: #f0f7ff;
             border: 2px solid #0066cc;
@@ -76,56 +21,6 @@
             margin-bottom: 10px;
             font-size: 1.05em;
         }
-
-        .tab-navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            gap: 10px;
-        }
-
-        .nav-button {
-            flex: 1;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .nav-button.prev {
-            background: #f5f5f5;
-            color: #666;
-        }
-
-        .nav-button.prev:hover {
-            background: #e8e8e8;
-        }
-
-        .nav-button.next {
-            background: #0066cc;
-            color: white;
-        }
-
-        .nav-button.next:hover {
-            background: #0052a3;
-        }
-
-        .nav-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        @media (max-width: 768px) {
-            .tabs-container {
-                flex-direction: column;
-            }
-
-            .tab-button {
-                width: 100%;
-            }
-        }
     </style>
 </head>
 <body>
@@ -136,14 +31,12 @@
         <main class="admin-main">
             <div class="form-header">
                 <h1><i class="fas fa-flask"></i> Laboratorium</h1>
-                <p>Formulir Permintaan Pemeriksaan Laboratorium - Data Dasar dan Spesimen</p>
+                <p>Formulir Permintaan Pemeriksaan Laboratorium</p>
             </div>
 
             <form id="lab-form" onsubmit="handleLaboratorium(event)" class="patient-form" novalidate>
                 
-                <!-- Bagian: Data Permintaan -->
-                <div class="form-section">
-                <!-- Data Pasien -->
+                <!-- Bagian: Data Pasien -->
                 <div class="form-section">
                     <h3>
                         <i class="fas fa-user"></i> Data Pasien
@@ -192,25 +85,16 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="tanggal-permintaan">
+                            <label for="tanggal-lab">
                                 <span class="required">*</span> Tanggal Permintaan
                             </label>
-                            <input type="date" id="tanggal-permintaan" name="tanggal-permintaan" required>
+                            <input type="date" id="tanggal-lab" name="tanggal-lab" required>
                         </div>
                         <div class="form-group">
-                            <label for="jam-permintaan">
-                                <span class="required">*</span> Jam Permintaan
-                            </label>
-                            <input type="time" id="jam-permintaan" name="jam-permintaan" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row full">
-                        <div class="form-group">
-                            <label for="status-puasa">
+                            <label for="urgency-lab">
                                 <span class="required">*</span> Status Puasa
                             </label>
-                            <select id="status-puasa" name="status-puasa" required>
+                            <select id="urgency-lab" name="urgency-lab" required>
                                 <option value="">Pilih Status Puasa</option>
                                 <option value="puasa">Puasa</option>
                                 <option value="tidak-puasa">Tidak Puasa</option>
@@ -222,265 +106,145 @@
 
                 <!-- Bagian: Data Spesimen -->
                 <div class="form-section">
-                    <div class="section-header">
-                        <h3><i class="fas fa-vial"></i> Informasi Spesimen</h3>
-                    </div>
+                    <h3>
+                        <i class="fas fa-vial"></i> Informasi Spesimen
+                    </h3>
                     
-                    <!-- Data Pasien Section -->
-                    <div class="form-section">
-                        <h3><i class="fas fa-user-circle"></i> Data Pasien & Permintaan</h3>
+                    <div class="specimen-box">
+                        <div class="specimen-title">Tipe Spesimen</div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="no-rm-lab2">No RM <span class="required">*</span></label>
-                                <input type="text" id="no-rm-lab2" placeholder="RM-2024-001" value="RM-2024-001" required>
+                                <label for="jenis-lab">Jenis Spesimen <span class="required">*</span></label>
+                                <select id="jenis-lab" name="jenis-lab" onchange="updateSpecimenInfo()" required>
+                                    <option value="">-- Pilih Jenis Spesimen --</option>
+                                    <option value="darah-vena">Darah Vena (Venous Blood)</option>
+                                    <option value="darah-kapiler">Darah Kapiler (Fingerstick)</option>
+                                    <option value="urin">Urin (Urine)</option>
+                                    <option value="feces">Feses (Stool)</option>
+                                    <option value="sputum">Sputum (Dahak)</option>
+                                    <option value="cairan-tubuh">Cairan Tubuh Lainnya</option>
+                                    <option value="jaringan">Jaringan (Tissue)</option>
+                                    <option value="biopsi">Biopsi</option>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label for="nama-pasien-lab2">Nama Pasien <span class="required">*</span></label>
-                                <input type="text" id="nama-pasien-lab2" placeholder="Nama lengkap pasien" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="no-permintaan">No Permintaan Lab <span class="required">*</span></label>
-                                <input type="text" id="no-permintaan" placeholder="Masukkan nomor permintaan lab" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="tanggal-pengambilan">Tanggal & Waktu Pengambilan <span class="required">*</span></label>
-                                <input type="datetime-local" id="tanggal-pengambilan" required>
+                                <label for="indikasi-lab">Indikasi <span class="required">*</span></label>
+                                <input type="text" id="indikasi-lab" name="indikasi-lab" placeholder="Indikasi pemeriksaan" required>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Specimen Information -->
-                    <div class="form-section">
-                        <h3><i class="fas fa-vial"></i> Informasi Spesimen</h3>
-                        
-                        <div class="specimen-box">
-                            <div class="specimen-title">Tipe Spesimen Utama</div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="tipe-spesimen">Jenis Spesimen <span class="required">*</span></label>
-                                    <select id="tipe-spesimen" onchange="updateSpecimenInfo()" required>
-                                        <option value="">-- Pilih Jenis Spesimen --</option>
-                                        <option value="darah-vena">Darah Vena (Venous Blood)</option>
-                                        <option value="darah-kapiler">Darah Kapiler (Fingerstick)</option>
-                                        <option value="urin">Urin (Urine)</option>
-                                        <option value="feces">Feses (Stool)</option>
-                                        <option value="sputum">Sputum (Dahak)</option>
-                                        <option value="cairan-tubuh">Cairan Tubuh Lainnya</option>
-                                        <option value="jaringan">Jaringan (Tissue)</option>
-                                        <option value="biopsi">Biopsi</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="jumlah-spesimen">Jumlah Spesimen <span class="required">*</span></label>
-                                    <input type="number" id="jumlah-spesimen" placeholder="Jumlah mL/gram/piece" min="1" required>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Darah Vena Details -->
-                        <div id="darah-vena-details" class="specimen-box" style="display: none;">
-                            <div class="specimen-title">Detail Pengambilan Darah Vena</div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="lokasi-pengambilan">Lokasi Pengambilan <span class="required">*</span></label>
-                                    <select id="lokasi-pengambilan">
-                                        <option value="">-- Pilih Lokasi --</option>
-                                        <option value="antecubital">Antecubital (lipatan siku)</option>
-                                        <option value="tangan">Tangan</option>
-                                        <option value="kaki">Kaki</option>
-                                        <option value="leher">Leher (CVP)</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="jenis-tabung">Jenis Tabung/Container <span class="required">*</span></label>
-                                    <select id="jenis-tabung">
-                                        <option value="">-- Pilih Tabung --</option>
-                                        <option value="gold-serum">Gold/Serum (SST) - Merah muda</option>
-                                        <option value="purple-edta">Purple/EDTA - Ungu</option>
-                                        <option value="blue-citrate">Blue/Citrate - Biru</option>
-                                        <option value="green-heparin">Green/Heparin - Hijau</option>
-                                        <option value="gray-fluoride">Gray/Fluoride - Abu-abu</option>
-                                    </select>
-                                </div>
+                    <!-- Darah Vena Details -->
+                    <div id="darah-vena-details" class="specimen-box" style="display: none;">
+                        <div class="specimen-title">Detail Pengambilan Darah Vena</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="lokasi-pengambilan">Lokasi Pengambilan</label>
+                                <select id="lokasi-pengambilan">
+                                    <option value="">-- Pilih Lokasi --</option>
+                                    <option value="antecubital">Antecubital (lipatan siku)</option>
+                                    <option value="tangan">Tangan</option>
+                                    <option value="kaki">Kaki</option>
+                                    <option value="leher">Leher (CVP)</option>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label for="petugas-pengambil">Petugas Pengambil Darah <span class="required">*</span></label>
-                                <input type="text" id="petugas-pengambil" placeholder="Nama petugas flebotomi">
-                            </div>
-                        </div>
-
-                        <!-- Urin Details -->
-                        <div id="urin-details" class="specimen-box" style="display: none;">
-                            <div class="specimen-title">Detail Pengambilan Urin</div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="metode-urin">Metode Pengambilan <span class="required">*</span></label>
-                                    <select id="metode-urin">
-                                        <option value="">-- Pilih Metode --</option>
-                                        <option value="midstream">Midstream (tengah aliran)</option>
-                                        <option value="first-morning">First Morning (pagi pertama)</option>
-                                        <option value="24-jam">24 Jam (24-hour)</option>
-                                        <option value="kateter">Kateter</option>
-                                        <option value="puncture">Suprapubic Puncture</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="container-urin">Container <span class="required">*</span></label>
-                                    <select id="container-urin">
-                                        <option value="">-- Pilih Container --</option>
-                                        <option value="steril">Steril (Sterilized)</option>
-                                        <option value="non-steril">Non-steril</option>
-                                        <option value="24jam-bottle">24 Jam Bottle</option>
-                                        <option value="dengan-preservative">Dengan Preservative</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Sputum Details -->
-                        <div id="sputum-details" class="specimen-box" style="display: none;">
-                            <div class="specimen-title">Detail Pengambilan Sputum</div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="karakteristik-sputum">Karakteristik Sputum <span class="required">*</span></label>
-                                    <select id="karakteristik-sputum">
-                                        <option value="">-- Pilih Karakteristik --</option>
-                                        <option value="mukoid">Mukoid (jernih/putih)</option>
-                                        <option value="purulen">Purulen (kuning/hijau)</option>
-                                        <option value="berdarah">Berdarah (hemoptisis)</option>
-                                        <option value="berwarna">Berwarna lainnya</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="volume-sputum">Volume Sputum (mL) <span class="required">*</span></label>
-                                    <input type="number" id="volume-sputum" placeholder="Jumlah mL" min="0.5">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Feses Details -->
-                        <div id="feces-details" class="specimen-box" style="display: none;">
-                            <div class="specimen-title">Detail Pengambilan Feses</div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="konsistensi-feces">Konsistensi Feses <span class="required">*</span></label>
-                                    <select id="konsistensi-feces">
-                                        <option value="">-- Pilih Konsistensi --</option>
-                                        <option value="padat">Padat</option>
-                                        <option value="lunak">Lunak</option>
-                                        <option value="cair">Cair/Diare</option>
-                                        <option value="berdarah">Berdarah</option>
-                                        <option value="berlendir">Berlendir</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="container-feces">Container <span class="required">*</span></label>
-                                    <select id="container-feces">
-                                        <option value="">-- Pilih Container --</option>
-                                        <option value="pot-steril">Pot Steril</option>
-                                        <option value="dengan-pengawet">Dengan Pengawet</option>
-                                        <option value="dengan-formaldehida">Dengan Formaldehida</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Cairan Tubuh Details -->
-                        <div id="cairan-details" class="specimen-box" style="display: none;">
-                            <div class="specimen-title">Detail Cairan Tubuh</div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="jenis-cairan">Jenis Cairan Tubuh <span class="required">*</span></label>
-                                    <select id="jenis-cairan">
-                                        <option value="">-- Pilih Jenis --</option>
-                                        <option value="cerebrospinal">CSF (Cairan Serebrospinal)</option>
-                                        <option value="pleural">Pleural (Cairan Paru)</option>
-                                        <option value="peritoneal">Peritoneal (Cairan Perut)</option>
-                                        <option value="synovial">Synovial (Cairan Sendi)</option>
-                                        <option value="bile">Empedu (Bile)</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="volume-cairan">Volume Cairan (mL) <span class="required">*</span></label>
-                                    <input type="number" id="volume-cairan" placeholder="Jumlah mL" min="0.5">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Jaringan Details -->
-                        <div id="jaringan-details" class="specimen-box" style="display: none;">
-                            <div class="specimen-title">Detail Jaringan/Biopsi</div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="asal-jaringan">Asal Jaringan <span class="required">*</span></label>
-                                    <input type="text" id="asal-jaringan" placeholder="Contoh: Kulit dada, Payudara kanan">
-                                </div>
-                                <div class="form-group">
-                                    <label for="ukuran-jaringan">Ukuran Jaringan (cm) <span class="required">*</span></label>
-                                    <input type="text" id="ukuran-jaringan" placeholder="Contoh: 2 x 1.5 x 0.8">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="fixative-jaringan">Fiksatif (Pengawet) <span class="required">*</span></label>
-                                <select id="fixative-jaringan">
-                                    <option value="">-- Pilih Fiksatif --</option>
-                                    <option value="formalin-10">Formalin 10%</option>
-                                    <option value="formalin-4">Formalin 4%</option>
-                                    <option value="alcohol-70">Alkohol 70%</option>
-                                    <option value="methyl-alcohol">Metil Alkohol</option>
-                                    <option value="lainnya">Lainnya</option>
+                                <label for="jenis-tabung">Jenis Tabung/Container</label>
+                                <select id="jenis-tabung">
+                                    <option value="">-- Pilih Tabung --</option>
+                                    <option value="gold-serum">Gold/Serum (SST)</option>
+                                    <option value="purple-edta">Purple/EDTA</option>
+                                    <option value="blue-citrate">Blue/Citrate</option>
+                                    <option value="green-heparin">Green/Heparin</option>
                                 </select>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Transport & Handling -->
-                    <div class="form-section">
-                        <h3><i class="fas fa-truck"></i> Pengangkutan & Penyimpanan</h3>
-                        
+                    <!-- Urin Details -->
+                    <div id="urin-details" class="specimen-box" style="display: none;">
+                        <div class="specimen-title">Detail Pengambilan Urin</div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="kondisi-suhu">Kondisi Suhu Pengangkutan <span class="required">*</span></label>
-                                <select id="kondisi-suhu" required>
-                                    <option value="">-- Pilih Kondisi --</option>
-                                    <option value="kamar">Kamar (Room Temperature)</option>
-                                    <option value="kulkas">Kulkas (2-8°C)</option>
-                                    <option value="es-kering">Es Kering / Dry Ice (-20°C)</option>
-                                    <option value="nitrogen">Nitrogen Cair (-196°C)</option>
+                                <label for="metode-urin">Metode Pengambilan</label>
+                                <select id="metode-urin">
+                                    <option value="">-- Pilih Metode --</option>
+                                    <option value="midstream">Midstream (tengah aliran)</option>
+                                    <option value="first-morning">First Morning (pagi pertama)</option>
+                                    <option value="24-jam">24 Jam (24-hour)</option>
+                                    <option value="kateter">Kateter</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="waktu-pengiriman">Waktu Pengiriman ke Lab (jam) <span class="required">*</span></label>
-                                <input type="number" id="waktu-pengiriman" placeholder="Contoh: 2 jam" min="0.5" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="catatan-pengiriman">Catatan Khusus Pengiriman</label>
-                            <textarea id="catatan-pengiriman" placeholder="Catatan tambahan untuk pengiriman spesimen"></textarea>
                         </div>
                     </div>
 
-                    <!-- Technician Information -->
-                    <div class="form-section">
-                        <h3><i class="fas fa-user-md"></i> Informasi Teknisi Laboratorium</h3>
+                    <!-- Sputum Details -->
+                    <div id="sputum-details" class="specimen-box" style="display: none;">
+                        <div class="specimen-title">Detail Pengambilan Sputum</div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="nama-teknisi">Nama Teknisi Lab <span class="required">*</span></label>
-                                <input type="text" id="nama-teknisi" placeholder="Nama teknisi laboratorium" required>
+                                <label for="karakteristik-sputum">Karakteristik Sputum</label>
+                                <select id="karakteristik-sputum">
+                                    <option value="">-- Pilih Karakteristik --</option>
+                                    <option value="mukoid">Mukoid (jernih/putih)</option>
+                                    <option value="purulen">Purulen (kuning/hijau)</option>
+                                    <option value="berdarah">Berdarah (hemoptisis)</option>
+                                </select>
                             </div>
-                            <div class="form-group">
-                                <label for="no-identitas-teknisi">No Identitas / NIP <span class="required">*</span></label>
-                                <input type="text" id="no-identitas-teknisi" placeholder="NIP atau no identitas" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="tanggal-terima-lab">Tanggal & Waktu Diterima Lab <span class="required">*</span></label>
-                            <input type="datetime-local" id="tanggal-terima-lab" required>
                         </div>
                     </div>
+
+                    <!-- Feses Details -->
+                    <div id="feces-details" class="specimen-box" style="display: none;">
+                        <div class="specimen-title">Detail Pengambilan Feses</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="konsistensi-feces">Konsistensi Feses</label>
+                                <select id="konsistensi-feces">
+                                    <option value="">-- Pilih Konsistensi --</option>
+                                    <option value="padat">Padat</option>
+                                    <option value="lunak">Lunak</option>
+                                    <option value="cair">Cair/Diare</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cairan Details -->
+                    <div id="cairan-details" class="specimen-box" style="display: none;">
+                        <div class="specimen-title">Detail Cairan Tubuh</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="jenis-cairan">Jenis Cairan Tubuh</label>
+                                <select id="jenis-cairan">
+                                    <option value="">-- Pilih Jenis --</option>
+                                    <option value="cerebrospinal">CSF (Cairan Serebrospinal)</option>
+                                    <option value="pleural">Pleural (Cairan Paru)</option>
+                                    <option value="peritoneal">Peritoneal (Cairan Perut)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Jaringan Details -->
+                    <div id="jaringan-details" class="specimen-box" style="display: none;">
+                        <div class="specimen-title">Detail Jaringan/Biopsi</div>
+                        <div class="form-group">
+                            <label for="ukuran-jaringan">Ukuran Jaringan</label>
+                            <input type="text" id="ukuran-jaringan" placeholder="Ukuran jaringan">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Catatan -->
+                <div class="form-section">
+                    <h3><i class="fas fa-sticky-note"></i> Catatan Khusus</h3>
+                    <div class="form-group">
+                        <label for="catatan-lab">Catatan Tambahan</label>
+                        <textarea id="catatan-lab" name="catatan-lab" placeholder="Catatan tambahan untuk laboratorium"></textarea>
+                    </div>
+                </div>
+
                 <!-- Submit -->
                 <div style="margin-top: 20px;">
                     <div class="form-actions">
@@ -488,7 +252,7 @@
                             <i class="fas fa-times"></i> Batal
                         </button>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Simpan Data Laboratorium
+                            <i class="fas fa-save"></i> Simpan Permintaan Laboratorium
                         </button>
                     </div>
                 </div>
@@ -497,11 +261,9 @@
     </div>
 
     <script>
-        // No tab navigation; form flows linearly
-
         // Update specimen info visibility based on specimen type
         function updateSpecimenInfo() {
-            const specimenType = document.getElementById('tipe-spesimen').value;
+            const specimenType = document.getElementById('jenis-lab').value;
             const detailDivs = document.querySelectorAll('[id$="-details"]');
             
             detailDivs.forEach(div => {
@@ -523,42 +285,9 @@
             }
         }
 
-        function handleLaboratorium(event) {
-            event.preventDefault();
-            
-            // Collect data from all tabs
-            const data = {
-                // Tab 1: Data Permintaan
-                noRm: document.getElementById('no-rm-lab').value,
-                namaPasien: document.getElementById('nama-pasien-lab').value,
-                umur: document.getElementById('umur-lab').value,
-                jenisKelamin: document.getElementById('jenis-kelamin-lab').value,
-                tanggalPermintaan: document.getElementById('tanggal-permintaan').value,
-                jamPermintaan: document.getElementById('jam-permintaan').value,
-                statusPuasa: document.getElementById('status-puasa').value,
-                
-                // Tab 2: Data Spesimen
-                noRmLab2: document.getElementById('no-rm-lab2').value,
-                namaPasienLab2: document.getElementById('nama-pasien-lab2').value,
-                noPermintaan: document.getElementById('no-permintaan').value,
-                tanggalPengambilan: document.getElementById('tanggal-pengambilan').value,
-                tipeSpesimen: document.getElementById('tipe-spesimen').value,
-                jumlahSpesimen: document.getElementById('jumlah-spesimen').value,
-                kondisiSuhu: document.getElementById('kondisi-suhu').value,
-                waktuPengiriman: document.getElementById('waktu-pengiriman').value,
-                namaTeknis: document.getElementById('nama-teknisi').value
-            };
-
-            console.log('Data laboratorium disimpan:', data);
-            alert('Data laboratorium berhasil disimpan!');
-            // Here you would typically send the data to the server
-            // window.location.href = 'dashboard-pasien.html';
+        function goBack() {
+            window.history.back();
         }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            // Nothing to init for linear flow
-        });
     </script>
     <script src="js/role-manager.js"></script>
     <script src="js/script.js"></script>
@@ -570,3 +299,4 @@
     </script>
 </body>
 </html>
+
