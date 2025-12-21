@@ -411,70 +411,14 @@
     <script src="js/script.js"></script>
     <script>
         function switchTab(tabName) {
-            // Hide all tabs
             document.getElementById('login-tab').classList.remove('active');
             document.getElementById('register-tab').classList.remove('active');
-            
-            // Remove active class from all buttons
-            document.querySelectorAll('.form-tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Show selected tab
+            document.querySelectorAll('.form-tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabName + '-tab').classList.add('active');
-            
-            // Add active class to clicked button
             event.target.classList.add('active');
         }
-
-        function handleAdminLogin(event) {
-            event.preventDefault();
-            
-            // Default to admin role
-            roleManager.setRole('admin', {
-                name: 'Admin',
-                email: 'admin@rsjayasehat.com',
-                id: 'admin-' + Date.now()
-            });
-            
-            // Redirect to dashboard
-            window.location.href = 'dashboard-admin.html';
-        }
-
-        function handleAdminRegister(event) {
-            event.preventDefault();
-            
-            const nip = document.getElementById('reg-nip').value;
-            const username = document.getElementById('reg-username').value;
-            const email = document.getElementById('reg-email').value;
-            const password = document.getElementById('reg-password').value;
-            
-            if (!nip || !username || !email || !password) {
-                alert('Semua field harus diisi!');
-                return;
-            }
-            
-            // Save registration data (in real app, send to backend)
-            alert('Akun berhasil dibuat! Silakan login dengan akun Anda.');
-            
-            // Reset form
-            document.getElementById('admin-register-form').reset();
-            
-            // Switch back to login tab
-            switchTab('login');
-        }
-
-        function directAdminAccess() {
-            // Direct access without form submission
-            if (typeof roleManager !== 'undefined') {
-                roleManager.setRole('admin', {
-                    name: 'Admin',
-                    email: 'admin@rsjayasehat.com',
-                    id: 'admin-' + Date.now()
-                });
-            }
-            window.location.href = 'dashboard-admin.html';
-        }
+        // Delegate to global handler in js/script.js
+        function handleAdminLogin(event) { return window.handleAdminLogin(event); }
     </script>
 </body>
 </html>

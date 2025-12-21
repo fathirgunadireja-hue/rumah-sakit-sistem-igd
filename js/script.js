@@ -18,96 +18,66 @@ window.addEventListener('scroll', () => {
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.clientHeight;
-        if (window.pageYOffset >= sectionTop - 200) {
-            currentSection = section.getAttribute('id');
-        }
-    });
+    
+            const nip = document.getElementById('nip')?.value.trim();
+            const username = document.getElementById('username-register')?.value.trim();
+            const email = document.getElementById('email-register')?.value.trim();
+            const password = document.getElementById('password-register')?.value || '';
+            const confirmPassword = document.getElementById('confirm-password')?.value || '';
 
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href').includes(currentSection)) {
-            link.classList.add('active');
-        }
-    });
-});
+            if (!nip || !username || !email || !password || !confirmPassword) {
+                alert('Semua field wajib diisi.');
+                return;
+            }
 
-// ============================================
-// HAMBURGER MENU
-// ============================================
+            if (password !== confirmPassword) {
+                alert('Password dan konfirmasi password tidak cocok!');
+                return;
+            }
+    
+            if (password.length < 8) {
+                alert('Password minimal harus 8 karakter!');
+                return;
+            }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const hamburger = document.querySelector('.hamburger');
-    const navbarMenu = document.querySelector('.navbar-menu');
+            const accounts = loadAdminAccounts();
+            const usernameExists = accounts.some(acc => acc.username.toLowerCase() === username.toLowerCase());
+            const emailExists = accounts.some(acc => acc.email.toLowerCase() === email.toLowerCase());
 
-    if (hamburger && navbarMenu) {
-        hamburger.addEventListener('click', () => {
-            navbarMenu.classList.toggle('active');
-            hamburger.classList.toggle('active');
-        });
+            if (usernameExists) {
+                alert('Username sudah digunakan. Silakan pilih username lain.');
+                return;
+            }
 
-        // Close menu when link is clicked
-        const navLinks = navbarMenu.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                navbarMenu.classList.remove('active');
-                hamburger.classList.remove('active');
-            });
-        });
-    }
-});
+            if (emailExists) {
+                alert('Email sudah terdaftar. Gunakan email lain.');
+                return;
+            }
 
-// ============================================
-// MODAL FUNCTIONS
-// ============================================
+            const newAccount = {
+                nip,
+                username,
+                email,
+                password,
+                name: username,
+                createdAt: new Date().toISOString()
+            };
 
-function showModal(modalType) {
-    const overlay = document.getElementById('modal-overlay');
-    let modal = null;
+            accounts.push(newAccount);
+            saveAdminAccounts(accounts);
+            localStorage.setItem('adminRememberedUser', username);
 
-    // Close all modals first before opening new one
-    const allModals = document.querySelectorAll('.modal');
-    allModals.forEach(m => m.classList.remove('active'));
-
-    // Map modal types to modal elements
-    const modalMap = {
-        'appointment': 'appointment-modal',
-        'emergency': 'emergency-modal',
-        'contact': 'contact-modal'
-    };
-
-    if (modalMap[modalType]) {
-        modal = document.getElementById(modalMap[modalType]);
-    } else {
-        // Generic modal for other content
-        modal = document.getElementById('generic-modal');
-        const modalBody = document.getElementById('generic-modal-body');
-
-        // Load content based on modal type
-        const contentMap = {
-            'service-inap': '<h2>Layanan Rawat Inap</h2><p>Fasilitas rawat inap kami dilengkapi dengan:</p><ul><li>Ruang perawatan yang nyaman dan bersih</li><li>Perawat 24 jam</li><li>Ketersediaan dokter spesialis</li><li>Fasilitas WiFi gratis</li><li>Ruang kunjung yang luas</li></ul><p>Harga: Mulai dari Rp 500.000 per hari</p>',
-            'service-umum': '<h2>Pemeriksaan Umum</h2><p>Layanan pemeriksaan kesehatan rutin kami meliputi:</p><ul><li>Konsultasi dokter umum</li><li>Pemeriksaan tekanan darah</li><li>Pemeriksaan berat badan</li><li>Tes darah dasar</li><li>EKG</li></ul><p>Harga: Rp 150.000 - Rp 300.000</p>',
-            'service-lab': '<h2>Laboratorium</h2><p>Fasilitas laboratorium kami menyediakan:</p><ul><li>Tes darah lengkap</li><li>Tes urin</li><li>Kultur mikrobiologi</li><li>Tes hormon</li><li>Immunoserologi</li></ul><p>Hasil dikirim dalam 24-48 jam</p>',
-            'service-radiologi': '<h2>Radiologi</h2><p>Peralatan radiologi modern kami:</p><ul><li>CT Scan 64 slices</li><li>X-Ray digital</li><li>Ultrasonografi (USG)</li><li>Mammografi</li><li>Fluoroscopy</li></ul><p>Hasil dikirim dengan CD dan laporan tertulis</p>',
-            'service-apotek': '<h2>Apotek</h2><p>Apotek kami melayani:</p><ul><li>Obat-obatan resep</li><li>Obat bebas dan bebas terbatas</li><li>Suplemen dan vitamin</li><li>Peralatan medis</li><li>Konsultasi apoteker gratis</li></ul><p>Jam operasional: 24 jam</p>',
-            'service-wellness': '<h2>Program Wellness</h2><p>Program kesehatan kami mencakup:</p><ul><li>Medical check-up berkala</li><li>Fitness dan yoga</li><li>Konseling gizi</li><li>Manajemen stress</li><li>Paket detox</li></ul><p>Konsultasi gratis untuk membership</p>',
-            'doctor-1': '<h2>Dr. Ahmad Sutrisno</h2><p class="specialty"><strong>Spesialis Jantung (Kardiologi)</strong></p><p><strong>Pengalaman:</strong> 15 tahun</p><p><strong>Pendidikan:</strong></p><ul><li>Sarjana Kedokteran - Universitas Indonesia</li><li>Spesialis Kardiologi - FKUI</li><li>Fellowship Intervensi Kardiologi - National Heart Centre Singapore</li></ul><p><strong>Jadwal Praktik:</strong></p><ul><li>Senin - Jumat: 08:00 - 16:00</li><li>Sabtu: 08:00 - 12:00</li></ul><p><strong>Keahlian Khusus:</strong> Kateterisasi Jantung, Ekokardiografi, Penanganan Gagal Jantung</p><button class="btn btn-primary" onclick="showModal(\'appointment\')">Buat Janji Temu</button>',
-            'doctor-2': '<h2>Dr. Siti Nurhaliza</h2><p class="specialty"><strong>Spesialis Anak (Pediatri)</strong></p><p><strong>Pengalaman:</strong> 12 tahun</p><p><strong>Pendidikan:</strong></p><ul><li>Sarjana Kedokteran - Universitas Gadjah Mada</li><li>Spesialis Anak - FK UGM</li><li>Fellowship Neonatologi - RSCM Jakarta</li></ul><p><strong>Jadwal Praktik:</strong></p><ul><li>Senin - Jumat: 13:00 - 20:00</li><li>Sabtu: 09:00 - 14:00</li></ul><p><strong>Keahlian Khusus:</strong> Tumbuh Kembang Anak, Vaksinasi, Penanganan Bayi Prematur</p><button class="btn btn-primary" onclick="showModal(\'appointment\')">Buat Janji Temu</button>',
-            'doctor-3': '<h2>Dr. Budi Santoso</h2><p class="specialty"><strong>Spesialis Saraf (Neurologi)</strong></p><p><strong>Pengalaman:</strong> 18 tahun</p><p><strong>Pendidikan:</strong></p><ul><li>Sarjana Kedokteran - Universitas Airlangga</li><li>Spesialis Neurologi - FK UNAIR</li><li>Fellowship Stroke - National Neuroscience Institute Singapore</li></ul><p><strong>Jadwal Praktik:</strong></p><ul><li>Senin, Rabu, Jumat: 10:00 - 15:00</li><li>Selasa, Kamis: 14:00 - 18:00</li></ul><p><strong>Keahlian Khusus:</strong> Stroke, Epilepsi, Penyakit Parkinson, Sakit Kepala Kronis</p><button class="btn btn-primary" onclick="showModal(\'appointment\')">Buat Janji Temu</button>',
-            'doctor-4': '<h2>Dr. Dewi Lestari</h2><p class="specialty"><strong>Spesialis Kandungan (Obstetri & Ginekologi)</strong></p><p><strong>Pengalaman:</strong> 14 tahun</p><p><strong>Pendidikan:</strong></p><ul><li>Sarjana Kedokteran - Universitas Padjadjaran</li><li>Spesialis Obstetri & Ginekologi - FK UNPAD</li><li>Fellowship Fetomaternal - RSCM Jakarta</li></ul><p><strong>Jadwal Praktik:</strong></p><ul><li>Senin - Kamis: 09:00 - 17:00</li><li>Sabtu: 08:00 - 13:00</li></ul><p><strong>Keahlian Khusus:</strong> Kehamilan Risiko Tinggi, Operasi Caesar, USG 4D, Laparoskopi</p><button class="btn btn-primary" onclick="showModal(\'appointment\')">Buat Janji Temu</button>',
-            'doctor-5': '<h2>Dr. Rifa\'i Rahman</h2><p class="specialty"><strong>Spesialis Tulang (Ortopedi)</strong></p><p><strong>Pengalaman:</strong> 16 tahun</p><p><strong>Pendidikan:</strong></p><ul><li>Sarjana Kedokteran - Universitas Diponegoro</li><li>Spesialis Ortopedi - FK UNDIP</li><li>Fellowship Spine Surgery - Singapore General Hospital</li></ul><p><strong>Jadwal Praktik:</strong></p><ul><li>Selasa, Kamis: 10:00 - 16:00</li><li>Sabtu: 08:00 - 12:00</li></ul><p><strong>Keahlian Khusus:</strong> Operasi Tulang Belakang, Penanganan Patah Tulang, Artroskopi Lutut</p><button class="btn btn-primary" onclick="showModal(\'appointment\')">Buat Janji Temu</button>',
-            'doctor-6': '<h2>Dr. Indah Kusuma</h2><p class="specialty"><strong>Spesialis Paru (Pulmonologi)</strong></p><p><strong>Pengalaman:</strong> 13 tahun</p><p><strong>Pendidikan:</strong></p><ul><li>Sarjana Kedokteran - Universitas Indonesia</li><li>Spesialis Paru - FKUI</li><li>Fellowship Intervensi Paru - Persahabatan Hospital Jakarta</li></ul><p><strong>Jadwal Praktik:</strong></p><ul><li>Senin, Rabu, Jumat: 08:00 - 14:00</li><li>Selasa: 13:00 - 17:00</li></ul><p><strong>Keahlian Khusus:</strong> Asma, PPOK, Tuberkulosis, Sleep Apnea, Bronkoskopi</p><button class="btn btn-primary" onclick="showModal(\'appointment\')">Buat Janji Temu</button>'
-        };
-
-        if (contentMap[modalType]) {
-            modalBody.innerHTML = contentMap[modalType];
-        }
-    }
-
-    if (modal) {
-        modal.classList.add('active');
-        overlay.classList.add('active');
-    }
+            alert('Akun admin berhasil dibuat! Silakan login dengan username dan password Anda.');
+            window.location.href = 'admin.html';
 }
+
+        // ============================================
+        // DAFTAR KUNJUNGAN FUNCTIONS
+        // ============================================
+
+        function applyFilter() {
+            alert('Filter diterapkan. Data akan diperbarui sesuai kriteria pencarian.');
+        }
 
 function closeModal() {
     const modals = document.querySelectorAll('.modal');
@@ -205,131 +175,241 @@ function togglePasswordPasien() {
     }
 }
 
+// ============================================
+// ADMIN ACCOUNT STORAGE (LOCALSTORAGE)
+// ============================================
+
+const ADMIN_STORAGE_KEY = 'adminAccounts';
+
+function ensureDefaultAdmin(accounts) {
+    const hasDefault = accounts.some(acc => acc.username === 'admin');
+    if (!hasDefault) {
+        accounts.push({
+            username: 'admin',
+            email: 'admin@rsjayasehat.com',
+            password: 'admin123',
+            nip: '000000',
+            name: 'Administrator',
+            createdAt: new Date().toISOString()
+        });
+    }
+    return accounts;
+}
+
+function loadAdminAccounts() {
+    try {
+        const raw = localStorage.getItem(ADMIN_STORAGE_KEY);
+        let accounts = raw ? JSON.parse(raw) : [];
+        if (!Array.isArray(accounts)) accounts = [];
+        accounts = ensureDefaultAdmin(accounts);
+        localStorage.setItem(ADMIN_STORAGE_KEY, JSON.stringify(accounts));
+        return accounts;
+    } catch (error) {
+        const fallback = ensureDefaultAdmin([]);
+        localStorage.setItem(ADMIN_STORAGE_KEY, JSON.stringify(fallback));
+        return fallback;
+    }
+}
+
+function saveAdminAccounts(accounts) {
+    localStorage.setItem(ADMIN_STORAGE_KEY, JSON.stringify(accounts));
+}
+
+// ============================================
+// LOCAL STORAGE MANAGEMENT SYSTEM
+// ============================================
+
+const StorageManager = {
+    KEYS: {
+        IDENTITAS_PASIEN: 'identitasPasienList',
+        PASIEN_UNKNOWN: 'pasienUnknownList',
+        DAFTAR_KUNJUNGAN: 'daftarKunjunganList',
+        TRIASE_IGD: 'triaseIGDList',
+        ASSESSMENT_IGD: 'assessmentIGDList',
+        PEMERIKSAAN_FISIK: 'pemeriksaanFisikList',
+        SCREENING_RISIKO: 'screeningRisikoList',
+        PSIKOLOGIS_PEMULANGAN: 'psikologisPemulangan',
+        DIAGNOSIS: 'diagnosisList',
+        INFORMED_CONSENT: 'informedConsentList',
+        GENERAL_CONSENT: 'generalConsentList',
+        PEMERIKSAAN_PENUNJANG: 'pemeriksaanPenunjangList',
+        RADIOLOGI: 'radiologiList',
+        LABORATORIUM: 'laboratoriumList',
+        HASIL_LABORATORIUM: 'hasilLaboratoriumList',
+        TERAPI: 'terapiList'
+    },
+
+    getAll(key) {
+        try {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : [];
+        } catch (error) {
+            console.error(`Error loading ${key}:`, error);
+            return [];
+        }
+    },
+
+    saveAll(key, data) {
+        try {
+            localStorage.setItem(key, JSON.stringify(data));
+            return true;
+        } catch (error) {
+            console.error(`Error saving ${key}:`, error);
+            return false;
+        }
+    },
+
+    add(key, record) {
+        const data = this.getAll(key);
+        record.id = record.id || 'ID-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        record.createdAt = record.createdAt || new Date().toISOString();
+        data.push(record);
+        this.saveAll(key, data);
+        return record;
+    },
+
+    update(key, id, updates) {
+        const data = this.getAll(key);
+        const index = data.findIndex(item => item.id === id);
+        if (index !== -1) {
+            data[index] = { ...data[index], ...updates, updatedAt: new Date().toISOString() };
+            this.saveAll(key, data);
+            return data[index];
+        }
+        return null;
+    },
+
+    delete(key, id) {
+        const data = this.getAll(key);
+        const filtered = data.filter(item => item.id !== id);
+        this.saveAll(key, filtered);
+        return filtered.length < data.length;
+    },
+
+    getById(key, id) {
+        const data = this.getAll(key);
+        return data.find(item => item.id === id);
+    },
+
+    search(key, query) {
+        const data = this.getAll(key);
+        const lowerQuery = query.toLowerCase();
+        return data.filter(item => 
+            JSON.stringify(item).toLowerCase().includes(lowerQuery)
+        );
+    },
+
+    clearAll(key) {
+        localStorage.removeItem(key);
+    }
+};
+
 function handleAdminLogin(event) {
     event.preventDefault();
-    
-    const role = document.getElementById('role-select')?.value || 'admin';
 
-    // Set role menggunakan roleManager
-    roleManager.setRole(role, {
-        name: 'Staff',
-        email: 'staff@rsjayasehat.com',
-        id: 'user-' + Date.now()
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const rememberMe = document.getElementById('remember-me')?.checked;
+
+    const username = usernameInput?.value.trim();
+    const password = passwordInput?.value || '';
+
+    if (!username || !password) {
+        alert('Username dan password wajib diisi.');
+        return;
+    }
+
+    const accounts = loadAdminAccounts();
+    const account = accounts.find(acc => acc.username === username && acc.password === password);
+
+    if (!account) {
+        alert('Username atau password salah.');
+        return;
+    }
+
+    if (rememberMe) {
+        localStorage.setItem('adminRememberedUser', username);
+    } else {
+        localStorage.removeItem('adminRememberedUser');
+    }
+
+    roleManager.setRole('admin', {
+        name: account.name || account.username,
+        email: account.email || 'admin@rsjayasehat.com',
+        id: account.nip || 'admin-' + Date.now()
     });
-    
-    // Redirect to dashboard
+
     window.location.href = 'dashboard-admin.html';
-}
-
-function handlePasienLogin(event) {
-    event.preventDefault();
-    
-    // Set role sebagai pasien menggunakan roleManager
-    roleManager.setRole('pasien', {
-        name: 'Pasien',
-        email: 'pasien@rsjayasehat.com',
-        id: 'pasien-' + Date.now()
-    });
-    
-    // Redirect to patient portal dashboard
-    window.location.href = 'portal-pasien.html';
-}
-
-function logout() {
-    // Clear role data using roleManager if available
-    if (typeof roleManager !== 'undefined') {
-        roleManager.clearRole();
-    }
-    window.location.href = 'index.html';
-}
-
-// ============================================
-// DASHBOARD FUNCTIONS
-// ============================================
-
-function closeAlert(button) {
-    button.closest('.alert').style.display = 'none';
-}
-
-// ============================================
-// UTILITY FUNCTIONS
-// ============================================
-
-// Format currency
-function formatCurrency(amount) {
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0
-    }).format(amount);
-}
-
-// Format date
-function formatDate(date) {
-    return new Intl.DateTimeFormat('id-ID', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    }).format(new Date(date));
-}
-
-// Format time
-function formatTime(time) {
-    const [hours, minutes] = time.split(':');
-    return `${hours}:${minutes}`;
-}
-
-// ============================================
-// FORM FUNCTIONS - IDENTITAS PASIEN
-// ============================================
-
-function hitungUsia() {
-    const tanggalLahir = document.getElementById('tanggal-lahir').value;
-    if (tanggalLahir) {
-        const birthDate = new Date(tanggalLahir);
-        const today = new Date();
-        let usia = today.getFullYear() - birthDate.getFullYear();
-        const bulan = today.getMonth() - birthDate.getMonth();
-        
-        if (bulan < 0 || (bulan === 0 && today.getDate() < birthDate.getDate())) {
-            usia--;
-        }
-        
-        document.getElementById('usia').value = usia;
-    }
 }
 
 function handleIdentitasPasien(event) {
     event.preventDefault();
     
-    // Simpan data ke localStorage (bisa disesuaikan dengan backend)
     const formData = {
         nik: document.getElementById('nik')?.value,
-        noRm: document.getElementById('no-rm')?.value,
+        noRm: document.getElementById('no-rm')?.value || 'RM-' + Date.now(),
         namaLengkap: document.getElementById('nama-lengkap')?.value,
         tanggalLahir: document.getElementById('tanggal-lahir')?.value,
-        savedAt: new Date().toISOString()
+        jenisKelamin: document.getElementById('jenis-kelamin')?.value,
+        alamat: document.getElementById('alamat')?.value,
+        nomorTelepon: document.getElementById('nomor-telepon')?.value,
+        pekerjaan: document.getElementById('pekerjaan')?.value,
+        pendidikan: document.getElementById('pendidikan')?.value,
+        statusPerkawinan: document.getElementById('status-perkawinan')?.value
     };
     
-    localStorage.setItem('dataPasien', JSON.stringify(formData));
+    const result = StorageManager.add(StorageManager.KEYS.IDENTITAS_PASIEN, formData);
     
-    alert('✅ Data identitas pasien berhasil disimpan!');
+    alert(`✅ Data identitas pasien berhasil disimpan!\nNo RM: ${result.noRm}`);
     
-    // Reset form setelah simpan (opsional)
-    // document.getElementById('identitas-pasien-form').reset();
+    if (document.getElementById('identitas-pasien-form')) {
+        document.getElementById('identitas-pasien-form').reset();
+    }
+}
+
+function handlePasienUnknown(event) {
+    event.preventDefault();
+    
+    const formData = {
+        noRmTemporary: 'RM-TEMP-' + Date.now(),
+        jenisKelamin: document.getElementById('jenis-kelamin-unknown')?.value,
+        perkiraaanUmur: document.getElementById('perkiraan-umur')?.value,
+        ciriCiri: document.getElementById('ciri-ciri')?.value,
+        keterangan: document.getElementById('keterangan-unknown')?.value,
+        tanggalDitemukan: document.getElementById('tanggal-ditemukan')?.value
+    };
+    
+    const result = StorageManager.add(StorageManager.KEYS.PASIEN_UNKNOWN, formData);
+    
+    alert(`✅ Data pasien tidak dikenal berhasil disimpan!\nNo RM Sementara: ${result.noRmTemporary}`);
+    
+    if (document.getElementById('pasien-unknown-form')) {
+        document.getElementById('pasien-unknown-form').reset();
+    }
 }
 
 function handlePendaftaranPasien(event) {
     event.preventDefault();
     
-    // Generate nomor registrasi
     const noRegistrasi = 'REG-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 10000)).padStart(4, '0');
     const noAntrian = String(Math.floor(Math.random() * 999)).padStart(3, '0');
+    
+    const formData = {
+        noRm: document.getElementById('no-rm')?.value,
+        namaLengkap: document.getElementById('nama-lengkap-daftar')?.value,
+        tanggalKunjungan: document.getElementById('tanggal-kunjungan')?.value,
+        jamMasuk: document.getElementById('jam-masuk')?.value,
+        keluhan: document.getElementById('keluhan')?.value,
+        noRegistrasi: noRegistrasi,
+        noAntrian: noAntrian,
+        status: 'Pending'
+    };
+    
+    const result = StorageManager.add(StorageManager.KEYS.DAFTAR_KUNJUNGAN, formData);
     
     document.getElementById('no-registrasi').value = noRegistrasi;
     document.getElementById('no-antrian').value = noAntrian;
     
-    // Show success message
     const successMsg = document.getElementById('success-message');
     if (successMsg) {
         successMsg.style.display = 'flex';
@@ -337,6 +417,8 @@ function handlePendaftaranPasien(event) {
             alert('Pendaftaran berhasil! No Antrian: ' + noAntrian);
             window.location.href = 'daftar-kunjungan.html';
         }, 1500);
+    } else {
+        alert('✅ Pendaftaran berhasil! No Antrian: ' + noAntrian);
     }
 }
 
@@ -385,22 +467,57 @@ function toggleConfirmPassword() {
 
 function handleCreateAdmin(event) {
     event.preventDefault();
-    
-    const password = document.getElementById('password-register').value;
-    const confirmPassword = document.getElementById('confirm-password').value;
-    
+
+    const nip = document.getElementById('nip')?.value.trim();
+    const username = document.getElementById('username-register')?.value.trim();
+    const email = document.getElementById('email-register')?.value.trim();
+    const password = document.getElementById('password-register')?.value || '';
+    const confirmPassword = document.getElementById('confirm-password')?.value || '';
+
+    if (!nip || !username || !email || !password || !confirmPassword) {
+        alert('Semua field wajib diisi.');
+        return;
+    }
+
     if (password !== confirmPassword) {
         alert('Password dan konfirmasi password tidak cocok!');
         return;
     }
-    
+
     if (password.length < 8) {
         alert('Password minimal harus 8 karakter!');
         return;
     }
-    
+
+    const accounts = loadAdminAccounts();
+    const usernameExists = accounts.some(acc => acc.username.toLowerCase() === username.toLowerCase());
+    const emailExists = accounts.some(acc => acc.email.toLowerCase() === email.toLowerCase());
+
+    if (usernameExists) {
+        alert('Username sudah digunakan. Silakan pilih username lain.');
+        return;
+    }
+
+    if (emailExists) {
+        alert('Email sudah terdaftar. Gunakan email lain.');
+        return;
+    }
+
+    const newAccount = {
+        nip,
+        username,
+        email,
+        password,
+        name: username,
+        createdAt: new Date().toISOString()
+    };
+
+    accounts.push(newAccount);
+    saveAdminAccounts(accounts);
+    localStorage.setItem('adminRememberedUser', username);
+
     alert('Akun admin berhasil dibuat! Silakan login dengan username dan password Anda.');
-    window.location.href = 'login-admin.html';
+    window.location.href = 'admin.html';
 }
 
 // ============================================
@@ -425,6 +542,297 @@ function exportData() {
 
 function printData() {
     window.print();
+}
+
+// ============================================
+// TRIASE IGD HANDLER
+// ============================================
+
+function handleTriaseIGD(event) {
+    event.preventDefault();
+    
+    const formData = {
+        noRm: document.getElementById('no-rm-triase')?.value,
+        tanggal: document.getElementById('tanggal-triase')?.value,
+        waktu: document.getElementById('waktu-triase')?.value,
+        keluhan: document.getElementById('keluhan-utama')?.value,
+        sistol: document.getElementById('sistol')?.value,
+        diastol: document.getElementById('diastol')?.value,
+        nadi: document.getElementById('nadi')?.value,
+        respirasi: document.getElementById('respirasi')?.value,
+        suhu: document.getElementById('suhu')?.value,
+        kategoriTriase: document.getElementById('kategori-triase')?.value,
+        tindakanAwal: document.getElementById('tindakan-awal')?.value
+    };
+    
+    const result = StorageManager.add(StorageManager.KEYS.TRIASE_IGD, formData);
+    alert(`✅ Data Triase IGD berhasil disimpan!`);
+}
+
+// ============================================
+// ASSESSMENT IGD HANDLER
+// ============================================
+
+function handleAssessmentIGD(event) {
+    event.preventDefault();
+    
+    const formData = {
+        noRm: document.getElementById('no-rm-assessment')?.value,
+        tanggal: document.getElementById('tanggal-assessment')?.value,
+        riwayatPenyakit: document.getElementById('riwayat-penyakit')?.value,
+        riwayatAlergi: document.getElementById('riwayat-alergi')?.value,
+        riwayatObat: document.getElementById('riwayat-obat')?.value,
+        hasilKesadaran: document.getElementById('hasil-kesadaran')?.value,
+        hasilPsikis: document.getElementById('hasil-psikis')?.value,
+        hasilSosial: document.getElementById('hasil-sosial')?.value,
+        kesan: document.getElementById('kesan')?.value
+    };
+    
+    const result = StorageManager.add(StorageManager.KEYS.ASSESSMENT_IGD, formData);
+    alert(`✅ Assessment IGD berhasil disimpan!`);
+}
+
+// ============================================
+// PEMERIKSAAN FISIK HANDLER
+// ============================================
+
+function handlePemeriksaanFisik(event) {
+    event.preventDefault();
+    
+    const formData = {
+        noRm: document.getElementById('no-rm-fisik')?.value,
+        tanggal: document.getElementById('tanggal-fisik')?.value,
+        kepalaBidang: document.getElementById('kepala-bidang')?.value,
+        mataBidang: document.getElementById('mata-bidang')?.value,
+        telingaBidang: document.getElementById('telinga-bidang')?.value,
+        muluBidang: document.getElementById('mulu-bidang')?.value,
+        leherBidang: document.getElementById('leher-bidang')?.value,
+        thoraksBidang: document.getElementById('thoraks-bidang')?.value,
+        abdomenBidang: document.getElementById('abdomen-bidang')?.value,
+        ekstremitasBidang: document.getElementById('ekstremitas-bidang')?.value,
+        kulit: document.getElementById('kulit')?.value,
+        kesimpulan: document.getElementById('kesimpulan-fisik')?.value
+    };
+    
+    const result = StorageManager.add(StorageManager.KEYS.PEMERIKSAAN_FISIK, formData);
+    alert(`✅ Pemeriksaan Fisik berhasil disimpan!`);
+}
+
+// ============================================
+// SCREENING RISIKO HANDLER
+// ============================================
+
+function handleScreeningRisiko(event) {
+    event.preventDefault();
+    
+    const formData = {
+        noRm: document.getElementById('no-rm-risiko')?.value,
+        tanggal: document.getElementById('tanggal-risiko')?.value,
+        risikoJatuh: document.getElementById('risiko-jatuh')?.value || 'Tidak',
+        risikoLuka: document.getElementById('risiko-luka')?.value || 'Tidak',
+        risikoInfeksi: document.getElementById('risiko-infeksi')?.value || 'Tidak',
+        risikoDelirium: document.getElementById('risiko-delirium')?.value || 'Tidak',
+        risikoMalnutrisi: document.getElementById('risiko-malnutrisi')?.value || 'Tidak',
+        risikoKekerasan: document.getElementById('risiko-kekerasan')?.value || 'Tidak',
+        levelRisiko: document.getElementById('level-risiko')?.value,
+        rekomendasi: document.getElementById('rekomendasi')?.value
+    };
+    
+    const result = StorageManager.add(StorageManager.KEYS.SCREENING_RISIKO, formData);
+    alert(`✅ Screening Risiko berhasil disimpan!`);
+}
+
+// ============================================
+// PSIKOLOGIS & PEMULANGAN HANDLER
+// ============================================
+
+function handlePsikologisPemulangan(event) {
+    event.preventDefault();
+    
+    const formData = {
+        noRm: document.getElementById('no-rm-psikologis')?.value,
+        tanggal: document.getElementById('tanggal-psikologis')?.value,
+        statusEmosional: document.getElementById('status-emosional')?.value,
+        dukunganKeluarga: document.getElementById('dukungan-keluarga')?.value,
+        kesiapanPulang: document.getElementById('kesiapan-pulang')?.value,
+        instruksiPulang: document.getElementById('instruksi-pulang')?.value,
+        nasehatKesehatan: document.getElementById('nasehat-kesehatan')?.value,
+        follow_up: document.getElementById('follow-up')?.value
+    };
+    
+    const result = StorageManager.add(StorageManager.KEYS.PSIKOLOGIS_PEMULANGAN, formData);
+    alert(`✅ Data Psikologis & Pemulangan berhasil disimpan!`);
+}
+
+// ============================================
+// DIAGNOSIS HANDLER
+// ============================================
+
+function handleDiagnosis(event) {
+    event.preventDefault();
+    
+    const formData = {
+        noRm: document.getElementById('no-rm-diagnosis')?.value,
+        tanggal: document.getElementById('tanggal-diagnosis')?.value,
+        diagnosisPrimer: document.getElementById('diagnosis-primer')?.value,
+        diagnosisSkunder: document.getElementById('diagnosis-skunder')?.value,
+        kodeDiagnosis: document.getElementById('kode-diagnosis')?.value,
+        deskripsi: document.getElementById('deskripsi-diagnosis')?.value,
+        dokter: document.getElementById('dokter-diagnosis')?.value
+    };
+    
+    const result = StorageManager.add(StorageManager.KEYS.DIAGNOSIS, formData);
+    alert(`✅ Diagnosis berhasil disimpan!`);
+}
+
+// ============================================
+// INFORMED CONSENT HANDLER
+// ============================================
+
+function handleInformedConsent(event) {
+    event.preventDefault();
+    
+    const formData = {
+        noRm: document.getElementById('no-rm-informed')?.value,
+        tanggal: document.getElementById('tanggal-informed')?.value,
+        procedur: document.getElementById('procedur-informed')?.value,
+        risiko: document.getElementById('risiko-informed')?.value,
+        benefit: document.getElementById('benefit-informed')?.value,
+        alternatif: document.getElementById('alternatif-informed')?.value,
+        pahamInfo: document.getElementById('paham-info')?.checked,
+        bersediaProsedu: document.getElementById('bersedia-prosedur')?.checked,
+        tanda_tangan: document.getElementById('tanda-tangan-informed')?.value
+    };
+    
+    const result = StorageManager.add(StorageManager.KEYS.INFORMED_CONSENT, formData);
+    alert(`✅ Informed Consent berhasil disimpan!`);
+}
+
+// ============================================
+// GENERAL CONSENT HANDLER
+// ============================================
+
+function handleGeneralConsent(event) {
+    event.preventDefault();
+    
+    const formData = {
+        noRm: document.getElementById('no-rm-general')?.value,
+        tanggal: document.getElementById('tanggal-general')?.value,
+        pasienBersedia: document.getElementById('pasien-bersedia')?.checked,
+        hak_hak: document.getElementById('hak-hak')?.value,
+        kerahasiaanData: document.getElementById('kerahasiaan-data')?.checked,
+        tanda_tangan: document.getElementById('tanda-tangan-general')?.value
+    };
+    
+    const result = StorageManager.add(StorageManager.KEYS.GENERAL_CONSENT, formData);
+    alert(`✅ General Consent berhasil disimpan!`);
+}
+
+// ============================================
+// PEMERIKSAAN PENUNJANG HANDLER
+// ============================================
+
+function handlePemeriksaanPenunjang(event) {
+    event.preventDefault();
+    
+    const formData = {
+        noRm: document.getElementById('no-rm-penunjang')?.value,
+        tanggal: document.getElementById('tanggal-penunjang')?.value,
+        jenisPemeriksaan: document.getElementById('jenis-penunjang')?.value,
+        indikasi: document.getElementById('indikasi-penunjang')?.value,
+        urgency: document.getElementById('urgency-penunjang')?.value,
+        catatan: document.getElementById('catatan-penunjang')?.value,
+        status: 'Pending'
+    };
+    
+    const result = StorageManager.add(StorageManager.KEYS.PEMERIKSAAN_PENUNJANG, formData);
+    alert(`✅ Permintaan Pemeriksaan Penunjang berhasil disimpan!`);
+}
+
+// ============================================
+// RADIOLOGI HANDLER
+// ============================================
+
+function handleRadiologi(event) {
+    event.preventDefault();
+    
+    const formData = {
+        noRm: document.getElementById('no-rm-radiologi')?.value,
+        tanggal: document.getElementById('tanggal-radiologi')?.value,
+        jenisRadiologi: document.getElementById('jenis-radiologi')?.value,
+        lokasi: document.getElementById('lokasi-radiologi')?.value,
+        indikasi: document.getElementById('indikasi-radiologi')?.value,
+        hasilRadiologi: document.getElementById('hasil-radiologi')?.value,
+        interpretasi: document.getElementById('interpretasi-radiologi')?.value,
+        dokterRadiologi: document.getElementById('dokter-radiologi')?.value
+    };
+    
+    const result = StorageManager.add(StorageManager.KEYS.RADIOLOGI, formData);
+    alert(`✅ Data Radiologi berhasil disimpan!`);
+}
+
+// ============================================
+// LABORATORIUM HANDLER
+// ============================================
+
+function handleLaboratorium(event) {
+    event.preventDefault();
+    
+    const formData = {
+        noRm: document.getElementById('no-rm-lab')?.value,
+        tanggal: document.getElementById('tanggal-lab')?.value,
+        jenisLab: document.getElementById('jenis-lab')?.value,
+        indikasi: document.getElementById('indikasi-lab')?.value,
+        urgency: document.getElementById('urgency-lab')?.value,
+        status: 'Pending'
+    };
+    
+    const result = StorageManager.add(StorageManager.KEYS.LABORATORIUM, formData);
+    alert(`✅ Permintaan Laboratorium berhasil disimpan!`);
+}
+
+// ============================================
+// HASIL LABORATORIUM HANDLER
+// ============================================
+
+function handleHasilLab(event) {
+    event.preventDefault();
+    
+    const formData = {
+        noRm: document.getElementById('no-rm-hasil')?.value,
+        tanggalPemeriksaan: document.getElementById('tanggal-hasil')?.value,
+        jenisPemeriksaan: document.getElementById('jenis-hasil')?.value,
+        hasilPemeriksaan: document.getElementById('hasil-pemeriksaan')?.value,
+        nilaiNormal: document.getElementById('nilai-normal')?.value,
+        interpretasi: document.getElementById('interpretasi-hasil')?.value,
+        dokterValidasi: document.getElementById('dokter-validasi')?.value,
+        status: 'Validated'
+    };
+    
+    const result = StorageManager.add(StorageManager.KEYS.HASIL_LABORATORIUM, formData);
+    alert(`✅ Hasil Laboratorium berhasil disimpan!\\nNo RM: ${result.noRm}`);\n}
+
+// ============================================
+// TERAPI HANDLER
+// ============================================
+
+function handleTerapi(event) {
+    event.preventDefault();
+    
+    const formData = {
+        noRm: document.getElementById('no-rm-terapi')?.value,
+        tanggal: document.getElementById('tanggal-terapi')?.value,
+        jenisTerapi: document.getElementById('jenis-terapi')?.value,
+        indikasi: document.getElementById('indikasi-terapi')?.value,
+        durasi: document.getElementById('durasi-terapi')?.value,
+        frekuensi: document.getElementById('frekuensi-terapi')?.value,
+        instruksi: document.getElementById('instruksi-terapi')?.value,
+        dokter: document.getElementById('dokter-terapi')?.value,
+        status: 'Active'
+    };
+    
+    const result = StorageManager.add(StorageManager.KEYS.TERAPI, formData);
+    alert(`✅ Data Terapi berhasil disimpan!`);
 }
 
 function viewDetail(id) {
