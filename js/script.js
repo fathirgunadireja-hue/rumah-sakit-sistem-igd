@@ -305,38 +305,11 @@ const StorageManager = {
 };
 
 function handleAdminLogin(event) {
-    event.preventDefault();
-
-    const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('password');
-    const rememberMe = document.getElementById('remember-me')?.checked;
-
-    const username = usernameInput?.value.trim();
-    const password = passwordInput?.value || '';
-
-    if (!username || !password) {
-        alert('Username dan password wajib diisi.');
-        return;
-    }
-
-    const accounts = loadAdminAccounts();
-    const account = accounts.find(acc => acc.username === username && acc.password === password);
-
-    if (!account) {
-        alert('Username atau password salah.');
-        return;
-    }
-
-    if (rememberMe) {
-        localStorage.setItem('adminRememberedUser', username);
-    } else {
-        localStorage.removeItem('adminRememberedUser');
-    }
-
+    // Langsung login tanpa validasi
     roleManager.setRole('admin', {
-        name: account.name || account.username,
-        email: account.email || 'admin@rsjayasehat.com',
-        id: account.nip || 'admin-' + Date.now()
+        name: 'Admin',
+        email: 'admin@rsjayasehat.com',
+        id: 'admin-' + Date.now()
     });
 
     window.location.href = 'dashboard-admin.html';
@@ -468,55 +441,24 @@ function toggleConfirmPassword() {
 function handleCreateAdmin(event) {
     event.preventDefault();
 
-    const nip = document.getElementById('nip')?.value.trim();
-    const username = document.getElementById('username-register')?.value.trim();
-    const email = document.getElementById('email-register')?.value.trim();
-    const password = document.getElementById('password-register')?.value || '';
-    const confirmPassword = document.getElementById('confirm-password')?.value || '';
-
-    if (!nip || !username || !email || !password || !confirmPassword) {
-        alert('Semua field wajib diisi.');
-        return;
-    }
-
-    if (password !== confirmPassword) {
-        alert('Password dan konfirmasi password tidak cocok!');
-        return;
-    }
-
-    if (password.length < 8) {
-        alert('Password minimal harus 8 karakter!');
-        return;
-    }
-
-    const accounts = loadAdminAccounts();
-    const usernameExists = accounts.some(acc => acc.username.toLowerCase() === username.toLowerCase());
-    const emailExists = accounts.some(acc => acc.email.toLowerCase() === email.toLowerCase());
-
-    if (usernameExists) {
-        alert('Username sudah digunakan. Silakan pilih username lain.');
-        return;
-    }
-
-    if (emailExists) {
-        alert('Email sudah terdaftar. Gunakan email lain.');
-        return;
-    }
-
+    // Auto-create dengan data random yang di-generate
+    const timestamp = Date.now();
+    const randomId = Math.random().toString(36).substr(2, 9);
+    
     const newAccount = {
-        nip,
-        username,
-        email,
-        password,
-        name: username,
+        nip: 'NIP-' + timestamp,
+        username: 'admin-' + randomId,
+        email: 'admin-' + randomId + '@rsjayasehat.com',
+        password: 'Pass' + timestamp.toString().slice(-8),
+        name: 'Admin ' + randomId.toUpperCase(),
         createdAt: new Date().toISOString()
     };
 
+    const accounts = loadAdminAccounts();
     accounts.push(newAccount);
     saveAdminAccounts(accounts);
-    localStorage.setItem('adminRememberedUser', username);
 
-    alert('Akun admin berhasil dibuat! Silakan login dengan username dan password Anda.');
+    alert(`✅ Akun admin berhasil dibuat!\\n\\nUsername: ${newAccount.username}\\nPassword: ${newAccount.password}\\nEmail: ${newAccount.email}\\n\\nSilakan login menggunakan kredensial ini.`);
     window.location.href = 'admin.html';
 }
 
