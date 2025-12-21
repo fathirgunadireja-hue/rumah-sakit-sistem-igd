@@ -1018,8 +1018,8 @@ function buildUnifiedInternalShell() {
         ];
 
         const standaloneLinks = [
-            // { href: 'farmasi.html', label: 'Farmasi', icon: 'fas fa-prescription-bottle' }, // Hidden - feature in development
-            // { href: 'keuangan.html', label: 'Keuangan', icon: 'fas fa-credit-card' }, // Hidden - feature in development
+            { href: 'farmasi.html', label: 'Farmasi', icon: 'fas fa-prescription-bottle' },
+            { href: 'keuangan.html', label: 'Billing', icon: 'fas fa-credit-card' },
             { href: 'setting.html', label: 'Pengaturan', icon: 'fas fa-cog' }
         ];
 
